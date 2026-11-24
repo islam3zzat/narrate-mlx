@@ -14,26 +14,10 @@ All four demos were made with `/explainer-video` in the default **`cel-sky`** th
 
 | Demo | Mode | Length | Video |
 |---|---|---|---|
-| **All visuals (2D)** — all 16 supported 2D visual types | 2D | 1 min 57 s | [all-visuals-2d.mp4](docs/video/all-visuals-2d.mp4) |
-| **All visuals (3D)** — all 13 supported 3D visual types | 3D | 1 min 30 s | [all-visuals-3d.mp4](docs/video/all-visuals-3d.mp4) |
-| **Architectural overview (2D)** — how `narrate-mlx` works | 2D | 1 min 09 s | [arch-overview-2d.mp4](docs/video/arch-overview-2d.mp4) |
-| **Architectural overview (3D)** — exact same script in 3D | 3D | 1 min 09 s | [arch-overview-3d.mp4](docs/video/arch-overview-3d.mp4) |
+| **All visuals (2D)** — all 16 supported 2D visual types | 2D | 1 min 57 s | https://github.com/user-attachments/assets/add1b23d-5ff2-4b5c-927a-43b4738437a5 |
+| **Architectural overview (2D)** — how `narrate-mlx` works | 2D | 1 min 09 s | https://github.com/user-attachments/assets/551a7add-9c16-43a8-bdf0-56a77c62c820 |
 
 
-
-
-
-
-
-
-
-| All visuals (2D) | All visuals (3D) |
-|---|---|
-| https://github.com/user-attachments/assets/c5f12f52-8d4f-49ac-959d-280b1cd84318 | https://github.com/user-attachments/assets/ca9ae45e-889a-48eb-b480-80c552d95e0a |
-
-| Architectural overview (2D) | Architectural overview (3D) |
-|---|---|
-| https://github.com/user-attachments/assets/fa569e99-928f-4610-bbea-281de6da7488 |  https://github.com/user-attachments/assets/483a5f1b-c8e5-4905-ae12-55cde0830c73 |
 
 Scripts, transcripts and rebuild steps are in [`docs/video/`](docs/video/).
 
