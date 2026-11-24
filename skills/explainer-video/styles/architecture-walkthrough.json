@@ -1,0 +1,55 @@
+{
+  "name": "architecture-walkthrough",
+  "description": "Walk engineers who are new to a system through it: context, a map of the parts, a zoom per component, one concrete request traced end to end, trade-offs with their reasons.",
+  "audience": "engineers new to this system",
+  "defaults": {
+    "speed": 1.0
+  },
+  "bounds": {
+    "scenes": [
+      8,
+      35
+    ],
+    "seconds": [
+      180,
+      480
+    ],
+    "wordsPerScene": [
+      20,
+      60
+    ]
+  },
+  "preferredVisuals": [
+    "graph",
+    "flow",
+    "sequence",
+    "class",
+    "layers3d"
+  ],
+  "ledger": {
+    "required": false,
+    "kinds": [
+      "system",
+      "decision",
+      "factor",
+      "number",
+      "ambiguity"
+    ],
+    "mustCover": [
+      "system"
+    ],
+    "coverHigh": false,
+    "allowDeferred": false
+  },
+  "sections": [
+    "context",
+    "map",
+    "components",
+    "trace",
+    "trade-offs",
+    "recap"
+  ],
+  "lint": {
+    "blameless": false
+  }
+}

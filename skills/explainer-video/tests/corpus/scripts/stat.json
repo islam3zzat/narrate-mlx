@@ -1,0 +1,58 @@
+{
+  "title": "Stat corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Availability held steady all quarter. We reached 99.9 percent.",
+      "visual": {
+        "type": "stat",
+        "heading": "Quarter in one number",
+        "stats": [
+          {"label": "Availability", "value": 99.9, "unit": "%", "tone": "good"}
+        ],
+        "caption": "One plain counter."
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "Tail latency fell from 420 to 180. Median latency fell from 95 to 60.",
+      "visual": {
+        "type": "stat",
+        "heading": "Latency, before and after",
+        "stats": [
+          {"id": "tail", "label": "Tail latency", "value": 180, "from": 420, "unit": "ms", "better": "down"},
+          {"id": "median", "label": "Median latency", "value": 60, "from": 95, "unit": "ms", "better": "down"}
+        ]
+      },
+      "focus": [{"at": "median latency", "on": ["median"]}, {"at": "to 60", "on": []}]
+    },
+    {
+      "id": "s03",
+      "narration": "Traffic reached 12,500 requests per second. Setup time grew from 0 to 120 milliseconds. The error rate stayed at 3.1 percent.",
+      "visual": {
+        "type": "stat",
+        "heading": "Mixed units",
+        "stats": [
+          {"label": "Traffic", "value": 12500, "unit": "req/s"},
+          {"label": "Setup time", "value": 120, "from": 0, "unit": "ms", "better": "down"},
+          {"label": "Error rate", "value": 3.1, "unit": "%", "tone": "bad"}
+        ],
+        "caption": "A change from zero shows the absolute difference."
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "Signups grew from 950 to 1050. Churn fell from 900 to 700. Support tickets stayed at 240. Coverage reached 97 percent.",
+      "visual": {
+        "type": "stat",
+        "heading": "Four at a glance",
+        "stats": [
+          {"label": "Signups", "value": 1050, "from": 950, "unit": "users", "better": "up"},
+          {"label": "Churn", "value": 700, "from": 900, "unit": "users", "better": "down"},
+          {"label": "Support tickets", "value": 240},
+          {"label": "Coverage", "value": 97, "unit": "%"}
+        ]
+      }
+    }
+  ]
+}

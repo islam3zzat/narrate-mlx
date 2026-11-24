@@ -1,0 +1,60 @@
+{
+  "title": "اختبار الرسم",
+  "language": "ar",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "الْعَمِيلُ يُرْسِلُ طَلَبًا عَبْرَ السِّلْكِ إِلَى الْخَادِمِ.",
+      "visual": {
+        "type": "svg",
+        "heading": "رِحْلَةُ الطَّلَبِ",
+        "parts": [
+          {
+            "id": "client",
+            "label": "العميل"
+          },
+          {
+            "id": "wire",
+            "label": "السلك"
+          },
+          {
+            "id": "server",
+            "label": "الخادم"
+          }
+        ],
+        "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"client\"><rect x=\"1280\" y=\"170\" width=\"320\" height=\"220\" fill=\"primary\"/><text x=\"1440\" y=\"285\" text-anchor=\"middle\" size=\"title\">العميل</text></g><g id=\"wire\"><line x1=\"1250\" y1=\"280\" x2=\"470\" y2=\"280\" arrow=\"end\"/></g><g id=\"server\"><rect x=\"100\" y=\"170\" width=\"320\" height=\"220\" fill=\"accent\"/><text x=\"260\" y=\"285\" text-anchor=\"middle\" size=\"title\">الخادم</text></g></svg>"
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "أَوَّلًا قِرَاءَةٌ، ثُمَّ مُقَارَنَةٌ، ثُمَّ تَعْدِيلٌ.",
+      "visual": {
+        "type": "svg",
+        "heading": "ثَلَاثُ خُطُوَاتٍ",
+        "parts": [
+          {
+            "id": "one",
+            "label": "قراءة"
+          },
+          {
+            "id": "two",
+            "label": "مقارنة"
+          },
+          {
+            "id": "three",
+            "label": "تعديل"
+          }
+        ],
+        "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"one\"><circle cx=\"1400\" cy=\"260\" r=\"120\" fill=\"primary\"/><text x=\"1400\" y=\"272\" text-anchor=\"middle\" size=\"title\">قراءة</text></g><g id=\"two\"><line x1=\"1260\" y1=\"260\" x2=\"990\" y2=\"260\" arrow=\"end\"/><circle cx=\"850\" cy=\"260\" r=\"120\" fill=\"secondary\"/><text x=\"850\" y=\"272\" text-anchor=\"middle\" size=\"title\">مقارنة</text></g><g id=\"three\"><line x1=\"710\" y1=\"260\" x2=\"440\" y2=\"260\" arrow=\"end\"/><circle cx=\"300\" cy=\"260\" r=\"120\" fill=\"accent\"/><text x=\"300\" y=\"272\" text-anchor=\"middle\" size=\"title\">تعديل</text></g></svg>"
+      },
+      "focus": [
+        {
+          "at": "ثُمَّ تَعْدِيلٌ",
+          "on": [
+            "three"
+          ]
+        }
+      ]
+    }
+  ]
+}

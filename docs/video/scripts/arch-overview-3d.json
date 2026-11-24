@@ -1,0 +1,103 @@
+{
+  "title": "Narrate Architecture — 3D",
+  "mode": "3d",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Narrate turns a plain JSON script into a fully narrated, timed explainer video on Apple Silicon.",
+      "visual": {
+        "type": "title",
+        "kicker": "ARCHITECTURE OVERVIEW",
+        "headline": "How Narrate Works",
+        "sub": "From JSON script to local speech and deterministic video"
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "Every video runs through four stages: validate the script, synthesize speech locally, align word timings, and render frames with Remotion.",
+      "visual": {
+        "type": "flow",
+        "heading": "End-to-End Pipeline",
+        "nodes": [
+          {"label": "Script", "sub": "Zod schema"},
+          {"label": "Speech", "sub": "Kokoro MLX"},
+          {"label": "Timings", "sub": "Word cues"},
+          {"label": "Render", "sub": "Remotion MP4"}
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "At the core, the schema feeds a single visual registry that dispatches each scene to either its two-dimensional or three-dimensional view.",
+      "visual": {
+        "type": "graph",
+        "heading": "Visual Dispatch Architecture",
+        "direction": "LR",
+        "nodes": [
+          {"id": "script", "label": "Script JSON", "tone": "primary"},
+          {"id": "schema", "label": "Zod Schema", "sub": "Validation", "tone": "neutral"},
+          {"id": "reg", "label": "Registry", "sub": "Semantics", "tone": "accent"},
+          {"id": "v2d", "label": "2D Views", "sub": "React & SVG", "tone": "primary"},
+          {"id": "v3d", "label": "3D Views", "sub": "Three.js WebGL", "tone": "secondary"}
+        ],
+        "edges": [
+          {"from": "script", "to": "schema"},
+          {"from": "schema", "to": "reg", "label": "valid"},
+          {"from": "reg", "to": "v2d", "label": "2d", "tone": "accent"},
+          {"from": "reg", "to": "v3d", "label": "3d", "tone": "secondary"}
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "During audio generation, the CLI sends narration to Kokoro, receives per-word timestamps, and writes a timing manifest that drives every reveal.",
+      "cues": ["Kokoro", "timestamps", "timing manifest"],
+      "visual": {
+        "type": "sequence",
+        "heading": "Audio & Timing Sync",
+        "participants": [
+          {"id": "cli", "label": "CLI", "tone": "primary"},
+          {"id": "tts", "label": "Kokoro", "sub": "MLX", "tone": "accent"},
+          {"id": "data", "label": "Manifest", "sub": "JSON", "tone": "secondary"}
+        ],
+        "messages": [
+          {"from": "cli", "to": "tts", "label": "Synthesize narration"},
+          {"from": "tts", "to": "cli", "label": "WAV + word times", "reply": true, "tone": "accent"},
+          {"from": "cli", "to": "data", "label": "Write reveal cues", "tone": "primary"}
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "narration": "Zooming out, the full build loop validates the script, loops back on errors, skips synthesis on cache hits, and renders the final video.",
+      "visual": {
+        "type": "mermaid",
+        "heading": "Full Build & Cache Loop",
+        "code": "flowchart LR\n  subgraph Input\n    S[Script JSON] --> V{Valid?}\n  end\n  V -->|no| E[Fix Script]\n  E --> S\n  V -->|yes| C{Audio Cached?}\n  subgraph Pipeline\n    C -->|no| T[Kokoro Speech]\n    T --> A[Word Timings]\n    C -->|yes| A\n    A --> R[Remotion Render]\n  end\n  R --> M[Final Video]",
+        "caption": "Subgraphs, validation feedback loop, and cache bypass"
+      }
+    },
+    {
+      "id": "s06",
+      "narration": "Both rendering modes share the exact same script format: two-dimensional mode maximizes diagram density, while three-dimensional mode adds spatial depth.",
+      "visual": {
+        "type": "compare",
+        "heading": "Two Modes, One Script",
+        "columns": [
+          {"title": "2D Mode", "tag": "FAST & DENSE", "items": ["16 visual types", "Code, SVG, Stat, Timeline", "Sub-minute renders"]},
+          {"title": "3D Mode", "tag": "SPATIAL DEPTH", "items": ["13 visual types", "Terraces, staircases, stacks", "Three-tone cel shading"]}
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "narration": "And the final callout: write your story once, and switch between two-dimensional and three-dimensional rendering with a single mode field.",
+      "visual": {
+        "type": "callout",
+        "heading": "Key Takeaway",
+        "big": "Write Once, Render 2D or 3D",
+        "text": "Same narration, same timings, same cel-sky theme."
+      }
+    }
+  ]
+}

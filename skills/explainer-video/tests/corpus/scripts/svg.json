@@ -1,0 +1,100 @@
+{
+  "title": "Svg corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "A browser sends a request along the wire to the server. The server answers, and next to it a cache remembers the reply, so the next request is fast.",
+      "visual": {
+        "type": "svg",
+        "heading": "A request path",
+        "parts": [
+          {
+            "id": "client",
+            "label": "browser"
+          },
+          {
+            "id": "wire",
+            "label": "wire"
+          },
+          {
+            "id": "server",
+            "label": "server"
+          },
+          {
+            "id": "cache",
+            "label": "cache"
+          }
+        ],
+        "svg": "<svg viewBox=\"0 0 1700 560\"><line x1=\"60\" y1=\"500\" x2=\"1640\" y2=\"500\" stroke=\"dim\" stroke-width=\"2\"/><text x=\"60\" y=\"538\" text-anchor=\"start\" font=\"mono\" size=\"small\" fill=\"dim\">one request, one reply</text><g id=\"client\"><rect x=\"100\" y=\"170\" width=\"320\" height=\"220\" fill=\"primary\"/><text x=\"260\" y=\"270\" text-anchor=\"middle\" size=\"title\">Browser</text><text x=\"260\" y=\"325\" text-anchor=\"middle\" font=\"mono\" size=\"small\">client</text></g><g id=\"wire\"><line x1=\"450\" y1=\"250\" x2=\"890\" y2=\"250\" arrow=\"end\"/><line x1=\"890\" y1=\"320\" x2=\"450\" y2=\"320\" arrow=\"end\" stroke=\"secondary\"/></g><g id=\"server\"><rect x=\"920\" y=\"170\" width=\"320\" height=\"220\" fill=\"accent\"/><text x=\"1080\" y=\"270\" text-anchor=\"middle\" size=\"title\">Server</text><text x=\"1080\" y=\"325\" text-anchor=\"middle\" font=\"mono\" size=\"small\">origin</text></g><g id=\"cache\"><rect x=\"1350\" y=\"215\" width=\"260\" height=\"130\" fill=\"muted\" stroke-width=\"2\"/><text x=\"1480\" y=\"290\" text-anchor=\"middle\" size=\"body\" font=\"mono\">cache</text><line x1=\"1250\" y1=\"280\" x2=\"1340\" y2=\"280\" arrow=\"both\" stroke-width=\"2\"/></g></svg>",
+        "caption": "One drawing, four parts, revealed as spoken."
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "A thermostat has to read the room, then diff it against the target, then heat the room. That closes the loop, and the loop repeats all day long.",
+      "visual": {
+        "type": "svg",
+        "heading": "A feedback loop",
+        "parts": [
+          {
+            "id": "measure",
+            "label": "read"
+          },
+          {
+            "id": "compare",
+            "label": "diff"
+          },
+          {
+            "id": "adjust",
+            "label": "heat"
+          },
+          {
+            "id": "loop",
+            "label": "loop"
+          }
+        ],
+        "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"measure\"><circle cx=\"300\" cy=\"260\" r=\"120\" fill=\"primary\"/><text x=\"300\" y=\"272\" text-anchor=\"middle\" size=\"title\">read</text></g><g id=\"compare\"><line x1=\"440\" y1=\"260\" x2=\"710\" y2=\"260\" arrow=\"end\"/><circle cx=\"850\" cy=\"260\" r=\"120\" fill=\"secondary\"/><text x=\"850\" y=\"272\" text-anchor=\"middle\" size=\"title\">diff</text></g><g id=\"adjust\"><line x1=\"990\" y1=\"260\" x2=\"1260\" y2=\"260\" arrow=\"end\"/><circle cx=\"1400\" cy=\"260\" r=\"120\" fill=\"accent\"/><text x=\"1400\" y=\"272\" text-anchor=\"middle\" size=\"title\">heat</text></g><g id=\"loop\"><path d=\"M 1400 400 C 1400 560, 300 560, 300 400\" arrow=\"end\" stroke=\"danger\"/></g></svg>"
+      },
+      "focus": [
+        {
+          "at": "closes the loop",
+          "on": [
+            "loop"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s03",
+      "narration": "Here is a small bar, then a medium bar, and finally the large bar. The large bar is the tallest of them all.",
+      "visual": {
+        "type": "svg",
+        "heading": "Three bars",
+        "parts": [
+          {
+            "id": "small",
+            "label": "small"
+          },
+          {
+            "id": "medium",
+            "label": "medium"
+          },
+          {
+            "id": "large",
+            "label": "large"
+          }
+        ],
+        "svg": "<svg viewBox=\"0 0 1700 560\"><line x1=\"100\" y1=\"480\" x2=\"1600\" y2=\"480\"/><line x1=\"100\" y1=\"480\" x2=\"100\" y2=\"40\" stroke-width=\"2\"/><text x=\"100\" y=\"28\" text-anchor=\"start\" font=\"mono\" size=\"small\">value</text><g id=\"small\"><rect x=\"300\" y=\"380\" width=\"260\" height=\"100\" fill=\"muted\"/><text x=\"430\" y=\"350\" text-anchor=\"middle\" size=\"body\">9</text></g><g id=\"medium\"><rect x=\"700\" y=\"260\" width=\"260\" height=\"220\" fill=\"primary\"/><text x=\"830\" y=\"230\" text-anchor=\"middle\" size=\"body\">21</text></g><g id=\"large\"><rect x=\"1100\" y=\"140\" width=\"260\" height=\"340\" fill=\"accent\"/><text x=\"1230\" y=\"110\" text-anchor=\"middle\" size=\"body\">Peak <tspan fill=\"danger\">42</tspan></text><polygon points=\"1230,60 1210,20 1250,20\" fill=\"danger\"/></g></svg>",
+        "caption": "Colour names only; borders are 2 or 4 pixels."
+      },
+      "focus": [
+        {
+          "at": "the tallest",
+          "on": [
+            "large"
+          ]
+        }
+      ]
+    }
+  ]
+}

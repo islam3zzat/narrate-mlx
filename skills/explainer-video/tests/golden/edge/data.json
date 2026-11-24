@@ -1,0 +1,2152 @@
+{
+ "id": "edge",
+ "title": "Edge corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 2825,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "Every visual type, in one short test video.",
+   "visual": {
+    "type": "title",
+    "kicker": "corpus",
+    "headline": "Edge cases",
+    "sub": "Every visual type"
+   },
+   "audio": "audio/edge/s01.wav",
+   "durationSec": 3.375,
+   "frames": 129,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Every",
+     "start": 0.275,
+     "end": 0.55
+    },
+    {
+     "w": "visual",
+     "start": 0.55,
+     "end": 0.925
+    },
+    {
+     "w": "type,",
+     "start": 0.925,
+     "end": 1.4
+    },
+    {
+     "w": "in",
+     "start": 1.5,
+     "end": 1.65
+    },
+    {
+     "w": "one",
+     "start": 1.65,
+     "end": 1.913
+    },
+    {
+     "w": "short",
+     "start": 1.913,
+     "end": 2.175
+    },
+    {
+     "w": "test",
+     "start": 2.175,
+     "end": 2.45
+    },
+    {
+     "w": "video.",
+     "start": 2.45,
+     "end": 3.125
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Every visual type, in one short test video.",
+     "start": 0.275
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "First, parsing. Second, validating the input. Third, writing the output.",
+   "visual": {
+    "type": "bullets",
+    "heading": "Three bullets",
+    "items": [
+     "Parsing",
+     "Validating the input",
+     "Writing the output"
+    ]
+   },
+   "cues": [
+    "First",
+    "",
+    "Third"
+   ],
+   "audio": "audio/edge/s02.wav",
+   "durationSec": 5.375,
+   "frames": 189,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "First,",
+     "start": 0.3,
+     "end": 0.575
+    },
+    {
+     "w": "parsing.",
+     "start": 0.625,
+     "end": 1.3
+    },
+    {
+     "w": "Second,",
+     "start": 1.438,
+     "end": 1.85
+    },
+    {
+     "w": "validating",
+     "start": 1.9,
+     "end": 2.487
+    },
+    {
+     "w": "the",
+     "start": 2.487,
+     "end": 2.6
+    },
+    {
+     "w": "input.",
+     "start": 2.6,
+     "end": 3.275
+    },
+    {
+     "w": "Third,",
+     "start": 3.425,
+     "end": 3.825
+    },
+    {
+     "w": "writing",
+     "start": 3.913,
+     "end": 4.263
+    },
+    {
+     "w": "the",
+     "start": 4.263,
+     "end": 4.4
+    },
+    {
+     "w": "output.",
+     "start": 4.4,
+     "end": 5.125
+    }
+   ],
+   "sentences": [
+    {
+     "text": "First, parsing.",
+     "start": 0.3
+    },
+    {
+     "text": "Second, validating the input.",
+     "start": 1.438
+    },
+    {
+     "text": "Third, writing the output.",
+     "start": 3.425
+    }
+   ],
+   "revealSec": [
+    0.18,
+    1.78,
+    3.305
+   ]
+  },
+  {
+   "id": "s03",
+   "narration": "Cache is fast but small. Disk is slow but large.",
+   "visual": {
+    "type": "compare",
+    "heading": "Two options",
+    "columns": [
+     {
+      "title": "Cache",
+      "tag": "fast",
+      "items": [
+       "Small",
+       "Volatile"
+      ]
+     },
+     {
+      "title": "Disk",
+      "tag": "slow",
+      "items": [
+       "Large",
+       "Durable"
+      ]
+     }
+    ]
+   },
+   "audio": "audio/edge/s03.wav",
+   "durationSec": 3.925,
+   "frames": 145,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Cache",
+     "start": 0.275,
+     "end": 0.562
+    },
+    {
+     "w": "is",
+     "start": 0.562,
+     "end": 0.7
+    },
+    {
+     "w": "fast",
+     "start": 0.7,
+     "end": 1.025
+    },
+    {
+     "w": "but",
+     "start": 1.025,
+     "end": 1.175
+    },
+    {
+     "w": "small.",
+     "start": 1.175,
+     "end": 1.775
+    },
+    {
+     "w": "Disk",
+     "start": 1.913,
+     "end": 2.225
+    },
+    {
+     "w": "is",
+     "start": 2.225,
+     "end": 2.375
+    },
+    {
+     "w": "slow",
+     "start": 2.375,
+     "end": 2.825
+    },
+    {
+     "w": "but",
+     "start": 2.825,
+     "end": 2.975
+    },
+    {
+     "w": "large.",
+     "start": 2.975,
+     "end": 3.65
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Cache is fast but small.",
+     "start": 0.275
+    },
+    {
+     "text": "Disk is slow but large.",
+     "start": 1.913
+    }
+   ],
+   "revealSec": [
+    0.155,
+    1.793
+   ]
+  },
+  {
+   "id": "s04",
+   "narration": "Plan the work, build it, then ship it.",
+   "visual": {
+    "type": "steps",
+    "heading": "Advancing steps",
+    "items": [
+     "Plan the work",
+     "Build it",
+     "Ship it"
+    ]
+   },
+   "audio": "audio/edge/s04.wav",
+   "durationSec": 2.575,
+   "frames": 105,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Plan",
+     "start": 0.25,
+     "end": 0.487
+    },
+    {
+     "w": "the",
+     "start": 0.487,
+     "end": 0.575
+    },
+    {
+     "w": "work,",
+     "start": 0.575,
+     "end": 0.875
+    },
+    {
+     "w": "build",
+     "start": 0.925,
+     "end": 1.175
+    },
+    {
+     "w": "it,",
+     "start": 1.175,
+     "end": 1.375
+    },
+    {
+     "w": "then",
+     "start": 1.45,
+     "end": 1.663
+    },
+    {
+     "w": "ship",
+     "start": 1.663,
+     "end": 1.925
+    },
+    {
+     "w": "it.",
+     "start": 1.925,
+     "end": 2.325
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Plan the work, build it, then ship it.",
+     "start": 0.25
+    }
+   ],
+   "revealSec": [
+    0.13,
+    0.805,
+    1.543
+   ]
+  },
+  {
+   "id": "s05",
+   "narration": "The middle step is where the effort goes.",
+   "visual": {
+    "type": "steps",
+    "heading": "Fixed step",
+    "active": 1,
+    "items": [
+     "Plan",
+     "Build",
+     "Ship"
+    ]
+   },
+   "audio": "audio/edge/s05.wav",
+   "durationSec": 2.7,
+   "frames": 109,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.275,
+     "end": 0.35
+    },
+    {
+     "w": "middle",
+     "start": 0.35,
+     "end": 0.625
+    },
+    {
+     "w": "step",
+     "start": 0.625,
+     "end": 1.062
+    },
+    {
+     "w": "is",
+     "start": 1.062,
+     "end": 1.212
+    },
+    {
+     "w": "where",
+     "start": 1.212,
+     "end": 1.337
+    },
+    {
+     "w": "the",
+     "start": 1.337,
+     "end": 1.45
+    },
+    {
+     "w": "effort",
+     "start": 1.45,
+     "end": 1.775
+    },
+    {
+     "w": "goes.",
+     "start": 1.775,
+     "end": 2.45
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The middle step is where the effort goes.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    0.23,
+    0.942,
+    1.192
+   ]
+  },
+  {
+   "id": "s06",
+   "narration": "A client calls a gateway, which calls a service.",
+   "visual": {
+    "type": "flow",
+    "heading": "A chain",
+    "nodes": [
+     {
+      "label": "Client",
+      "sub": "asks"
+     },
+     {
+      "label": "Gateway",
+      "sub": "routes"
+     },
+     {
+      "label": "Service",
+      "sub": "answers"
+     }
+    ]
+   },
+   "audio": "audio/edge/s06.wav",
+   "durationSec": 3.325,
+   "frames": 127,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.362
+    },
+    {
+     "w": "client",
+     "start": 0.362,
+     "end": 0.8
+    },
+    {
+     "w": "calls",
+     "start": 0.8,
+     "end": 1.038
+    },
+    {
+     "w": "a",
+     "start": 1.038,
+     "end": 1.1
+    },
+    {
+     "w": "gateway,",
+     "start": 1.1,
+     "end": 1.65
+    },
+    {
+     "w": "which",
+     "start": 1.75,
+     "end": 1.95
+    },
+    {
+     "w": "calls",
+     "start": 1.95,
+     "end": 2.212
+    },
+    {
+     "w": "a",
+     "start": 2.212,
+     "end": 2.312
+    },
+    {
+     "w": "service.",
+     "start": 2.312,
+     "end": 3.075
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A client calls a gateway, which calls a service.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    0.242,
+    0.98,
+    2.192
+   ]
+  },
+  {
+   "id": "s07",
+   "narration": "The router sends traffic to billing or to search.",
+   "visual": {
+    "type": "fanout",
+    "heading": "One to many",
+    "source": {
+     "label": "Router"
+    },
+    "targets": [
+     {
+      "label": "Billing",
+      "sub": "invoices"
+     },
+     {
+      "label": "Search",
+      "sub": "queries"
+     }
+    ]
+   },
+   "audio": "audio/edge/s07.wav",
+   "durationSec": 3.175,
+   "frames": 123,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.275,
+     "end": 0.375
+    },
+    {
+     "w": "router",
+     "start": 0.375,
+     "end": 0.725
+    },
+    {
+     "w": "sends",
+     "start": 0.725,
+     "end": 0.975
+    },
+    {
+     "w": "traffic",
+     "start": 0.975,
+     "end": 1.4
+    },
+    {
+     "w": "to",
+     "start": 1.4,
+     "end": 1.5
+    },
+    {
+     "w": "billing",
+     "start": 1.5,
+     "end": 2.0
+    },
+    {
+     "w": "or",
+     "start": 2.0,
+     "end": 2.15
+    },
+    {
+     "w": "to",
+     "start": 2.15,
+     "end": 2.288
+    },
+    {
+     "w": "search.",
+     "start": 2.288,
+     "end": 2.9
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The router sends traffic to billing or to search.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    1.38,
+    2.168
+   ]
+  },
+  {
+   "id": "s08",
+   "narration": "Two methods differ in speed and in safety.",
+   "visual": {
+    "type": "table",
+    "heading": "A table",
+    "headers": [
+     "Method",
+     "Speed",
+     "Safety"
+    ],
+    "rows": [
+     [
+      "Alpha",
+      "Fast",
+      "Low"
+     ],
+     [
+      "Beta",
+      "Slow",
+      "High"
+     ]
+    ]
+   },
+   "audio": "audio/edge/s08.wav",
+   "durationSec": 3.175,
+   "frames": 123,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Two",
+     "start": 0.275,
+     "end": 0.45
+    },
+    {
+     "w": "methods",
+     "start": 0.45,
+     "end": 0.85
+    },
+    {
+     "w": "differ",
+     "start": 0.85,
+     "end": 1.087
+    },
+    {
+     "w": "in",
+     "start": 1.087,
+     "end": 1.2
+    },
+    {
+     "w": "speed",
+     "start": 1.2,
+     "end": 1.85
+    },
+    {
+     "w": "and",
+     "start": 1.85,
+     "end": 1.988
+    },
+    {
+     "w": "in",
+     "start": 1.988,
+     "end": 2.138
+    },
+    {
+     "w": "safety.",
+     "start": 2.138,
+     "end": 2.925
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Two methods differ in speed and in safety.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    0.73,
+    1.08
+   ]
+  },
+  {
+   "id": "s09",
+   "narration": "Never reuse a token. It is a real risk.",
+   "visual": {
+    "type": "callout",
+    "heading": "Warning",
+    "big": "Never reuse a token",
+    "text": "A reused token can be replayed.",
+    "tone": "warn"
+   },
+   "audio": "audio/edge/s09.wav",
+   "durationSec": 3.25,
+   "frames": 125,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Never",
+     "start": 0.325,
+     "end": 0.625
+    },
+    {
+     "w": "reuse",
+     "start": 0.625,
+     "end": 0.963
+    },
+    {
+     "w": "a",
+     "start": 0.963,
+     "end": 1.025
+    },
+    {
+     "w": "token.",
+     "start": 1.025,
+     "end": 1.6
+    },
+    {
+     "w": "It",
+     "start": 1.7,
+     "end": 1.85
+    },
+    {
+     "w": "is",
+     "start": 1.85,
+     "end": 1.962
+    },
+    {
+     "w": "a",
+     "start": 1.962,
+     "end": 2.062
+    },
+    {
+     "w": "real",
+     "start": 2.062,
+     "end": 2.375
+    },
+    {
+     "w": "risk.",
+     "start": 2.375,
+     "end": 2.975
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Never reuse a token.",
+     "start": 0.325
+    },
+    {
+     "text": "It is a real risk.",
+     "start": 1.7
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "narration": "The machine is idle, then running, then done.",
+   "visual": {
+    "type": "mermaid",
+    "heading": "A static state diagram",
+    "code": "stateDiagram-v2\n  [*] --> Idle\n  Idle --> Running\n  Running --> Done\n  Done --> [*]",
+    "caption": "Plain mermaid"
+   },
+   "mermaidRendered": {
+    "svg": "mermaid/88bd4a98727574bf275f9221.svg"
+   },
+   "audio": "audio/edge/s10.wav",
+   "durationSec": 3.05,
+   "frames": 119,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.25,
+     "end": 0.312
+    },
+    {
+     "w": "machine",
+     "start": 0.312,
+     "end": 0.7
+    },
+    {
+     "w": "is",
+     "start": 0.7,
+     "end": 0.863
+    },
+    {
+     "w": "idle,",
+     "start": 0.863,
+     "end": 1.35
+    },
+    {
+     "w": "then",
+     "start": 1.45,
+     "end": 1.625
+    },
+    {
+     "w": "running,",
+     "start": 1.625,
+     "end": 2.0
+    },
+    {
+     "w": "then",
+     "start": 2.038,
+     "end": 2.25
+    },
+    {
+     "w": "done.",
+     "start": 2.25,
+     "end": 2.8
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The machine is idle, then running, then done.",
+     "start": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "narration": "The browser asks the server. The server asks the database. Look at the database.",
+   "visual": {
+    "type": "mermaid",
+    "heading": "Built and focused",
+    "build": true,
+    "code": "flowchart TB\n  Browser --> Server\n  Server --> Database",
+    "caption": "Mermaid with build"
+   },
+   "focus": [
+    {
+     "at": "Look at the database",
+     "on": [
+      "Database"
+     ]
+    }
+   ],
+   "mermaidRendered": {
+    "svg": "mermaid/459d06b7a12a0e31fb38b395.svg",
+    "layout": {
+     "vb": [
+      0,
+      0,
+      199.28,
+      338
+     ],
+     "parts": [
+      {
+       "name": "Browser",
+       "label": "Browser",
+       "anim": "pop",
+       "slot": true,
+       "file": "p0.svg",
+       "x": 15.81,
+       "y": 8,
+       "w": 167.66,
+       "h": 74
+      },
+      {
+       "name": "Server",
+       "label": "Server",
+       "anim": "pop",
+       "slot": true,
+       "file": "p1.svg",
+       "x": 27.2,
+       "y": 132,
+       "w": 144.88,
+       "h": 74
+      },
+      {
+       "name": "Database",
+       "label": "Database",
+       "anim": "pop",
+       "slot": true,
+       "file": "p2.svg",
+       "x": 8,
+       "y": 256,
+       "w": 183.28,
+       "h": 74
+      },
+      {
+       "name": "Browser->Server",
+       "label": "",
+       "anim": "draw",
+       "slot": false,
+       "file": "p3.svg",
+       "x": 99.64,
+       "y": 82,
+       "w": 0,
+       "h": 46,
+       "from": "Browser",
+       "to": "Server",
+       "after": [
+        "Browser",
+        "Server"
+       ],
+       "d": "M99.641,82L99.641,86.167C99.641,90.333,99.641,98.667,99.641,106.333C99.641,114,99.641,121,99.641,124.5L99.641,128",
+       "dx": 0,
+       "dy": 0
+      },
+      {
+       "name": "Server->Database",
+       "label": "",
+       "anim": "draw",
+       "slot": false,
+       "file": "p4.svg",
+       "x": 99.64,
+       "y": 206,
+       "w": 0,
+       "h": 46,
+       "from": "Server",
+       "to": "Database",
+       "after": [
+        "Server",
+        "Database"
+       ],
+       "d": "M99.641,206L99.641,210.167C99.641,214.333,99.641,222.667,99.641,230.333C99.641,238,99.641,245,99.641,248.5L99.641,252",
+       "dx": 0,
+       "dy": 0
+      }
+     ],
+     "dir": "mermaid/459d06b7a12a0e31fb38b395"
+    }
+   },
+   "audio": "audio/edge/s11.wav",
+   "durationSec": 5.35,
+   "frames": 188,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.275,
+     "end": 0.35
+    },
+    {
+     "w": "browser",
+     "start": 0.35,
+     "end": 0.812
+    },
+    {
+     "w": "asks",
+     "start": 0.812,
+     "end": 1.175
+    },
+    {
+     "w": "the",
+     "start": 1.175,
+     "end": 1.275
+    },
+    {
+     "w": "server.",
+     "start": 1.275,
+     "end": 1.875
+    },
+    {
+     "w": "The",
+     "start": 2.0,
+     "end": 2.138
+    },
+    {
+     "w": "server",
+     "start": 2.138,
+     "end": 2.538
+    },
+    {
+     "w": "asks",
+     "start": 2.538,
+     "end": 2.9
+    },
+    {
+     "w": "the",
+     "start": 2.9,
+     "end": 3.0
+    },
+    {
+     "w": "database.",
+     "start": 3.0,
+     "end": 3.75
+    },
+    {
+     "w": "Look",
+     "start": 3.862,
+     "end": 4.037
+    },
+    {
+     "w": "at",
+     "start": 4.037,
+     "end": 4.112
+    },
+    {
+     "w": "the",
+     "start": 4.112,
+     "end": 4.2
+    },
+    {
+     "w": "database.",
+     "start": 4.2,
+     "end": 5.1
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The browser asks the server.",
+     "start": 0.275
+    },
+    {
+     "text": "The server asks the database.",
+     "start": 2.0
+    },
+    {
+     "text": "Look at the database.",
+     "start": 3.862
+    }
+   ],
+   "revealSec": [
+    0.23,
+    1.155,
+    2.88
+   ],
+   "focusSec": [
+    {
+     "t": 3.782,
+     "on": [
+      "Database"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "narration": "A user logs in. The app checks the cache and the store. Look at the cache.",
+   "visual": {
+    "type": "graph",
+    "heading": "Graph",
+    "direction": "LR",
+    "nodes": [
+     {
+      "id": "user",
+      "label": "User",
+      "tone": "primary"
+     },
+     {
+      "id": "app",
+      "label": "App",
+      "tone": "secondary"
+     },
+     {
+      "id": "cache",
+      "label": "Cache",
+      "tone": "accent"
+     },
+     {
+      "id": "store",
+      "label": "Store"
+     }
+    ],
+    "edges": [
+     {
+      "from": "user",
+      "to": "app",
+      "label": "login"
+     },
+     {
+      "from": "app",
+      "to": "cache"
+     },
+     {
+      "from": "app",
+      "to": "store",
+      "dashed": true,
+      "tone": "danger"
+     }
+    ],
+    "caption": "A graph"
+   },
+   "focus": [
+    {
+     "at": "Look at the cache",
+     "on": [
+      "cache",
+      "app->cache"
+     ]
+    }
+   ],
+   "audio": "audio/edge/s12.wav",
+   "durationSec": 4.925,
+   "frames": 175,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.362
+    },
+    {
+     "w": "user",
+     "start": 0.362,
+     "end": 0.75
+    },
+    {
+     "w": "logs",
+     "start": 0.75,
+     "end": 1.062
+    },
+    {
+     "w": "in.",
+     "start": 1.062,
+     "end": 1.5
+    },
+    {
+     "w": "The",
+     "start": 1.625,
+     "end": 1.775
+    },
+    {
+     "w": "app",
+     "start": 1.775,
+     "end": 2.013
+    },
+    {
+     "w": "checks",
+     "start": 2.013,
+     "end": 2.325
+    },
+    {
+     "w": "the",
+     "start": 2.325,
+     "end": 2.425
+    },
+    {
+     "w": "cache",
+     "start": 2.425,
+     "end": 2.763
+    },
+    {
+     "w": "and",
+     "start": 2.763,
+     "end": 2.862
+    },
+    {
+     "w": "the",
+     "start": 2.862,
+     "end": 2.95
+    },
+    {
+     "w": "store.",
+     "start": 2.95,
+     "end": 3.5
+    },
+    {
+     "w": "Look",
+     "start": 3.638,
+     "end": 3.812
+    },
+    {
+     "w": "at",
+     "start": 3.812,
+     "end": 3.888
+    },
+    {
+     "w": "the",
+     "start": 3.888,
+     "end": 3.975
+    },
+    {
+     "w": "cache.",
+     "start": 3.975,
+     "end": 4.65
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A user logs in.",
+     "start": 0.275
+    },
+    {
+     "text": "The app checks the cache and the store.",
+     "start": 1.625
+    },
+    {
+     "text": "Look at the cache.",
+     "start": 3.638
+    }
+   ],
+   "revealSec": [
+    0.242,
+    1.655,
+    2.305,
+    2.83
+   ],
+   "focusSec": [
+    {
+     "t": 3.558,
+     "on": [
+      "cache",
+      "app->cache"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s13",
+   "narration": "The same app now also talks to a queue. The store goes away.",
+   "visual": {
+    "type": "graph",
+    "heading": "Graph, continued",
+    "direction": "LR",
+    "nodes": [
+     {
+      "id": "user",
+      "label": "User",
+      "tone": "primary"
+     },
+     {
+      "id": "app",
+      "label": "App",
+      "tone": "secondary"
+     },
+     {
+      "id": "cache",
+      "label": "Cache",
+      "tone": "accent"
+     },
+     {
+      "id": "queue",
+      "label": "Queue"
+     }
+    ],
+    "edges": [
+     {
+      "from": "user",
+      "to": "app",
+      "label": "login"
+     },
+     {
+      "from": "app",
+      "to": "cache"
+     },
+     {
+      "from": "app",
+      "to": "queue"
+     }
+    ]
+   },
+   "continues": true,
+   "audio": "audio/edge/s13.wav",
+   "durationSec": 3.95,
+   "frames": 146,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.25,
+     "end": 0.362
+    },
+    {
+     "w": "same",
+     "start": 0.362,
+     "end": 0.625
+    },
+    {
+     "w": "app",
+     "start": 0.625,
+     "end": 0.85
+    },
+    {
+     "w": "now",
+     "start": 0.85,
+     "end": 1.025
+    },
+    {
+     "w": "also",
+     "start": 1.025,
+     "end": 1.325
+    },
+    {
+     "w": "talks",
+     "start": 1.325,
+     "end": 1.65
+    },
+    {
+     "w": "to",
+     "start": 1.65,
+     "end": 1.738
+    },
+    {
+     "w": "a",
+     "start": 1.738,
+     "end": 1.8
+    },
+    {
+     "w": "queue.",
+     "start": 1.8,
+     "end": 2.25
+    },
+    {
+     "w": "The",
+     "start": 2.425,
+     "end": 2.55
+    },
+    {
+     "w": "store",
+     "start": 2.55,
+     "end": 2.825
+    },
+    {
+     "w": "goes",
+     "start": 2.825,
+     "end": 3.075
+    },
+    {
+     "w": "away.",
+     "start": 3.075,
+     "end": 3.675
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The same app now also talks to a queue.",
+     "start": 0.25
+    },
+    {
+     "text": "The store goes away.",
+     "start": 2.425
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    0.0,
+    1.68
+   ]
+  },
+  {
+   "id": "s14",
+   "narration": "A token inherits from a credential, and a client owns many tokens.",
+   "visual": {
+    "type": "class",
+    "heading": "Classes",
+    "direction": "TB",
+    "classes": [
+     {
+      "id": "cred",
+      "name": "Credential",
+      "stereotype": "abstract",
+      "attributes": [
+       "id: string"
+      ],
+      "methods": [
+       "verify()"
+      ]
+     },
+     {
+      "id": "token",
+      "name": "Token",
+      "attributes": [
+       "expires: int"
+      ],
+      "methods": [
+       "refresh()"
+      ],
+      "tone": "accent"
+     },
+     {
+      "id": "client",
+      "name": "Client",
+      "attributes": [
+       "name: string"
+      ]
+     }
+    ],
+    "relations": [
+     {
+      "from": "token",
+      "to": "cred",
+      "type": "inherits"
+     },
+     {
+      "from": "client",
+      "to": "token",
+      "type": "composes",
+      "label": "owns"
+     }
+    ]
+   },
+   "audio": "audio/edge/s14.wav",
+   "durationSec": 4.7,
+   "frames": 168,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.362
+    },
+    {
+     "w": "token",
+     "start": 0.362,
+     "end": 0.8
+    },
+    {
+     "w": "inherits",
+     "start": 0.8,
+     "end": 1.288
+    },
+    {
+     "w": "from",
+     "start": 1.288,
+     "end": 1.413
+    },
+    {
+     "w": "a",
+     "start": 1.413,
+     "end": 1.475
+    },
+    {
+     "w": "credential,",
+     "start": 1.475,
+     "end": 2.325
+    },
+    {
+     "w": "and",
+     "start": 2.425,
+     "end": 2.538
+    },
+    {
+     "w": "a",
+     "start": 2.538,
+     "end": 2.612
+    },
+    {
+     "w": "client",
+     "start": 2.612,
+     "end": 3.125
+    },
+    {
+     "w": "owns",
+     "start": 3.125,
+     "end": 3.4
+    },
+    {
+     "w": "many",
+     "start": 3.4,
+     "end": 3.625
+    },
+    {
+     "w": "tokens.",
+     "start": 3.625,
+     "end": 4.45
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A token inherits from a credential, and a client owns many tokens.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    1.355,
+    3.505,
+    3.755
+   ]
+  },
+  {
+   "id": "s15",
+   "narration": "Now the client also depends on a logger. Look at the client.",
+   "visual": {
+    "type": "class",
+    "heading": "Classes, continued",
+    "direction": "TB",
+    "classes": [
+     {
+      "id": "token",
+      "name": "Token",
+      "attributes": [
+       "expires: int"
+      ],
+      "methods": [
+       "refresh()"
+      ],
+      "tone": "accent"
+     },
+     {
+      "id": "client",
+      "name": "Client",
+      "attributes": [
+       "name: string"
+      ]
+     },
+     {
+      "id": "log",
+      "name": "Logger",
+      "stereotype": "interface",
+      "methods": [
+       "write(msg)"
+      ]
+     }
+    ],
+    "relations": [
+     {
+      "from": "client",
+      "to": "token",
+      "type": "composes",
+      "label": "owns"
+     },
+     {
+      "from": "client",
+      "to": "log",
+      "type": "depends"
+     }
+    ]
+   },
+   "continues": true,
+   "focus": [
+    {
+     "at": "Look at the client",
+     "on": [
+      "client"
+     ]
+    }
+   ],
+   "audio": "audio/edge/s15.wav",
+   "durationSec": 3.975,
+   "frames": 147,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Now",
+     "start": 0.325,
+     "end": 0.525
+    },
+    {
+     "w": "the",
+     "start": 0.525,
+     "end": 0.625
+    },
+    {
+     "w": "client",
+     "start": 0.625,
+     "end": 1.075
+    },
+    {
+     "w": "also",
+     "start": 1.075,
+     "end": 1.413
+    },
+    {
+     "w": "depends",
+     "start": 1.413,
+     "end": 1.738
+    },
+    {
+     "w": "on",
+     "start": 1.738,
+     "end": 1.837
+    },
+    {
+     "w": "a",
+     "start": 1.837,
+     "end": 1.9
+    },
+    {
+     "w": "logger.",
+     "start": 1.9,
+     "end": 2.5
+    },
+    {
+     "w": "Look",
+     "start": 2.663,
+     "end": 2.837
+    },
+    {
+     "w": "at",
+     "start": 2.837,
+     "end": 2.913
+    },
+    {
+     "w": "the",
+     "start": 2.913,
+     "end": 3.0
+    },
+    {
+     "w": "client.",
+     "start": 3.0,
+     "end": 3.725
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Now the client also depends on a logger.",
+     "start": 0.325
+    },
+    {
+     "text": "Look at the client.",
+     "start": 2.663
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    1.78
+   ],
+   "focusSec": [
+    {
+     "t": 2.583,
+     "on": [
+      "client"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s16",
+   "narration": "The client asks the server. The server replies. The client asks again.",
+   "visual": {
+    "type": "sequence",
+    "heading": "Messages",
+    "participants": [
+     {
+      "id": "c",
+      "label": "Client",
+      "tone": "primary"
+     },
+     {
+      "id": "s",
+      "label": "Server",
+      "tone": "secondary"
+     }
+    ],
+    "messages": [
+     {
+      "from": "c",
+      "to": "s",
+      "label": "request"
+     },
+     {
+      "from": "s",
+      "to": "c",
+      "label": "response",
+      "reply": true
+     },
+     {
+      "from": "c",
+      "to": "s",
+      "label": "request again",
+      "tone": "accent"
+     }
+    ]
+   },
+   "audio": "audio/edge/s16.wav",
+   "durationSec": 4.825,
+   "frames": 172,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.25,
+     "end": 0.325
+    },
+    {
+     "w": "client",
+     "start": 0.325,
+     "end": 0.738
+    },
+    {
+     "w": "asks",
+     "start": 0.738,
+     "end": 1.075
+    },
+    {
+     "w": "the",
+     "start": 1.075,
+     "end": 1.175
+    },
+    {
+     "w": "server.",
+     "start": 1.175,
+     "end": 1.7
+    },
+    {
+     "w": "The",
+     "start": 1.8,
+     "end": 1.925
+    },
+    {
+     "w": "server",
+     "start": 1.925,
+     "end": 2.25
+    },
+    {
+     "w": "replies.",
+     "start": 2.25,
+     "end": 2.975
+    },
+    {
+     "w": "The",
+     "start": 3.075,
+     "end": 3.175
+    },
+    {
+     "w": "client",
+     "start": 3.175,
+     "end": 3.587
+    },
+    {
+     "w": "asks",
+     "start": 3.587,
+     "end": 3.925
+    },
+    {
+     "w": "again.",
+     "start": 3.925,
+     "end": 4.575
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The client asks the server.",
+     "start": 0.25
+    },
+    {
+     "text": "The server replies.",
+     "start": 1.8
+    },
+    {
+     "text": "The client asks again.",
+     "start": 3.075
+    }
+   ],
+   "revealSec": [
+    0.955,
+    2.13,
+    3.805
+   ]
+  },
+  {
+   "id": "s17",
+   "narration": "The same client now also reaches a database. Look at the database.",
+   "visual": {
+    "type": "sequence",
+    "heading": "Messages, continued",
+    "participants": [
+     {
+      "id": "c",
+      "label": "Client",
+      "tone": "primary"
+     },
+     {
+      "id": "s",
+      "label": "Server",
+      "tone": "secondary"
+     },
+     {
+      "id": "d",
+      "label": "Database",
+      "tone": "accent"
+     }
+    ],
+    "messages": [
+     {
+      "from": "c",
+      "to": "s",
+      "label": "request"
+     },
+     {
+      "from": "s",
+      "to": "d",
+      "label": "query"
+     },
+     {
+      "from": "d",
+      "to": "s",
+      "label": "rows",
+      "reply": true
+     },
+     {
+      "from": "s",
+      "to": "s",
+      "label": "cache it"
+     }
+    ]
+   },
+   "continues": true,
+   "focus": [
+    {
+     "at": "Look at the database",
+     "on": [
+      "d",
+      "s->d"
+     ]
+    }
+   ],
+   "audio": "audio/edge/s17.wav",
+   "durationSec": 4.575,
+   "frames": 165,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.25,
+     "end": 0.362
+    },
+    {
+     "w": "same",
+     "start": 0.362,
+     "end": 0.7
+    },
+    {
+     "w": "client",
+     "start": 0.7,
+     "end": 1.012
+    },
+    {
+     "w": "now",
+     "start": 1.012,
+     "end": 1.375
+    },
+    {
+     "w": "also",
+     "start": 1.375,
+     "end": 1.775
+    },
+    {
+     "w": "reaches",
+     "start": 1.775,
+     "end": 2.087
+    },
+    {
+     "w": "a",
+     "start": 2.087,
+     "end": 2.15
+    },
+    {
+     "w": "database.",
+     "start": 2.15,
+     "end": 3.0
+    },
+    {
+     "w": "Look",
+     "start": 3.138,
+     "end": 3.312
+    },
+    {
+     "w": "at",
+     "start": 3.312,
+     "end": 3.388
+    },
+    {
+     "w": "the",
+     "start": 3.388,
+     "end": 3.475
+    },
+    {
+     "w": "database.",
+     "start": 3.475,
+     "end": 4.325
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The same client now also reaches a database.",
+     "start": 0.25
+    },
+    {
+     "text": "Look at the database.",
+     "start": 3.138
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.58,
+    1.655,
+    2.03
+   ],
+   "focusSec": [
+    {
+     "t": 3.058,
+     "on": [
+      "d",
+      "s->d"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s18",
+   "narration": "Most of the time goes to waiting, then some to compute.",
+   "visual": {
+    "type": "mermaid",
+    "heading": "Built pie",
+    "build": true,
+    "code": "pie title Time\n  \"Waiting\" : 60\n  \"Compute\" : 40"
+   },
+   "mermaidRendered": {
+    "svg": "mermaid/844796092975d2a83930cb67.svg",
+    "layout": {
+     "vb": [
+      0,
+      0,
+      582.56,
+      450
+     ],
+     "parts": [
+      {
+       "name": "s0",
+       "label": "Waiting",
+       "anim": "pop",
+       "slot": true,
+       "file": "p0.svg",
+       "x": 116.26,
+       "y": 40,
+       "w": 403.1,
+       "h": 370,
+       "ox": 225,
+       "oy": 225
+      },
+      {
+       "name": "s1",
+       "label": "Compute",
+       "anim": "pop",
+       "slot": true,
+       "file": "p1.svg",
+       "x": 40,
+       "y": 40,
+       "w": 493.56,
+       "h": 334.67,
+       "ox": 225,
+       "oy": 225
+      }
+     ],
+     "dir": "mermaid/844796092975d2a83930cb67"
+    }
+   },
+   "audio": "audio/edge/s18.wav",
+   "durationSec": 3.725,
+   "frames": 139,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Most",
+     "start": 0.3,
+     "end": 0.562
+    },
+    {
+     "w": "of",
+     "start": 0.562,
+     "end": 0.637
+    },
+    {
+     "w": "the",
+     "start": 0.637,
+     "end": 0.725
+    },
+    {
+     "w": "time",
+     "start": 0.725,
+     "end": 1.1
+    },
+    {
+     "w": "goes",
+     "start": 1.1,
+     "end": 1.375
+    },
+    {
+     "w": "to",
+     "start": 1.375,
+     "end": 1.5
+    },
+    {
+     "w": "waiting,",
+     "start": 1.5,
+     "end": 2.075
+    },
+    {
+     "w": "then",
+     "start": 2.175,
+     "end": 2.375
+    },
+    {
+     "w": "some",
+     "start": 2.375,
+     "end": 2.6
+    },
+    {
+     "w": "to",
+     "start": 2.6,
+     "end": 2.7
+    },
+    {
+     "w": "compute.",
+     "start": 2.7,
+     "end": 3.475
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Most of the time goes to waiting, then some to compute.",
+     "start": 0.3
+    }
+   ],
+   "revealSec": [
+    1.38,
+    2.58
+   ]
+  },
+  {
+   "id": "s19",
+   "narration": "The client pings the server. The server pongs.",
+   "visual": {
+    "type": "sequence",
+    "heading": "Ping",
+    "participants": [
+     {
+      "id": "c",
+      "label": "Client",
+      "tone": "primary"
+     },
+     {
+      "id": "s",
+      "label": "Server",
+      "tone": "secondary"
+     }
+    ],
+    "messages": [
+     {
+      "from": "c",
+      "to": "s",
+      "label": "ping"
+     },
+     {
+      "from": "s",
+      "to": "c",
+      "label": "pong",
+      "reply": true
+     }
+    ]
+   },
+   "audio": "audio/edge/s19.wav",
+   "durationSec": 3.35,
+   "frames": 128,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.25,
+     "end": 0.325
+    },
+    {
+     "w": "client",
+     "start": 0.325,
+     "end": 0.7
+    },
+    {
+     "w": "pings",
+     "start": 0.7,
+     "end": 1.012
+    },
+    {
+     "w": "the",
+     "start": 1.012,
+     "end": 1.1
+    },
+    {
+     "w": "server.",
+     "start": 1.1,
+     "end": 1.65
+    },
+    {
+     "w": "The",
+     "start": 1.775,
+     "end": 1.913
+    },
+    {
+     "w": "server",
+     "start": 1.913,
+     "end": 2.325
+    },
+    {
+     "w": "pongs.",
+     "start": 2.325,
+     "end": 3.075
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The client pings the server.",
+     "start": 0.25
+    },
+    {
+     "text": "The server pongs.",
+     "start": 1.775
+    }
+   ],
+   "revealSec": [
+    0.58,
+    2.205
+   ]
+  },
+  {
+   "id": "s20",
+   "narration": "Then the client closes the connection.",
+   "visual": {
+    "type": "sequence",
+    "heading": "Ping, continued",
+    "participants": [
+     {
+      "id": "c",
+      "label": "Client",
+      "tone": "primary"
+     },
+     {
+      "id": "s",
+      "label": "Server",
+      "tone": "secondary"
+     }
+    ],
+    "messages": [
+     {
+      "from": "c",
+      "to": "s",
+      "label": "ping"
+     },
+     {
+      "from": "s",
+      "to": "c",
+      "label": "pong",
+      "reply": true
+     },
+     {
+      "from": "c",
+      "to": "s",
+      "label": "close"
+     }
+    ]
+   },
+   "continues": true,
+   "audio": "audio/edge/s20.wav",
+   "durationSec": 2.5,
+   "frames": 103,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Then",
+     "start": 0.275,
+     "end": 0.463
+    },
+    {
+     "w": "the",
+     "start": 0.463,
+     "end": 0.55
+    },
+    {
+     "w": "client",
+     "start": 0.55,
+     "end": 0.95
+    },
+    {
+     "w": "closes",
+     "start": 0.95,
+     "end": 1.337
+    },
+    {
+     "w": "the",
+     "start": 1.337,
+     "end": 1.425
+    },
+    {
+     "w": "connection.",
+     "start": 1.425,
+     "end": 2.25
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Then the client closes the connection.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    0.83
+   ]
+  }
+ ]
+}

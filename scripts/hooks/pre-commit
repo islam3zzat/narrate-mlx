@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Opt-in git pre-commit hook (installed via `make install-hooks`).
+set -euo pipefail
+. "$(cd "$(dirname "$0")/.." && pwd -P)/lib.sh"
+use_node_path
+
+branch="$(git symbolic-ref --short HEAD 2>/dev/null || true)"
+git_dir="$(git rev-parse --git-dir)"
+if [ "$branch" = "main" ] && [ "${ALLOW_MAIN:-0}" != "1" ] && [ ! -f "$git_dir/MERGE_HEAD" ]; then
+  bad "direct commits on 'main' are blocked (branch first, or pass ALLOW_MAIN=1)"
+  exit 1
+fi
+
+staged="$(git diff --cached --name-only --diff-filter=ACMR)"
+if echo "$staged" | grep -qE '^skills/explainer-video/src/.*(meta|schema|styles|docs|capabilities|registry)\.ts$'; then
+  if ! (cd "$EXPLAINER_DIR" && node_modules/.bin/tsx src/cli.ts check-generated); then
+    bad "generated SKILL.md / JSON schemas are stale; run 'make docs' and re-stage"
+    exit 1
+  fi
+fi

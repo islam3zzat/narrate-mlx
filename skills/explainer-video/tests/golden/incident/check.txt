@@ -1,0 +1,8 @@
+exit 0
+--stdout--
+ok incident [style incident-review]: 9 scenes, 243 words, about 93s
+--stderr--
+warning: incident/s09: 18 words; style "incident-review" wants 20 to 60 per scene
+warning: incident: 9 scene(s); style "incident-review" wants 12 to 45
+warning: incident: about 106 s of video; style "incident-review" wants 300 to 720 s
+warning: 'UTC' (first in incident/s02) has no pronunciation entry; it may be spelled letter by letter. If it is said as a word, fix it for good with: explainer.py pronounce UTC "spoken form"

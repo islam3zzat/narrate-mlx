@@ -1,0 +1,3767 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "language": {
+      "default": "en",
+      "description": "Narration language: \"en\" (default, Kokoro voice) or \"ar\" (Modern Standard Arabic, SILMA voice). \"ar\" also mirrors every layout right to left. Arabic narration must be fully vowelled (tashkeel), with numbers written as words and no Latin letters",
+      "type": "string",
+      "enum": [
+        "en",
+        "ar"
+      ]
+    },
+    "mode": {
+      "default": "2d",
+      "description": "\"2d\" (default) or \"3d\": every scene is drawn in 3D (WebGL), with depth used for meaning (staircases, terraces, stacks); allows the 3D-only layers3d type. continues is not supported in 3D; graph direction is ignored (3D graphs always recede into depth)",
+      "type": "string",
+      "enum": [
+        "2d",
+        "3d"
+      ]
+    },
+    "theme": {
+      "description": "Visual theme: \"cel-sky\" (2.5D cel-shaded sky, default) or \"paper\" (flat neo-brutalist dotted paper)",
+      "type": "string",
+      "enum": [
+        "cel-sky",
+        "paper"
+      ]
+    },
+    "style": {
+      "description": "Audience/purpose style (explainer.py styles lists them;). Sets default speed, scene and length bounds, narration lints and what a fact ledger must cover. Absent = \"explainer\"",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Video title, shown top-left"
+    },
+    "scenes": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_-]+$",
+            "description": "Unique within the script, e.g. s01"
+          },
+          "narration": {
+            "type": "string",
+            "minLength": 1,
+            "description": "What the voice says: short sentences, 15 to 60 words"
+          },
+          "cues": {
+            "description": "Optional, one per revealed item (bullet, step, row, node, message, ...): a word or phrase from the narration at which that item should appear. Use \"\" to leave an item automatic. Only needed when automatic matching places an item wrongly. In a scene with \"continues\", only the new items count",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "focus": {
+            "description": "graph, class, sequence, svg, timeline, stat and mermaid only: point at parts already on screen as the narration talks about them (for mermaid: node ids or labels as drawn, or \"from->to\" for a line between them)",
+            "minItems": 1,
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "at": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Word or phrase from the narration, spoken when the focus should change; focus entries follow the narration order"
+                },
+                "on": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "description": "What to bring forward from then on: node, class, participant, svg part, timeline event or stat ids, or \"from->to\" for an edge, relation or message. Everything else is dimmed (a crowded diagram also zooms in). [] ends the focus"
+                }
+              },
+              "required": [
+                "at",
+                "on"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "continues": {
+            "description": "graph, class and sequence only: this scene carries on the previous scene's diagram (same type, shared ids). Shared parts stay on screen and move to their new places, only new ones are revealed. List the full diagram again",
+            "type": "boolean",
+            "const": true
+          },
+          "chapter": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Optional chapter card shown via @remotion/transitions before this scene when starting a new part (not allowed with continues)"
+          },
+          "facts": {
+            "description": "Styles with a fact ledger (style flag): ids of the ledger.json facts this scene covers; check fails when a required fact is in no scene",
+            "maxItems": 20,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-z]\\d{2,3}$"
+            }
+          },
+          "section": {
+            "description": "Styles: which part of the style's structure this scene is (one of the style's sections, e.g. \"decisions\"); optional",
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "visual": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "layers3d"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "layers": {
+                    "minItems": 2,
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Unique layer id"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Layer name, 28 characters or fewer"
+                        },
+                        "sub": {
+                          "description": "One short line under the label",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "tone": {
+                          "description": "Layer colour",
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "primary",
+                            "secondary",
+                            "accent",
+                            "danger"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Layers bottom to top, revealed in this order over the narration"
+                  },
+                  "caption": {
+                    "description": "Line under the stack",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "layers"
+                ],
+                "additionalProperties": false,
+                "description": "3D only (needs \"mode\": \"3d\"): an architecture drawn as stacked 3D slabs, bottom layer first"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "surface3d"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "xDomain": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "yDomain": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "zDomain": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "xLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional x-axis label"
+                  },
+                  "yLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional y-axis label"
+                  },
+                  "zLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional z-axis (height) label"
+                  },
+                  "expr": {
+                    "description": "Safe math expression z = f(x, y)",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "grid": {
+                    "description": "Explicit rectangular height grid grid[iy][ix] (2..32 per side)",
+                    "minItems": 2,
+                    "maxItems": 32,
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "resolution": {
+                    "description": "Mesh grid subdivisions (8..28, default 20)",
+                    "type": "integer",
+                    "minimum": 8,
+                    "maximum": 28
+                  },
+                  "overlays": {
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "slice"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "axis": {
+                              "type": "string",
+                              "enum": [
+                                "x",
+                                "y"
+                              ],
+                              "description": "Fix x=at or y=at to expose partial-derivative curve"
+                            },
+                            "at": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "axis",
+                            "at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "tangent"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "at": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2,
+                              "description": "[x, y] point of tangency"
+                            },
+                            "size": {
+                              "description": "Relative tangent plane patch half-size",
+                              "type": "number",
+                              "minimum": 0.2,
+                              "maximum": 3
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "columns"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "nx": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 10
+                            },
+                            "ny": {
+                              "type": "integer",
+                              "minimum": 2,
+                              "maximum": 10
+                            },
+                            "nz": {
+                              "description": "Vertical subdivisions when mode=\"voxels\"",
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 6
+                            },
+                            "xRange": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "yRange": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "mode": {
+                              "description": "Double-integral \"columns\" (default) or triple-integral \"voxels\"",
+                              "type": "string",
+                              "enum": [
+                                "columns",
+                                "voxels"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "nx",
+                            "ny"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional caption line"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "xDomain",
+                  "yDomain"
+                ],
+                "additionalProperties": false,
+                "description": "3D height surface z = f(x, y) with partial-derivative slices, tangent planes, and Riemann volume columns/voxels (3D mode only)"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "title"
+                  },
+                  "kicker": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Small uppercase line above the headline"
+                  },
+                  "headline": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Main headline; keep under about 35 characters"
+                  },
+                  "sub": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Subtitle under the headline"
+                  }
+                },
+                "required": [
+                  "type",
+                  "kicker",
+                  "headline",
+                  "sub"
+                ],
+                "additionalProperties": false,
+                "description": "Opening scene"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "bullets"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "items": {
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "One bullet"
+                    },
+                    "description": "Bullets, revealed as they are spoken; 6 or fewer fit well"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "items"
+                ],
+                "additionalProperties": false,
+                "description": "A short list"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "compare"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "columns": {
+                    "minItems": 2,
+                    "maxItems": 4,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Column title"
+                        },
+                        "tag": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Short tag under the title"
+                        },
+                        "items": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "One line"
+                          },
+                          "description": "Lines in the column"
+                        }
+                      },
+                      "required": [
+                        "title",
+                        "tag",
+                        "items"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "2 to 4 side-by-side options"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "columns"
+                ],
+                "additionalProperties": false,
+                "description": "Side-by-side comparison"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "steps"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "active": {
+                    "description": "Zero-based index of the highlighted step, fixed for the whole scene; must be < items.length. Omit it to let the highlight advance with the narration (step i lights up when it is spoken), which is right when one scene narrates several steps",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "items": {
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "One step"
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "items"
+                ],
+                "additionalProperties": false,
+                "description": "A sequence with one highlighted step (fixed, or advancing with the narration)"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "flow"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "nodes": {
+                    "minItems": 2,
+                    "maxItems": 5,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Box title"
+                        },
+                        "sub": {
+                          "description": "Small text under the title",
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "2 to 5 boxes joined by arrows, left to right"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "nodes"
+                ],
+                "additionalProperties": false,
+                "description": "A short left-to-right chain"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "fanout"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "source": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "The thing that routes"
+                      }
+                    },
+                    "required": [
+                      "label"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "targets": {
+                    "minItems": 1,
+                    "maxItems": 4,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Target name"
+                        },
+                        "sub": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "One line about it"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "sub"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "source",
+                  "targets"
+                ],
+                "additionalProperties": false,
+                "description": "One source routing to 1 to 4 targets"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "table"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "headers": {
+                    "minItems": 2,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Column header"
+                    }
+                  },
+                  "rows": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "description": "Each row needs exactly one cell per header"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "headers",
+                  "rows"
+                ],
+                "additionalProperties": false,
+                "description": "A small table"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "callout"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Small uppercase label"
+                  },
+                  "big": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "The key message, large"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "One supporting sentence"
+                  },
+                  "tone": {
+                    "description": "\"warn\" for a warning or open question",
+                    "type": "string",
+                    "const": "warn"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "big",
+                  "text"
+                ],
+                "additionalProperties": false,
+                "description": "One key message"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "mermaid"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "code": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Mermaid source (newlines as \\n). Use for sequence, state, ER, class and similar diagrams; use \"graph\" for plain node-and-edge diagrams"
+                  },
+                  "caption": {
+                    "description": "Line under the diagram",
+                    "type": "string"
+                  },
+                  "build": {
+                    "description": "Draw the diagram up as the narration names its parts (nodes, states, entities, tasks, events, slices, messages); lines follow once both ends are there. Without it the whole diagram appears at once",
+                    "type": "boolean",
+                    "const": true
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "code"
+                ],
+                "additionalProperties": false,
+                "description": "A mermaid diagram, pre-rendered to SVG"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "graph"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "direction": {
+                    "default": "LR",
+                    "description": "Layout direction: LR left to right (default), TB top to bottom",
+                    "type": "string",
+                    "enum": [
+                      "LR",
+                      "TB"
+                    ]
+                  },
+                  "nodes": {
+                    "minItems": 2,
+                    "maxItems": 12,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Unique id used by edges"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Node title, three words or fewer"
+                        },
+                        "sub": {
+                          "description": "Small text under the title",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "tone": {
+                          "description": "Colour: neutral (default), primary (yellow), secondary (pink), accent (green), danger (red)",
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "primary",
+                            "secondary",
+                            "accent",
+                            "danger"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Revealed in this order, spread over the narration; list them in the order you speak them"
+                  },
+                  "edges": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "description": "Id of the source node"
+                        },
+                        "to": {
+                          "type": "string",
+                          "description": "Id of the target node"
+                        },
+                        "label": {
+                          "description": "Short text on the edge",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "dashed": {
+                          "description": "Dashed line, for optional or indirect links",
+                          "type": "boolean"
+                        },
+                        "tone": {
+                          "description": "Colours the edge label and its travelling dots, e.g. accent for the valid path and danger for the failure path; defaults to the source node colour",
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "primary",
+                            "secondary",
+                            "accent",
+                            "danger"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Directed edges; the graph must be acyclic (no loops back). An edge appears once both of its nodes are visible"
+                  },
+                  "animate": {
+                    "default": true,
+                    "description": "Dots travel along the edges once they appear (default true); false for static lines",
+                    "type": "boolean"
+                  },
+                  "caption": {
+                    "description": "Line under the graph",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "nodes",
+                  "edges"
+                ],
+                "additionalProperties": false,
+                "description": "A node-and-edge diagram drawn with React Flow and laid out automatically"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "sequence"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "participants": {
+                    "minItems": 2,
+                    "maxItems": 5,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Unique id used by messages"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Participant name"
+                        },
+                        "sub": {
+                          "description": "Small text under the name, e.g. its role",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "tone": {
+                          "description": "Header colour",
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "primary",
+                            "secondary",
+                            "accent",
+                            "danger"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Lifelines, left to right"
+                  },
+                  "messages": {
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "description": "Id of the sender"
+                        },
+                        "to": {
+                          "type": "string",
+                          "description": "Id of the receiver; the same id draws a self-call"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Message text, 40 characters or fewer"
+                        },
+                        "reply": {
+                          "description": "Dashed line, for a response",
+                          "type": "boolean"
+                        },
+                        "tone": {
+                          "description": "Colours the label and dots",
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "primary",
+                            "secondary",
+                            "accent",
+                            "danger"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Messages top to bottom, revealed in this order over the narration"
+                  },
+                  "animate": {
+                    "default": true,
+                    "description": "Dots travel along each message arrow (default true)",
+                    "type": "boolean"
+                  },
+                  "caption": {
+                    "description": "Line under the diagram",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "participants",
+                  "messages"
+                ],
+                "additionalProperties": false,
+                "description": "A sequence diagram drawn natively and animated: who sends what to whom, in order"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "class"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "direction": {
+                    "default": "TB",
+                    "description": "Layout direction; TB (default) puts parents on top",
+                    "type": "string",
+                    "enum": [
+                      "LR",
+                      "TB"
+                    ]
+                  },
+                  "classes": {
+                    "minItems": 2,
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Unique id used by relations"
+                        },
+                        "name": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Class name"
+                        },
+                        "stereotype": {
+                          "description": "Shown above the name, e.g. interface or record",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "attributes": {
+                          "default": [],
+                          "description": "Attribute lines, 34 characters or fewer each, e.g. \"code_challenge: string\"",
+                          "maxItems": 8,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "maxLength": 34
+                          }
+                        },
+                        "methods": {
+                          "default": [],
+                          "description": "Method lines, 34 characters or fewer each, e.g. \"verify(verifier)\"",
+                          "maxItems": 8,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "maxLength": 34
+                          }
+                        },
+                        "tone": {
+                          "description": "Header colour",
+                          "type": "string",
+                          "enum": [
+                            "neutral",
+                            "primary",
+                            "secondary",
+                            "accent",
+                            "danger"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Classes, revealed in this order over the narration"
+                  },
+                  "relations": {
+                    "minItems": 1,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "from": {
+                          "type": "string",
+                          "description": "Id of the source class. For inherits/implements this is the child; for composes/aggregates the whole"
+                        },
+                        "to": {
+                          "type": "string",
+                          "description": "Id of the target class. For inherits/implements this is the parent; for composes/aggregates the part"
+                        },
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "inherits",
+                            "implements",
+                            "composes",
+                            "aggregates",
+                            "associates",
+                            "depends"
+                          ],
+                          "description": "inherits (solid, hollow triangle), implements (dashed, hollow triangle), composes (filled diamond), aggregates (hollow diamond), associates (arrow), depends (dashed arrow)"
+                        },
+                        "label": {
+                          "description": "Short text on the line, e.g. \"creates\"",
+                          "type": "string",
+                          "minLength": 1
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to",
+                        "type"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "UML relations between the classes"
+                  },
+                  "caption": {
+                    "description": "Line under the diagram",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "classes",
+                  "relations"
+                ],
+                "additionalProperties": false,
+                "description": "A UML class diagram drawn with React Flow: classes with attributes and methods, and relations"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "svg"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "parts": {
+                    "minItems": 1,
+                    "maxItems": 16,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Id of one top-level <g id=\"...\"> in the markup; the group is that part"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "What the part shows, in words the narration says: the part appears when they are spoken"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "The parts, in the order the narration reaches them; each is a top-level <g id> of the svg and appears when its label is spoken. Everything outside these groups is drawn from the first frame"
+                  },
+                  "svg": {
+                    "type": "string",
+                    "description": "Markup of one <svg viewBox=\"0 0 1700 560\"> in a strict subset: svg g rect circle ellipse line polyline polygon path text tspan; colours, fonts and sizes are names (see SKILL.md); anything else is rejected, not stripped. At most 24 KB"
+                  },
+                  "caption": {
+                    "description": "Line under the drawing",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "parts",
+                  "svg"
+                ],
+                "additionalProperties": false,
+                "description": "A drawing the model writes as SVG (strict subset), revealed part by part as the narration names them; 2D only"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "timeline"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Scene heading"
+                  },
+                  "events": {
+                    "minItems": 2,
+                    "maxItems": 10,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional id, only so a scene `focus` can name this event; unique within the timeline",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "at": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "When it happened, exactly as written in the source (e.g. \"14:02 UTC\", \"Day 3\"); shown as is, never reformatted"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "What happened, in words the narration says: the event appears when they are spoken"
+                        },
+                        "detail": {
+                          "description": "A line of extra context under the label",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "status": {
+                          "description": "How sure the source is: \"confirmed\", \"reported\" (second-hand) or \"unknown\". Shown as a text tag; omit when it does not matter",
+                          "type": "string",
+                          "enum": [
+                            "confirmed",
+                            "reported",
+                            "unknown"
+                          ]
+                        },
+                        "marker": {
+                          "description": "A milestone badge: \"detected\", \"mitigated\", \"resolved\" or \"impact\"; \"none\" or omitted for a plain event",
+                          "type": "string",
+                          "enum": [
+                            "detected",
+                            "mitigated",
+                            "resolved",
+                            "impact",
+                            "none"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "at",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Events in time order, each appearing when its label is spoken; up to 5 are laid out on a horizontal rail, more on a vertical one"
+                  },
+                  "caption": {
+                    "description": "Line under the timeline",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "events"
+                ],
+                "additionalProperties": false,
+                "description": "A chronological sequence of dated events (incident timelines, histories); 2D only"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "code"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50,
+                    "description": "Scene heading"
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": [
+                      "ts",
+                      "tsx",
+                      "js",
+                      "jsx",
+                      "python",
+                      "go",
+                      "rust",
+                      "java",
+                      "sql",
+                      "bash",
+                      "json",
+                      "yaml",
+                      "diff",
+                      "text"
+                    ],
+                    "description": "Colouring: ts, tsx, js, jsx, python, go, rust, java, sql, bash, json, yaml, diff, or \"text\" for none"
+                  },
+                  "code": {
+                    "type": "string",
+                    "description": "The code, shown as written: at most 30 lines of 80 display cells (East Asian wide characters and emoji count 2) and 2400 characters excluding line breaks, indented with spaces (no tabs), no leading or trailing blank lines, no invisible or direction-changing characters. Never trimmed: too much is an error"
+                  },
+                  "highlights": {
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "lines": {
+                          "type": "string",
+                          "description": "The lines to point at: \"4\" or \"4-6\" (1-based, inclusive, within the code; ranges may overlap or repeat)"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "What this part does, in words the narration says: the highlight moves here when they are spoken"
+                        }
+                      },
+                      "required": [
+                        "lines",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Parts to point at, each taking the spotlight when its label is spoken"
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Line under the code"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "language",
+                  "code",
+                  "highlights"
+                ],
+                "additionalProperties": false,
+                "description": "A code excerpt with syntax colouring and a spotlight that moves as the narration names its parts; 2D only"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "stat"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50,
+                    "description": "Scene heading"
+                  },
+                  "stats": {
+                    "minItems": 1,
+                    "maxItems": 4,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional id, only so a scene `focus` can name this stat; unique within the scene",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "What is measured, in words the narration says (the stat appears when they are spoken); at most 40 display cells, one line"
+                        },
+                        "value": {
+                          "type": "number",
+                          "description": "The number shown, counted up to; finite, at most 1e12 in size; 0 or more when `from` is set"
+                        },
+                        "unit": {
+                          "description": "Shown after the number: \"%\", \"ms\", \"req/s\", \"USD\" (a suffix only; at most 12 characters). Stats with bars share one scale only when their units match",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "decimals": {
+                          "description": "Decimal places shown on every frame (0 to 4); default: as many as `value` and `from` have. Never rounds: a value with more places is an error",
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 4
+                        },
+                        "from": {
+                          "description": "Earlier value: the counter runs from it to `value`, with before/after bars and a percent-change chip; 0 or more",
+                          "type": "number"
+                        },
+                        "max": {
+                          "description": "With `from`: the end of the bar axis (e.g. 100 for a percentage); at least from and value",
+                          "type": "number"
+                        },
+                        "better": {
+                          "description": "With `from`: which direction is good (\"down\" for latency or errors, \"up\" for throughput); the change is named better or worse",
+                          "type": "string",
+                          "enum": [
+                            "up",
+                            "down"
+                          ]
+                        },
+                        "tone": {
+                          "description": "Overrides the tone from `better`; on a plain stat, a \"good\" or \"bad\" tag",
+                          "type": "string",
+                          "enum": [
+                            "good",
+                            "bad",
+                            "neutral"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "1 to 4 headline numbers, each appearing (and counting up) when its label is spoken; 1 or 2 are big tiles, 3 or 4 a row"
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Line under the stats"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "stats"
+                ],
+                "additionalProperties": false,
+                "description": "One to four headline numbers that count up, optionally before/after with bars and a percent change; 2D only, English only"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "plot2d"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "xDomain": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "description": "[xMin, xMax] horizontal axis domain"
+                  },
+                  "yDomain": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "description": "[yMin, yMax] vertical axis domain"
+                  },
+                  "xLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional horizontal axis label"
+                  },
+                  "yLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional vertical axis label"
+                  },
+                  "curves": {
+                    "minItems": 1,
+                    "maxItems": 4,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional id so `focus` can highlight this curve",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Shown in the legend and used for narration reveal when no stages are set"
+                        },
+                        "expr": {
+                          "description": "Safe math expression in x, e.g. \"0.5 * x^2\" or \"sin(x)\"",
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "points": {
+                          "description": "Explicit [x, y] points with strictly increasing x (2 to 200 points)",
+                          "minItems": 2,
+                          "maxItems": 200,
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ],
+                            "items": false,
+                            "minItems": 2,
+                            "maxItems": 2
+                          }
+                        },
+                        "tone": {
+                          "description": "Curve colour token from theme",
+                          "type": "string",
+                          "enum": [
+                            "secondary",
+                            "accent",
+                            "primary",
+                            "danger",
+                            "ink"
+                          ]
+                        },
+                        "dashed": {
+                          "description": "Draw dashed line instead of solid",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "stages": {
+                    "description": "Optional narration-timed stages (point, secant, tangent, riemann, zoom)",
+                    "minItems": 1,
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "point"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed stage label"
+                            },
+                            "curve": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "x": {
+                              "type": "number",
+                              "description": "Point x coordinate"
+                            },
+                            "tag": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Optional short callout tag next to point"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "x"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "secant"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed stage label"
+                            },
+                            "curve": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "x": {
+                              "type": "number",
+                              "description": "Base x coordinate"
+                            },
+                            "dx": {
+                              "type": "number",
+                              "description": "Starting step dx (non-zero)"
+                            },
+                            "toDx": {
+                              "description": "Target step dx at end of stage (may be 0 to converge to tangent)",
+                              "type": "number"
+                            },
+                            "zoom": {
+                              "description": "Optional camera zoom factor around (x, f(x))",
+                              "type": "number",
+                              "minimum": 1,
+                              "maximum": 20
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "x",
+                            "dx"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "tangent"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed stage label"
+                            },
+                            "curve": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "x": {
+                              "type": "number",
+                              "description": "Point x coordinate (auto-detects corners like |x|)"
+                            },
+                            "zoom": {
+                              "description": "Optional camera zoom factor around (x, f(x))",
+                              "type": "number",
+                              "minimum": 1,
+                              "maximum": 20
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "x"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "riemann"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed stage label"
+                            },
+                            "curve": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3
+                            },
+                            "range": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2,
+                              "description": "[a, b] integration interval with a < b"
+                            },
+                            "slices": {
+                              "description": "Starting rectangle count (1..64)",
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 64
+                            },
+                            "toSlices": {
+                              "description": "Target rectangle count at end of stage (1..64)",
+                              "type": "integer",
+                              "minimum": 1,
+                              "maximum": 64
+                            },
+                            "method": {
+                              "description": "Sampling rule or \"smooth\" continuous signed area",
+                              "type": "string",
+                              "enum": [
+                                "left",
+                                "right",
+                                "midpoint",
+                                "smooth"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "range"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "zoom"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed stage label"
+                            },
+                            "xDomain": {
+                              "description": "Target [xMin, xMax] viewport",
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "yDomain": {
+                              "description": "Target [yMin, yMax] viewport",
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "center": {
+                              "description": "Zoom center [x, y] (used with factor)",
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "factor": {
+                              "description": "Zoom multiplier around center",
+                              "type": "number",
+                              "minimum": 1,
+                              "maximum": 20
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional caption line under the plot"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "xDomain",
+                  "yDomain",
+                  "curves"
+                ],
+                "additionalProperties": false,
+                "description": "Animated 2D function plot with curves, secant-to-tangent zoom, corner detection, and Riemann slices (2D only)"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "linked-plot"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "xDomain": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2,
+                    "description": "Shared horizontal [xMin, xMax] domain"
+                  },
+                  "xLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional shared horizontal axis label"
+                  },
+                  "top": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Panel title/quantity name, e.g. \"Position\" or \"Speed\""
+                      },
+                      "yDomain": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ],
+                        "items": false,
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "description": "[yMin, yMax] vertical domain for this panel"
+                      },
+                      "yLabel": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Optional vertical axis label"
+                      },
+                      "unit": {
+                        "description": "Optional unit suffix, e.g. \"m\", \"m/s\", \"USD\"",
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "expr": {
+                        "description": "Safe math expression in x; omit on one panel to derive it automatically from the other",
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "points": {
+                        "minItems": 2,
+                        "maxItems": 200,
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "prefixItems": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "items": false,
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "tone": {
+                        "type": "string",
+                        "enum": [
+                          "secondary",
+                          "accent",
+                          "primary",
+                          "danger",
+                          "ink"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "yDomain"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Accumulation panel F(x): tangent slope matches bottom panel value"
+                  },
+                  "bottom": {
+                    "type": "object",
+                    "properties": {
+                      "label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Panel title/quantity name, e.g. \"Position\" or \"Speed\""
+                      },
+                      "yDomain": {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ],
+                        "items": false,
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "description": "[yMin, yMax] vertical domain for this panel"
+                      },
+                      "yLabel": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Optional vertical axis label"
+                      },
+                      "unit": {
+                        "description": "Optional unit suffix, e.g. \"m\", \"m/s\", \"USD\"",
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "expr": {
+                        "description": "Safe math expression in x; omit on one panel to derive it automatically from the other",
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "points": {
+                        "minItems": 2,
+                        "maxItems": 200,
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "prefixItems": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "items": false,
+                          "minItems": 2,
+                          "maxItems": 2
+                        }
+                      },
+                      "tone": {
+                        "type": "string",
+                        "enum": [
+                          "secondary",
+                          "accent",
+                          "primary",
+                          "danger",
+                          "ink"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "yDomain"
+                    ],
+                    "additionalProperties": false,
+                    "description": "Rate panel f(x) = F'(x): shaded area matches top panel height change"
+                  },
+                  "anchor": {
+                    "description": "Optional integration anchor {x, y} when top F(x) is derived from bottom f(x) (default F(xMin) = 0)",
+                    "type": "object",
+                    "properties": {
+                      "x": {
+                        "type": "number"
+                      },
+                      "y": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "x",
+                      "y"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "stages": {
+                    "minItems": 1,
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Stage label matched to narration (cursor moves to stage.x when spoken)"
+                        },
+                        "x": {
+                          "type": "number",
+                          "description": "Target x coordinate inside xDomain"
+                        },
+                        "show": {
+                          "description": "Which correspondence to emphasize (default \"both\")",
+                          "type": "string",
+                          "enum": [
+                            "tangent",
+                            "area",
+                            "both"
+                          ]
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Optional short annotation shown on the bridge bar"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "x"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional caption line under the plots"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "xDomain",
+                  "top",
+                  "bottom",
+                  "stages"
+                ],
+                "additionalProperties": false,
+                "description": "Dual stacked synchronized plots: top tangent slope equals bottom height, bottom shaded area equals top change (2D only)"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "cancellation-grid"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "theorem": {
+                    "type": "string",
+                    "enum": [
+                      "ftc-1d",
+                      "curl-2d",
+                      "divergence-2d",
+                      "divergence-3d"
+                    ],
+                    "description": "ftc-1d (1D telescoping), curl-2d (Green/Stokes), divergence-2d, or divergence-3d (isometric cells)"
+                  },
+                  "cols": {
+                    "description": "Subdivisions along x (ftc-1d: 2..8; 2D: 2..5; 3D: 2..3)",
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "rows": {
+                    "description": "Subdivisions along y (2D: 2..4; 3D: 2..3; omitted in ftc-1d)",
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "depth": {
+                    "description": "Subdivisions along z (3D only: 2)",
+                    "type": "integer",
+                    "minimum": -9007199254740991,
+                    "maximum": 9007199254740991
+                  },
+                  "stages": {
+                    "minItems": 1,
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Narration-timed stage label"
+                        },
+                        "phase": {
+                          "type": "string",
+                          "enum": [
+                            "cells",
+                            "interior",
+                            "cancel",
+                            "boundary"
+                          ],
+                          "description": "cells -> interior -> cancel -> boundary"
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Optional short explanation badge for this stage"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "phase"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional caption line"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "theorem",
+                  "stages"
+                ],
+                "additionalProperties": false,
+                "description": "Interior-cancellation tessellations showing how opposing interior contributions cancel to leave only the outer boundary (2D only)"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "field2d"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "mode": {
+                    "type": "string",
+                    "enum": [
+                      "scalar",
+                      "vector"
+                    ],
+                    "description": "\"scalar\" (contour map + gradient/paths) or \"vector\" (flow + divergence/curl/integrals)"
+                  },
+                  "xDomain": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "yDomain": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "xLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional horizontal axis label"
+                  },
+                  "yLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional vertical axis label"
+                  },
+                  "expr": {
+                    "description": "Scalar mode: safe math expression f(x, y)",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "levels": {
+                    "description": "Scalar mode: contour level count (4..14)",
+                    "type": "integer",
+                    "minimum": 4,
+                    "maximum": 14
+                  },
+                  "fx": {
+                    "description": "Vector mode: x-component expression Fx(x, y)",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "fy": {
+                    "description": "Vector mode: y-component expression Fy(x, y)",
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "density": {
+                    "description": "Vector mode: arrow grid density (5..12)",
+                    "type": "integer",
+                    "minimum": 5,
+                    "maximum": 12
+                  },
+                  "particles": {
+                    "description": "Vector mode: animate deterministic advected particles (default true)",
+                    "type": "boolean"
+                  },
+                  "overlays": {
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "slice"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "axis": {
+                              "type": "string",
+                              "enum": [
+                                "x",
+                                "y"
+                              ],
+                              "description": "Fix x=at (vary y) or y=at (vary x)"
+                            },
+                            "at": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "axis",
+                            "at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "gradient"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "points": {
+                              "minItems": 1,
+                              "maxItems": 12,
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "prefixItems": [
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ],
+                                "items": false,
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "path"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "direction": {
+                              "type": "string",
+                              "enum": [
+                                "ascent",
+                                "descent"
+                              ]
+                            },
+                            "starts": {
+                              "minItems": 1,
+                              "maxItems": 3,
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "prefixItems": [
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ],
+                                "items": false,
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            },
+                            "steps": {
+                              "type": "integer",
+                              "minimum": 10,
+                              "maximum": 80
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "direction",
+                            "starts"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "extrema"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "points": {
+                              "minItems": 1,
+                              "maxItems": 6,
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "at": {
+                                    "type": "array",
+                                    "prefixItems": [
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ],
+                                    "items": false,
+                                    "minItems": 2,
+                                    "maxItems": 2
+                                  },
+                                  "tag": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "description": "Short label, e.g. \"Local max\""
+                                  },
+                                  "tone": {
+                                    "type": "string",
+                                    "enum": [
+                                      "secondary",
+                                      "accent",
+                                      "primary",
+                                      "danger",
+                                      "ink"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "at",
+                                  "tag"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "points"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "jacobian"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "at": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "size": {
+                              "type": "number",
+                              "minimum": 0.1,
+                              "maximum": 4
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "divergence"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "at": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "radius": {
+                              "type": "number",
+                              "minimum": 0.1,
+                              "maximum": 4
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "curl"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "at": {
+                              "type": "array",
+                              "prefixItems": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ],
+                              "items": false,
+                              "minItems": 2,
+                              "maxItems": 2
+                            },
+                            "radius": {
+                              "type": "number",
+                              "minimum": 0.1,
+                              "maximum": 4
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "at"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "line-integral"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "points": {
+                              "minItems": 2,
+                              "maxItems": 40,
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "prefixItems": [
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ],
+                                "items": false,
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "points"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "const": "flux"
+                            },
+                            "id": {
+                              "type": "string",
+                              "pattern": "^[A-Za-z0-9_-]+$"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Narration-timed overlay label"
+                            },
+                            "points": {
+                              "minItems": 2,
+                              "maxItems": 20,
+                              "type": "array",
+                              "items": {
+                                "type": "array",
+                                "prefixItems": [
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "number"
+                                  }
+                                ],
+                                "items": false,
+                                "minItems": 2,
+                                "maxItems": 2
+                              }
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "label",
+                            "points"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional caption line"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "mode",
+                  "xDomain",
+                  "yDomain"
+                ],
+                "additionalProperties": false,
+                "description": "2D scalar contour map or vector field with narration-timed multivariable calculus overlays (2D only)"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "chart"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "bar",
+                      "line",
+                      "scatter"
+                    ],
+                    "description": "Empirical chart mode: benchmark bar, scaling line, or Pareto scatter"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "layout": {
+                    "description": "For kind=\"bar\": vertical grouped bars (default) or horizontal bars",
+                    "type": "string",
+                    "enum": [
+                      "grouped",
+                      "horizontal"
+                    ]
+                  },
+                  "xLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional horizontal axis label"
+                  },
+                  "yLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional vertical axis label"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional metric unit suffix shown on bar labels (e.g. \"%\", \"ms\")"
+                  },
+                  "xDomain": {
+                    "description": "Optional [xMin, xMax] viewport bounds",
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "yDomain": {
+                    "description": "Optional [yMin, yMax] viewport bounds",
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "xScale": {
+                    "description": "Horizontal axis scale for line/scatter (default \"linear\")",
+                    "type": "string",
+                    "enum": [
+                      "linear",
+                      "log"
+                    ]
+                  },
+                  "yScale": {
+                    "description": "Vertical/value axis scale (default \"linear\")",
+                    "type": "string",
+                    "enum": [
+                      "linear",
+                      "log"
+                    ]
+                  },
+                  "categories": {
+                    "description": "For kind=\"bar\": benchmark or dataset names along the category axis (1..8)",
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Category / benchmark label"
+                    }
+                  },
+                  "series": {
+                    "description": "For kind=\"bar\" or kind=\"line\": data series (1..8)",
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional id so `focus` can highlight this series",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Series or method legend label (40 display cells max)"
+                        },
+                        "tone": {
+                          "description": "Series colour token from theme",
+                          "type": "string",
+                          "enum": [
+                            "secondary",
+                            "accent",
+                            "primary",
+                            "danger",
+                            "ink"
+                          ]
+                        },
+                        "values": {
+                          "description": "For kind=\"bar\": one numeric value per category",
+                          "minItems": 1,
+                          "maxItems": 8,
+                          "type": "array",
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "errors": {
+                          "description": "For kind=\"bar\": optional symmetric ± half-width error bar per category",
+                          "minItems": 1,
+                          "maxItems": 8,
+                          "type": "array",
+                          "items": {
+                            "type": "number",
+                            "minimum": 0
+                          }
+                        },
+                        "ci": {
+                          "description": "For kind=\"bar\": optional [low, high] confidence interval per category",
+                          "minItems": 1,
+                          "maxItems": 8,
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ],
+                            "items": false,
+                            "minItems": 2,
+                            "maxItems": 2
+                          }
+                        },
+                        "points": {
+                          "description": "For kind=\"line\": sorted [x, y] points with strictly increasing x (2..100)",
+                          "minItems": 2,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ],
+                            "items": false,
+                            "minItems": 2,
+                            "maxItems": 2
+                          }
+                        },
+                        "band": {
+                          "description": "For kind=\"line\": optional [low, high] variance band matching points length",
+                          "minItems": 2,
+                          "maxItems": 100,
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ],
+                            "items": false,
+                            "minItems": 2,
+                            "maxItems": 2
+                          }
+                        },
+                        "dashed": {
+                          "description": "For kind=\"line\": draw dashed curve",
+                          "type": "boolean"
+                        },
+                        "highlight": {
+                          "description": "Emphasize proposed method or primary curve",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "points": {
+                    "description": "For kind=\"scatter\": trade-off points (2..20)",
+                    "minItems": 2,
+                    "maxItems": 20,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional id so `focus` can highlight this point",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Point / method label (40 display cells max)"
+                        },
+                        "x": {
+                          "type": "number",
+                          "description": "Horizontal metric value"
+                        },
+                        "y": {
+                          "type": "number",
+                          "description": "Vertical metric value"
+                        },
+                        "tone": {
+                          "description": "Marker colour token from theme",
+                          "type": "string",
+                          "enum": [
+                            "secondary",
+                            "accent",
+                            "primary",
+                            "danger",
+                            "ink"
+                          ]
+                        },
+                        "size": {
+                          "description": "Relative marker size multiplier (0.6..2.4)",
+                          "type": "number",
+                          "minimum": 0.6,
+                          "maximum": 2.4
+                        },
+                        "highlight": {
+                          "description": "Emphasize this point with a callout halo",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "x",
+                        "y"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "betterX": {
+                    "description": "For kind=\"scatter\": optimal X direction for Pareto frontier (default \"min\")",
+                    "type": "string",
+                    "enum": [
+                      "min",
+                      "max"
+                    ]
+                  },
+                  "betterY": {
+                    "description": "For kind=\"scatter\": optimal Y direction for Pareto frontier (default \"max\")",
+                    "type": "string",
+                    "enum": [
+                      "min",
+                      "max"
+                    ]
+                  },
+                  "showFrontier": {
+                    "description": "For kind=\"scatter\": draw the computed Pareto frontier line (default true)",
+                    "type": "boolean"
+                  },
+                  "baseline": {
+                    "description": "Optional reference threshold line across the value axis",
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "description": "Reference value threshold line"
+                      },
+                      "label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Optional baseline reference label"
+                      },
+                      "tone": {
+                        "description": "Reference line colour token",
+                        "type": "string",
+                        "enum": [
+                          "secondary",
+                          "accent",
+                          "primary",
+                          "danger",
+                          "ink"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional bottom takeaway note"
+                  }
+                },
+                "required": [
+                  "type",
+                  "kind",
+                  "heading"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "ablation"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "metric": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional metric / vertical axis label"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional unit suffix, e.g. \"%\", \"ms\", \"pt\""
+                  },
+                  "decimals": {
+                    "description": "Optional decimal places (auto-inferred when omitted)",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4
+                  },
+                  "higherIsBetter": {
+                    "description": "True (default) if positive deltas are gains; false for loss/latency metrics",
+                    "type": "boolean"
+                  },
+                  "baseline": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "description": "Optional id so `focus` can highlight the baseline bar",
+                        "type": "string",
+                        "pattern": "^[A-Za-z0-9_-]+$"
+                      },
+                      "label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Shown under the starting bar and used as its reveal slot"
+                      },
+                      "value": {
+                        "type": "number",
+                        "description": "Starting baseline numeric value"
+                      }
+                    },
+                    "required": [
+                      "label",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "steps": {
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional id so `focus` can highlight this component step",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Shown below this bar and matched in narration for timing"
+                        },
+                        "delta": {
+                          "type": "number",
+                          "description": "Signed contribution (+ or -) added to running total"
+                        },
+                        "tone": {
+                          "description": "Semantic tone: \"auto\" (default), \"accent\", \"danger\", \"neutral\", or \"primary\"",
+                          "type": "string",
+                          "enum": [
+                            "auto",
+                            "accent",
+                            "danger",
+                            "neutral",
+                            "primary"
+                          ]
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Optional short annotation badge"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "delta"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Ordered component additions or removals (1..8)"
+                  },
+                  "showTotal": {
+                    "description": "Whether to append the cumulative final bar (default true)",
+                    "type": "boolean"
+                  },
+                  "totalId": {
+                    "description": "Optional id so `focus` can highlight the final total bar",
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]+$"
+                  },
+                  "totalLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Final total bar label (default \"Full System\")"
+                  },
+                  "yDomain": {
+                    "description": "Optional explicit [yMin, yMax] range",
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional bottom takeaway note"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "baseline",
+                  "steps"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "matrix"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "rows": {
+                    "minItems": 2,
+                    "maxItems": 10,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Row label"
+                    }
+                  },
+                  "cols": {
+                    "minItems": 2,
+                    "maxItems": 10,
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "description": "Column label"
+                    }
+                  },
+                  "values": {
+                    "minItems": 2,
+                    "maxItems": 10,
+                    "type": "array",
+                    "items": {
+                      "minItems": 2,
+                      "maxItems": 10,
+                      "type": "array",
+                      "items": {
+                        "type": "number"
+                      }
+                    },
+                    "description": "2D grid of numeric intensities matching rows.length x cols.length"
+                  },
+                  "scale": {
+                    "description": "Colour encoding: \"sequential\" (default) or symmetric \"diverging\" around 0",
+                    "type": "string",
+                    "enum": [
+                      "sequential",
+                      "diverging"
+                    ]
+                  },
+                  "tone": {
+                    "description": "High-value theme colour token (default \"secondary\")",
+                    "type": "string",
+                    "enum": [
+                      "secondary",
+                      "primary",
+                      "accent",
+                      "danger"
+                    ]
+                  },
+                  "domain": {
+                    "description": "Optional explicit [min, max] intensity domain",
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2,
+                    "maxItems": 2
+                  },
+                  "rowLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional Y/row axis tensor annotation (e.g. \"Query Token\")"
+                  },
+                  "colLabel": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional X/column axis tensor annotation (e.g. \"Key Token\")"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional cell value unit suffix (e.g. \"%\", \"ms\")"
+                  },
+                  "decimals": {
+                    "description": "Optional fixed decimal places for cell numbers",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4
+                  },
+                  "showValues": {
+                    "description": "Show numeric values inside cells (default true)",
+                    "type": "boolean"
+                  },
+                  "highlights": {
+                    "description": "Optional narration-timed highlights over rows, columns, cells, or blocks",
+                    "minItems": 1,
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional id so `focus` can highlight this region",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Highlight / reveal slot label (matched in narration)"
+                        },
+                        "kind": {
+                          "type": "string",
+                          "enum": [
+                            "row",
+                            "col",
+                            "cell",
+                            "block"
+                          ],
+                          "description": "Highlighted matrix target kind"
+                        },
+                        "row": {
+                          "description": "0-based row index (for row/cell)",
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9
+                        },
+                        "col": {
+                          "description": "0-based col index (for col/cell)",
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9
+                        },
+                        "rows": {
+                          "description": "[startRow, endRow] inclusive range for kind=\"block\"",
+                          "type": "array",
+                          "prefixItems": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            }
+                          ],
+                          "items": false,
+                          "minItems": 2,
+                          "maxItems": 2
+                        },
+                        "cols": {
+                          "description": "[startCol, endCol] inclusive range for kind=\"block\"",
+                          "type": "array",
+                          "prefixItems": [
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991
+                            }
+                          ],
+                          "items": false,
+                          "minItems": 2,
+                          "maxItems": 2
+                        },
+                        "tone": {
+                          "description": "Highlight frame colour token from theme",
+                          "type": "string",
+                          "enum": [
+                            "secondary",
+                            "accent",
+                            "primary",
+                            "danger",
+                            "ink"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "kind"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional bottom takeaway note"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "rows",
+                  "cols",
+                  "values"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "equation"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "equations": {
+                    "minItems": 1,
+                    "maxItems": 2,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Optional short equation title/tag"
+                        },
+                        "latex": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 400,
+                          "description": "Sanitized LaTeX expression containing \\term{id}{...} sub-expressions"
+                        }
+                      },
+                      "required": [
+                        "latex"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "1 or 2 load-bearing LaTeX equations with \\term{id}{...} spans"
+                  },
+                  "terms": {
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Term id matching a \\term{id}{...} span in the equation"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Spotlight timing slot matched against narration"
+                        },
+                        "gloss": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 140,
+                          "description": "Plain-English explanation displayed below while this term is spotlighted"
+                        },
+                        "tone": {
+                          "description": "Spotlight highlight colour token from theme",
+                          "type": "string",
+                          "enum": [
+                            "primary",
+                            "accent",
+                            "secondary",
+                            "danger"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label",
+                        "gloss"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Ordered term spotlights and plain-English glosses (1..8)"
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional bottom takeaway note"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "equations",
+                  "terms"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "figure"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "src": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 240,
+                    "description": "Relative POSIX path inside <workdir> to a PNG, JPG/JPEG, or SVG file"
+                  },
+                  "alt": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120,
+                    "description": "Short figure description (also fallback reveal slot when no regions are listed)"
+                  },
+                  "aspect": {
+                    "description": "Expected image width/height aspect ratio (default 16/9)",
+                    "type": "number",
+                    "minimum": 0.35,
+                    "maximum": 3.5
+                  },
+                  "regions": {
+                    "description": "Optional narration-timed callout bounding boxes (1..6) with zoom & dim-outside spotlight",
+                    "minItems": 1,
+                    "maxItems": 6,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional id so `focus` can spotlight this region directly",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 36,
+                          "description": "Region / callout label matched in narration (36 display cells max)"
+                        },
+                        "x": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1,
+                          "description": "Normalized left edge [0..1]"
+                        },
+                        "y": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1,
+                          "description": "Normalized top edge [0..1]"
+                        },
+                        "w": {
+                          "type": "number",
+                          "minimum": 0.02,
+                          "maximum": 1,
+                          "description": "Normalized width [0.02..1]"
+                        },
+                        "h": {
+                          "type": "number",
+                          "minimum": 0.02,
+                          "maximum": 1,
+                          "description": "Normalized height [0.02..1]"
+                        },
+                        "zoom": {
+                          "description": "Optional zoom factor when spotlighting this region (1..3.5)",
+                          "type": "number",
+                          "minimum": 1,
+                          "maximum": 3.5
+                        },
+                        "tone": {
+                          "description": "Highlight bounding box colour token from theme",
+                          "type": "string",
+                          "enum": [
+                            "secondary",
+                            "accent",
+                            "primary",
+                            "danger",
+                            "ink"
+                          ]
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Optional short plain-English annotation shown while spotlighted"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "x",
+                        "y",
+                        "w",
+                        "h"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional bottom takeaway note"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "src",
+                  "alt"
+                ],
+                "additionalProperties": false
+              }
+            ],
+            "description": "What is drawn in the scene; \"type\" selects the shape"
+          }
+        },
+        "required": [
+          "id",
+          "narration",
+          "visual"
+        ],
+        "additionalProperties": false
+      },
+      "description": "Scenes in play order; one idea each"
+    }
+  },
+  "required": [
+    "title",
+    "scenes"
+  ],
+  "additionalProperties": false,
+  "description": "One video: <workdir>/scripts/<id>.json"
+}

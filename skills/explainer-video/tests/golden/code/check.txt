@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok code: 3 scenes, 68 words, about 26s
+--stderr--

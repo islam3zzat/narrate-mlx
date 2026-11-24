@@ -1,0 +1,5 @@
+[00:00:20] Dana: We agreed to move billing to the new provider on March 1.
+[00:02:10] Lee: I will own the migration plan, due February 10.
+[00:04:30] Priya: I will get finance sign-off on the vendor contract by February 20.
+[00:06:00] Priya: Legal has not reviewed the data processing terms yet, and I do not know who should.
+[00:07:15] Lee: We might also drop the old invoice format, but that is not decided.

@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok field2d: 3 scenes, 64 words, about 25s
+--stderr--

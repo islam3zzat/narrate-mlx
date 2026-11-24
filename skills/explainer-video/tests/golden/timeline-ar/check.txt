@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok timeline-ar [ar, right to left]: 1 scenes, 7 words, about 4s
+--stderr--

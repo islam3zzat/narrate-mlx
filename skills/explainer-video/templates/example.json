@@ -1,0 +1,180 @@
+{
+  "title": "How an API gateway handles a request",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "This is a short example of an explainer video. It shows how a gateway handles one request, using most of the kinds of scene this tool can draw.",
+      "visual": {
+        "type": "title",
+        "kicker": "Example",
+        "headline": "The API gateway",
+        "sub": "One request, start to finish"
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "A request passes through three stages. The gateway checks who is calling, applies its rules, and then forwards the request to the right service.",
+      "visual": {
+        "type": "flow",
+        "heading": "The path of a request",
+        "nodes": [
+          {
+            "label": "Client",
+            "sub": "sends a request"
+          },
+          {
+            "label": "Gateway",
+            "sub": "authenticates, applies rules"
+          },
+          {
+            "label": "Service",
+            "sub": "does the work"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "First, authentication. The gateway reads the token and decides whether the caller is allowed in.",
+      "visual": {
+        "type": "steps",
+        "heading": "Inside the gateway",
+        "active": 0,
+        "items": [
+          "Authenticate the caller",
+          "Apply rate limits and rules",
+          "Route to a service"
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "Second, the rules. Rate limits and policies decide whether this particular request may continue.",
+      "visual": {
+        "type": "steps",
+        "heading": "Inside the gateway",
+        "active": 1,
+        "items": [
+          "Authenticate the caller",
+          "Apply rate limits and rules",
+          "Route to a service"
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "narration": "Third, routing. The gateway picks the backend by path and version. Old and new versions can run side by side.",
+      "visual": {
+        "type": "fanout",
+        "heading": "Routing",
+        "source": {
+          "label": "Gateway"
+        },
+        "targets": [
+          {
+            "label": "orders v1",
+            "sub": "legacy, to be retired"
+          },
+          {
+            "label": "orders v2",
+            "sub": "current"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s05b",
+      "narration": "Here is the order of calls. The client sends a request to the gateway. The gateway asks the auth service to check the token. Once auth says yes, the gateway forwards the request to orders, and the answer travels back the same way.",
+      "visual": {
+        "type": "mermaid",
+        "heading": "One request, in order",
+        "code": "sequenceDiagram\n  Client->>Gateway: request\n  Gateway->>Auth: check token\n  Auth-->>Gateway: allowed\n  Gateway->>Orders: forward\n  Orders-->>Client: response",
+        "caption": "Auth happens before routing"
+      }
+    },
+    {
+      "id": "s05c",
+      "narration": "What if the token is bad? The gateway checks it first. If it is valid, the request goes on to orders. If not, the gateway stops it right there and answers with an error.",
+      "visual": {
+        "type": "graph",
+        "heading": "Token check decides the path",
+        "direction": "TB",
+        "nodes": [
+          {
+            "id": "req",
+            "label": "Request",
+            "tone": "primary"
+          },
+          {
+            "id": "chk",
+            "label": "Token valid?"
+          },
+          {
+            "id": "ord",
+            "label": "Orders service",
+            "tone": "accent"
+          },
+          {
+            "id": "err",
+            "label": "401 error",
+            "tone": "danger"
+          }
+        ],
+        "edges": [
+          {
+            "from": "req",
+            "to": "chk"
+          },
+          {
+            "from": "chk",
+            "to": "ord",
+            "label": "yes"
+          },
+          {
+            "from": "chk",
+            "to": "err",
+            "label": "no"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "narration": "Compared with calling services directly, a gateway adds a single place for security and traffic control, at the cost of one more hop.",
+      "visual": {
+        "type": "compare",
+        "heading": "Gateway or direct calls?",
+        "columns": [
+          {
+            "title": "With a gateway",
+            "tag": "Central control",
+            "items": [
+              "One place for auth",
+              "Shared rate limits",
+              "One extra hop"
+            ]
+          },
+          {
+            "title": "Direct calls",
+            "tag": "Simple",
+            "items": [
+              "No extra hop",
+              "Every service handles auth",
+              "Harder to change policy"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "narration": "To remember: the gateway authenticates, applies rules and routes. Everything else is the service's job.",
+      "visual": {
+        "type": "callout",
+        "heading": "Remember",
+        "big": "Authenticate, apply rules, route",
+        "text": "Everything else belongs to the service"
+      }
+    }
+  ]
+}

@@ -1,0 +1,231 @@
+{
+ "id": "figure",
+ "title": "Walking Through Paper Diagrams with Focus Regions",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 300,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "Looking at our architecture diagram, tokens first pass through the encoder block, then enter the sparse router gate before reaching the decoder output.",
+   "focus": [
+    {
+     "at": "encoder block",
+     "on": [
+      "enc"
+     ]
+    },
+    {
+     "at": "router gate",
+     "on": [
+      "gate"
+     ]
+    },
+    {
+     "at": "decoder output",
+     "on": [
+      "dec"
+     ]
+    }
+   ],
+   "visual": {
+    "type": "figure",
+    "heading": "System Schematic Spotlight",
+    "src": "assets/sample-figure.png",
+    "alt": "Encoder, router gate, and decoder pipeline diagram",
+    "aspect": 1.7778,
+    "regions": [
+     {
+      "id": "enc",
+      "label": "Encoder block",
+      "x": 0.068,
+      "y": 0.215,
+      "w": 0.26,
+      "h": 0.535,
+      "zoom": 1.85,
+      "tone": "accent",
+      "note": "Embeds input sequence"
+     },
+     {
+      "id": "gate",
+      "label": "Router gate",
+      "x": 0.39,
+      "y": 0.27,
+      "w": 0.22,
+      "h": 0.425,
+      "zoom": 2.1,
+      "tone": "primary",
+      "note": "Selects active experts"
+     },
+     {
+      "id": "dec",
+      "label": "Decoder output",
+      "x": 0.672,
+      "y": 0.215,
+      "w": 0.26,
+      "h": 0.535,
+      "zoom": 1.85,
+      "tone": "secondary",
+      "note": "Produces final logits"
+     }
+    ],
+    "caption": "Staged workdir assets pan, zoom, and dim outside each active callout box."
+   },
+   "figureAsset": "figures/0803ca256cc876ab.png",
+   "audio": "audio/figure/s01.wav",
+   "durationSec": 9.1,
+   "frames": 300,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Looking",
+     "start": 0.275,
+     "end": 0.6
+    },
+    {
+     "w": "at",
+     "start": 0.6,
+     "end": 0.688
+    },
+    {
+     "w": "our",
+     "start": 0.688,
+     "end": 0.825
+    },
+    {
+     "w": "architecture",
+     "start": 0.825,
+     "end": 1.4
+    },
+    {
+     "w": "diagram,",
+     "start": 1.4,
+     "end": 2.225
+    },
+    {
+     "w": "tokens",
+     "start": 2.337,
+     "end": 2.775
+    },
+    {
+     "w": "first",
+     "start": 2.775,
+     "end": 3.062
+    },
+    {
+     "w": "pass",
+     "start": 3.062,
+     "end": 3.45
+    },
+    {
+     "w": "through",
+     "start": 3.45,
+     "end": 3.638
+    },
+    {
+     "w": "the",
+     "start": 3.638,
+     "end": 3.775
+    },
+    {
+     "w": "encoder",
+     "start": 3.775,
+     "end": 4.2
+    },
+    {
+     "w": "block,",
+     "start": 4.2,
+     "end": 4.9
+    },
+    {
+     "w": "then",
+     "start": 5.0,
+     "end": 5.263
+    },
+    {
+     "w": "enter",
+     "start": 5.263,
+     "end": 5.537
+    },
+    {
+     "w": "the",
+     "start": 5.537,
+     "end": 5.638
+    },
+    {
+     "w": "sparse",
+     "start": 5.638,
+     "end": 6.075
+    },
+    {
+     "w": "router",
+     "start": 6.075,
+     "end": 6.425
+    },
+    {
+     "w": "gate",
+     "start": 6.425,
+     "end": 6.8
+    },
+    {
+     "w": "before",
+     "start": 6.8,
+     "end": 7.175
+    },
+    {
+     "w": "reaching",
+     "start": 7.175,
+     "end": 7.513
+    },
+    {
+     "w": "the",
+     "start": 7.513,
+     "end": 7.6
+    },
+    {
+     "w": "decoder",
+     "start": 7.6,
+     "end": 8.1
+    },
+    {
+     "w": "output.",
+     "start": 8.1,
+     "end": 8.85
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Looking at our architecture diagram, tokens first pass through the encoder block, then enter the sparse router gate before reaching the decoder output.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    3.655,
+    5.955,
+    7.48
+   ],
+   "focusSec": [
+    {
+     "t": 3.695,
+     "on": [
+      "enc"
+     ]
+    },
+    {
+     "t": 5.995,
+     "on": [
+      "gate"
+     ]
+    },
+    {
+     "t": 7.52,
+     "on": [
+      "dec"
+     ]
+    }
+   ]
+  }
+ ]
+}

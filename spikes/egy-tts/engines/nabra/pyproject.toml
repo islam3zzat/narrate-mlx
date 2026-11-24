@@ -1,0 +1,5 @@
+[project]
+name = "egy-nabra"
+version = "0"
+requires-python = ">=3.10,<3.13"
+dependencies = ["kokoro @ git+https://github.com/Oddadmix/kokoro.git@main", "torch", "soundfile", "huggingface_hub", "misaki[en]", "numpy"]

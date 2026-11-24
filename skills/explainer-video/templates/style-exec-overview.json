@@ -1,0 +1,40 @@
+{
+  "title": "Billing migration meeting (sample: replace with your meeting)",
+  "style": "exec-overview",
+  "scenes": [
+    {
+      "id": "s01",
+      "section": "title",
+      "facts": ["d01"],
+      "narration": "Billing moves to the new provider on March first. Two owners are named, and one question about legal terms is still open.",
+      "visual": {"type": "title", "kicker": "Meeting overview", "headline": "Billing moves in March", "sub": "One decision, two owners, one open question"}
+    },
+    {
+      "id": "s02",
+      "section": "decisions",
+      "facts": ["d01"],
+      "narration": "One decision was made. Billing moves to the new provider on March first, so invoices come from one system by spring.",
+      "visual": {"type": "bullets", "heading": "Decided", "items": ["Billing moves to the new provider on March first", "So: one invoicing system by spring"]}
+    },
+    {
+      "id": "s03",
+      "section": "next-steps",
+      "facts": ["a01", "a02"],
+      "narration": "Two actions follow. Lee writes the migration plan by February tenth. Priya gets finance sign-off on the vendor contract by February twentieth.",
+      "visual": {"type": "table", "heading": "Next steps", "headers": ["Action", "Owner", "Due"], "rows": [["Migration plan", "Lee", "February 10"], ["Vendor contract sign-off", "Priya", "February 20"]]}
+    },
+    {
+      "id": "s04",
+      "section": "open-questions",
+      "facts": ["q01", "q02"],
+      "narration": "Two questions are open. Legal has not reviewed the data processing terms, and nobody owns that yet. Dropping the old invoice format was suggested, but it is not decided.",
+      "visual": {"type": "bullets", "heading": "Open questions", "items": ["Legal review of the data processing terms: no owner yet", "Drop the old invoice format: suggested, not decided"]}
+    },
+    {
+      "id": "s05",
+      "section": "close",
+      "narration": "To remember: the move is decided, the plan is due February tenth, and legal needs an owner this week.",
+      "visual": {"type": "callout", "heading": "Remember", "big": "Plan due February 10", "text": "Legal review needs an owner this week"}
+    }
+  ]
+}

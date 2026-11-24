@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok code-ar [ar, right to left]: 1 scenes, 4 words, about 2s
+--stderr--

@@ -1,0 +1,667 @@
+{
+ "id": "plot2d",
+ "title": "Plot2D corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 999,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "We start with two smooth waves: the sine wave and the cosine wave. Look closely at the cosine curve.",
+   "visual": {
+    "type": "plot2d",
+    "heading": "Smooth waves",
+    "xDomain": [
+     0,
+     6.28
+    ],
+    "yDomain": [
+     -1.4,
+     1.4
+    ],
+    "xLabel": "x (radians)",
+    "yLabel": "value",
+    "curves": [
+     {
+      "id": "sin",
+      "label": "Sine wave",
+      "expr": "sin(x)",
+      "tone": "secondary"
+     },
+     {
+      "id": "cos",
+      "label": "Cosine curve",
+      "expr": "cos(x)",
+      "tone": "accent",
+      "dashed": true
+     }
+    ],
+    "caption": "Curves animate with @remotion/paths and support focus dimming."
+   },
+   "focus": [
+    {
+     "at": "Look closely at the cosine",
+     "on": [
+      "cos"
+     ]
+    }
+   ],
+   "audio": "audio/plot2d/s01.wav",
+   "durationSec": 6.725,
+   "frames": 229,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "We",
+     "start": 0.25,
+     "end": 0.375
+    },
+    {
+     "w": "start",
+     "start": 0.375,
+     "end": 0.662
+    },
+    {
+     "w": "with",
+     "start": 0.662,
+     "end": 0.838
+    },
+    {
+     "w": "two",
+     "start": 0.838,
+     "end": 1.113
+    },
+    {
+     "w": "smooth",
+     "start": 1.113,
+     "end": 1.5
+    },
+    {
+     "w": "waves:",
+     "start": 1.5,
+     "end": 2.125
+    },
+    {
+     "w": "the",
+     "start": 2.225,
+     "end": 2.362
+    },
+    {
+     "w": "sine",
+     "start": 2.362,
+     "end": 2.675
+    },
+    {
+     "w": "wave",
+     "start": 2.675,
+     "end": 3.062
+    },
+    {
+     "w": "and",
+     "start": 3.062,
+     "end": 3.163
+    },
+    {
+     "w": "the",
+     "start": 3.163,
+     "end": 3.25
+    },
+    {
+     "w": "cosine",
+     "start": 3.25,
+     "end": 3.725
+    },
+    {
+     "w": "wave.",
+     "start": 3.725,
+     "end": 4.35
+    },
+    {
+     "w": "Look",
+     "start": 4.487,
+     "end": 4.713
+    },
+    {
+     "w": "closely",
+     "start": 4.713,
+     "end": 5.188
+    },
+    {
+     "w": "at",
+     "start": 5.188,
+     "end": 5.263
+    },
+    {
+     "w": "the",
+     "start": 5.263,
+     "end": 5.35
+    },
+    {
+     "w": "cosine",
+     "start": 5.35,
+     "end": 5.825
+    },
+    {
+     "w": "curve.",
+     "start": 5.825,
+     "end": 6.475
+    }
+   ],
+   "sentences": [
+    {
+     "text": "We start with two smooth waves: the sine wave and the cosine wave.",
+     "start": 0.25
+    },
+    {
+     "text": "Look closely at the cosine curve.",
+     "start": 4.487
+    }
+   ],
+   "revealSec": [
+    1.38,
+    3.13
+   ],
+   "focusSec": [
+    {
+     "t": 4.407,
+     "on": [
+      "cos"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "Pick a point on the parabola. A secant line connects two points, then shrinks until it becomes the tangent line.",
+   "visual": {
+    "type": "plot2d",
+    "heading": "Secant to tangent",
+    "xDomain": [
+     -1,
+     4
+    ],
+    "yDomain": [
+     -0.5,
+     6
+    ],
+    "xLabel": "x",
+    "yLabel": "f(x)",
+    "curves": [
+     {
+      "id": "parabola",
+      "label": "0.5 x squared",
+      "expr": "0.5 * x^2",
+      "tone": "secondary"
+     }
+    ],
+    "stages": [
+     {
+      "kind": "point",
+      "label": "Pick a point",
+      "x": 1.2,
+      "tag": "x = 1.2"
+     },
+     {
+      "kind": "secant",
+      "label": "Secant shrinks",
+      "x": 1.2,
+      "dx": 1.8,
+      "toDx": 0,
+      "zoom": 3
+     }
+    ],
+    "caption": "Zooming in as dx approaches zero."
+   },
+   "audio": "audio/plot2d/s02.wav",
+   "durationSec": 7.225,
+   "frames": 244,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Pick",
+     "start": 0.25,
+     "end": 0.438
+    },
+    {
+     "w": "a",
+     "start": 0.438,
+     "end": 0.537
+    },
+    {
+     "w": "point",
+     "start": 0.537,
+     "end": 0.863
+    },
+    {
+     "w": "on",
+     "start": 0.863,
+     "end": 0.963
+    },
+    {
+     "w": "the",
+     "start": 0.963,
+     "end": 1.05
+    },
+    {
+     "w": "parabola.",
+     "start": 1.05,
+     "end": 1.95
+    },
+    {
+     "w": "A",
+     "start": 2.112,
+     "end": 2.237
+    },
+    {
+     "w": "secant",
+     "start": 2.237,
+     "end": 2.675
+    },
+    {
+     "w": "line",
+     "start": 2.675,
+     "end": 3.0
+    },
+    {
+     "w": "connects",
+     "start": 3.0,
+     "end": 3.462
+    },
+    {
+     "w": "two",
+     "start": 3.462,
+     "end": 3.675
+    },
+    {
+     "w": "points,",
+     "start": 3.675,
+     "end": 4.325
+    },
+    {
+     "w": "then",
+     "start": 4.425,
+     "end": 4.65
+    },
+    {
+     "w": "shrinks",
+     "start": 4.65,
+     "end": 5.088
+    },
+    {
+     "w": "until",
+     "start": 5.088,
+     "end": 5.338
+    },
+    {
+     "w": "it",
+     "start": 5.338,
+     "end": 5.412
+    },
+    {
+     "w": "becomes",
+     "start": 5.412,
+     "end": 5.812
+    },
+    {
+     "w": "the",
+     "start": 5.812,
+     "end": 5.9
+    },
+    {
+     "w": "tangent",
+     "start": 5.9,
+     "end": 6.325
+    },
+    {
+     "w": "line.",
+     "start": 6.325,
+     "end": 6.975
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Pick a point on the parabola.",
+     "start": 0.25
+    },
+    {
+     "text": "A secant line connects two points, then shrinks until it becomes the tangent line.",
+     "start": 2.112
+    }
+   ],
+   "revealSec": [
+    0.13,
+    2.117
+   ]
+  },
+  {
+   "id": "s03",
+   "narration": "Zoom onto zero on absolute value of x. Even at high magnification, the sharp corner keeps two different slopes.",
+   "visual": {
+    "type": "plot2d",
+    "heading": "A non-differentiable corner",
+    "xDomain": [
+     -3,
+     3
+    ],
+    "yDomain": [
+     -0.5,
+     3.2
+    ],
+    "xLabel": "x",
+    "yLabel": "|x|",
+    "curves": [
+     {
+      "label": "|x|",
+      "expr": "abs(x)",
+      "tone": "primary"
+     }
+    ],
+    "stages": [
+     {
+      "kind": "tangent",
+      "label": "Sharp corner",
+      "x": 0,
+      "zoom": 3.5
+     }
+    ],
+    "caption": "Left slope -1 never meets right slope +1."
+   },
+   "audio": "audio/plot2d/s03.wav",
+   "durationSec": 7.65,
+   "frames": 257,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Zoom",
+     "start": 0.35,
+     "end": 0.625
+    },
+    {
+     "w": "onto",
+     "start": 0.625,
+     "end": 0.95
+    },
+    {
+     "w": "zero",
+     "start": 0.95,
+     "end": 1.438
+    },
+    {
+     "w": "on",
+     "start": 1.438,
+     "end": 1.65
+    },
+    {
+     "w": "absolute",
+     "start": 1.65,
+     "end": 2.2
+    },
+    {
+     "w": "value",
+     "start": 2.2,
+     "end": 2.6
+    },
+    {
+     "w": "of",
+     "start": 2.6,
+     "end": 2.737
+    },
+    {
+     "w": "x.",
+     "start": 2.737,
+     "end": 3.062
+    },
+    {
+     "w": "Even",
+     "start": 3.062,
+     "end": 3.4
+    },
+    {
+     "w": "at",
+     "start": 3.4,
+     "end": 3.513
+    },
+    {
+     "w": "high",
+     "start": 3.513,
+     "end": 3.775
+    },
+    {
+     "w": "magnification,",
+     "start": 3.775,
+     "end": 4.95
+    },
+    {
+     "w": "the",
+     "start": 5.05,
+     "end": 5.188
+    },
+    {
+     "w": "sharp",
+     "start": 5.188,
+     "end": 5.5
+    },
+    {
+     "w": "corner",
+     "start": 5.5,
+     "end": 5.9
+    },
+    {
+     "w": "keeps",
+     "start": 5.9,
+     "end": 6.213
+    },
+    {
+     "w": "two",
+     "start": 6.213,
+     "end": 6.425
+    },
+    {
+     "w": "different",
+     "start": 6.425,
+     "end": 6.725
+    },
+    {
+     "w": "slopes.",
+     "start": 6.725,
+     "end": 7.4
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Zoom onto zero on absolute value of x.",
+     "start": 0.35
+    },
+    {
+     "text": "Even at high magnification, the sharp corner keeps two different slopes.",
+     "start": 3.062
+    }
+   ],
+   "revealSec": [
+    5.068
+   ]
+  },
+  {
+   "id": "s04",
+   "narration": "Slice the area under sine with four coarse bars, then refine to sixteen slices, and finally shade the signed smooth area.",
+   "visual": {
+    "type": "plot2d",
+    "heading": "Signed Riemann area",
+    "xDomain": [
+     0,
+     6.28
+    ],
+    "yDomain": [
+     -1.3,
+     1.3
+    ],
+    "xLabel": "x",
+    "yLabel": "sin(x)",
+    "curves": [
+     {
+      "label": "sin(x)",
+      "expr": "sin(x)",
+      "tone": "ink"
+     }
+    ],
+    "stages": [
+     {
+      "kind": "riemann",
+      "label": "Four coarse bars",
+      "range": [
+       0,
+       6
+      ],
+      "slices": 4,
+      "method": "midpoint"
+     },
+     {
+      "kind": "riemann",
+      "label": "Sixteen slices",
+      "range": [
+       0,
+       6
+      ],
+      "slices": 4,
+      "toSlices": 16,
+      "method": "midpoint"
+     },
+     {
+      "kind": "riemann",
+      "label": "Signed smooth area",
+      "range": [
+       0,
+       6
+      ],
+      "method": "smooth"
+     }
+    ],
+    "caption": "Positive area above the axis, negative area below."
+   },
+   "audio": "audio/plot2d/s04.wav",
+   "durationSec": 8.05,
+   "frames": 269,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Slice",
+     "start": 0.3,
+     "end": 0.537
+    },
+    {
+     "w": "the",
+     "start": 0.537,
+     "end": 0.675
+    },
+    {
+     "w": "area",
+     "start": 0.675,
+     "end": 1.025
+    },
+    {
+     "w": "under",
+     "start": 1.025,
+     "end": 1.288
+    },
+    {
+     "w": "sine",
+     "start": 1.288,
+     "end": 1.65
+    },
+    {
+     "w": "with",
+     "start": 1.65,
+     "end": 1.837
+    },
+    {
+     "w": "four",
+     "start": 1.837,
+     "end": 2.075
+    },
+    {
+     "w": "coarse",
+     "start": 2.075,
+     "end": 2.375
+    },
+    {
+     "w": "bars,",
+     "start": 2.375,
+     "end": 3.075
+    },
+    {
+     "w": "then",
+     "start": 3.175,
+     "end": 3.4
+    },
+    {
+     "w": "refine",
+     "start": 3.4,
+     "end": 3.9
+    },
+    {
+     "w": "to",
+     "start": 3.9,
+     "end": 4.025
+    },
+    {
+     "w": "sixteen",
+     "start": 4.025,
+     "end": 4.475
+    },
+    {
+     "w": "slices,",
+     "start": 4.475,
+     "end": 5.3
+    },
+    {
+     "w": "and",
+     "start": 5.4,
+     "end": 5.537
+    },
+    {
+     "w": "finally",
+     "start": 5.537,
+     "end": 5.987
+    },
+    {
+     "w": "shade",
+     "start": 5.987,
+     "end": 6.237
+    },
+    {
+     "w": "the",
+     "start": 6.237,
+     "end": 6.362
+    },
+    {
+     "w": "signed",
+     "start": 6.362,
+     "end": 6.787
+    },
+    {
+     "w": "smooth",
+     "start": 6.787,
+     "end": 7.15
+    },
+    {
+     "w": "area.",
+     "start": 7.15,
+     "end": 7.8
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Slice the area under sine with four coarse bars, then refine to sixteen slices, and finally shade the signed smooth area.",
+     "start": 0.3
+    }
+   ],
+   "revealSec": [
+    1.717,
+    3.905,
+    6.242
+   ]
+  }
+ ]
+}

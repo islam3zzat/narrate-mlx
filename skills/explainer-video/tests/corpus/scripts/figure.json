@@ -1,0 +1,27 @@
+{
+  "title": "Walking Through Paper Diagrams with Focus Regions",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Looking at our architecture diagram, tokens first pass through the encoder block, then enter the sparse router gate before reaching the decoder output.",
+      "focus": [
+        {"at": "encoder block", "on": ["enc"]},
+        {"at": "router gate", "on": ["gate"]},
+        {"at": "decoder output", "on": ["dec"]}
+      ],
+      "visual": {
+        "type": "figure",
+        "heading": "System Schematic Spotlight",
+        "src": "assets/sample-figure.png",
+        "alt": "Encoder, router gate, and decoder pipeline diagram",
+        "aspect": 1.7778,
+        "regions": [
+          {"id": "enc", "label": "Encoder block", "x": 0.068, "y": 0.215, "w": 0.26, "h": 0.535, "zoom": 1.85, "tone": "accent", "note": "Embeds input sequence"},
+          {"id": "gate", "label": "Router gate", "x": 0.39, "y": 0.27, "w": 0.22, "h": 0.425, "zoom": 2.1, "tone": "primary", "note": "Selects active experts"},
+          {"id": "dec", "label": "Decoder output", "x": 0.672, "y": 0.215, "w": 0.26, "h": 0.535, "zoom": 1.85, "tone": "secondary", "note": "Produces final logits"}
+        ],
+        "caption": "Staged workdir assets pan, zoom, and dim outside each active callout box."
+      }
+    }
+  ]
+}

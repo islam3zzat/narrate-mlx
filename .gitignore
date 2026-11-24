@@ -1,0 +1,20 @@
+.env
+.venv/
+__pycache__/
+node_modules/
+out/
+.DS_Store
+
+# voice A/B samples and previous video renders kept for comparison
+out-*/
+.qwen3/
+
+# explainer-video test corpus: generated per workdir (make golden-audio regenerates the audio, ~15 MB)
+skills/explainer-video/tests/corpus/public/
+skills/explainer-video/tests/corpus/out/
+skills/explainer-video/tests/corpus/transcripts/
+skills/explainer-video/tests/.scratch/
+skills/explainer-video/tests/.det_*/
+skills/explainer-video/tests/golden/_shim/
+
+software-factory/

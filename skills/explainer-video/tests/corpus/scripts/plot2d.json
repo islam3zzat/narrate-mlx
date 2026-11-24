@@ -1,0 +1,85 @@
+{
+  "title": "Plot2D corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "We start with two smooth waves: the sine wave and the cosine wave. Look closely at the cosine curve.",
+      "visual": {
+        "type": "plot2d",
+        "heading": "Smooth waves",
+        "xDomain": [0, 6.28],
+        "yDomain": [-1.4, 1.4],
+        "xLabel": "x (radians)",
+        "yLabel": "value",
+        "curves": [
+          {"id": "sin", "label": "Sine wave", "expr": "sin(x)", "tone": "secondary"},
+          {"id": "cos", "label": "Cosine curve", "expr": "cos(x)", "tone": "accent", "dashed": true}
+        ],
+        "caption": "Curves animate with @remotion/paths and support focus dimming."
+      },
+      "focus": [
+        {"at": "Look closely at the cosine", "on": ["cos"]}
+      ]
+    },
+    {
+      "id": "s02",
+      "narration": "Pick a point on the parabola. A secant line connects two points, then shrinks until it becomes the tangent line.",
+      "visual": {
+        "type": "plot2d",
+        "heading": "Secant to tangent",
+        "xDomain": [-1, 4],
+        "yDomain": [-0.5, 6],
+        "xLabel": "x",
+        "yLabel": "f(x)",
+        "curves": [
+          {"id": "parabola", "label": "0.5 x squared", "expr": "0.5 * x^2", "tone": "secondary"}
+        ],
+        "stages": [
+          {"kind": "point", "label": "Pick a point", "x": 1.2, "tag": "x = 1.2"},
+          {"kind": "secant", "label": "Secant shrinks", "x": 1.2, "dx": 1.8, "toDx": 0, "zoom": 3}
+        ],
+        "caption": "Zooming in as dx approaches zero."
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "Zoom onto zero on absolute value of x. Even at high magnification, the sharp corner keeps two different slopes.",
+      "visual": {
+        "type": "plot2d",
+        "heading": "A non-differentiable corner",
+        "xDomain": [-3, 3],
+        "yDomain": [-0.5, 3.2],
+        "xLabel": "x",
+        "yLabel": "|x|",
+        "curves": [
+          {"label": "|x|", "expr": "abs(x)", "tone": "primary"}
+        ],
+        "stages": [
+          {"kind": "tangent", "label": "Sharp corner", "x": 0, "zoom": 3.5}
+        ],
+        "caption": "Left slope -1 never meets right slope +1."
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "Slice the area under sine with four coarse bars, then refine to sixteen slices, and finally shade the signed smooth area.",
+      "visual": {
+        "type": "plot2d",
+        "heading": "Signed Riemann area",
+        "xDomain": [0, 6.28],
+        "yDomain": [-1.3, 1.3],
+        "xLabel": "x",
+        "yLabel": "sin(x)",
+        "curves": [
+          {"label": "sin(x)", "expr": "sin(x)", "tone": "ink"}
+        ],
+        "stages": [
+          {"kind": "riemann", "label": "Four coarse bars", "range": [0, 6], "slices": 4, "method": "midpoint"},
+          {"kind": "riemann", "label": "Sixteen slices", "range": [0, 6], "slices": 4, "toSlices": 16, "method": "midpoint"},
+          {"kind": "riemann", "label": "Signed smooth area", "range": [0, 6], "method": "smooth"}
+        ],
+        "caption": "Positive area above the axis, negative area below."
+      }
+    }
+  ]
+}

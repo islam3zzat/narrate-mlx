@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok equation: 2 scenes, 49 words, about 19s
+--stderr--

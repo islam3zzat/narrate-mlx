@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok edge-ar [ar, right to left]: 12 scenes, 84 words, about 52s
+--stderr--

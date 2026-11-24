@@ -1,0 +1,66 @@
+{
+  "title": "Order service walkthrough (sample: replace with your system)",
+  "style": "architecture-walkthrough",
+  "scenes": [
+    {
+      "id": "s01",
+      "section": "context",
+      "narration": "The order service takes a customer's checkout and turns it into a paid order. In this video we follow one request, a customer buying one pair of shoes, through every part.",
+      "visual": {"type": "title", "kicker": "Architecture walkthrough", "headline": "The order service", "sub": "One checkout, every part"}
+    },
+    {
+      "id": "s02",
+      "section": "map",
+      "narration": "Here is the map. There are four parts: the gateway receives the request, the order service decides what to do, the payment service charges the card, and the database stores the result.",
+      "visual": {
+        "type": "graph",
+        "heading": "The four parts",
+        "direction": "LR",
+        "nodes": [{"id": "gw", "label": "Gateway"}, {"id": "ord", "label": "Order service", "tone": "primary"}, {"id": "pay", "label": "Payment service"}, {"id": "db", "label": "Database"}],
+        "edges": [{"from": "gw", "to": "ord"}, {"from": "ord", "to": "pay"}, {"from": "ord", "to": "db"}]
+      }
+    },
+    {
+      "id": "s03",
+      "section": "components",
+      "continues": true,
+      "focus": [{"at": "order service", "on": ["ord"]}],
+      "narration": "Zoom in on the order service. It owns the order rules: it checks stock, asks the payment service to charge the card, and writes the order to the database.",
+      "visual": {
+        "type": "graph",
+        "heading": "The order service",
+        "direction": "LR",
+        "nodes": [{"id": "gw", "label": "Gateway"}, {"id": "ord", "label": "Order service", "tone": "primary"}, {"id": "pay", "label": "Payment service"}, {"id": "db", "label": "Database"}],
+        "edges": [{"from": "gw", "to": "ord"}, {"from": "ord", "to": "pay"}, {"from": "ord", "to": "db"}]
+      }
+    },
+    {
+      "id": "s04",
+      "section": "trace",
+      "narration": "Now one real request. The customer pays for the shoes. The gateway forwards the checkout, the order service asks for the charge, the payment service confirms it, and the order is stored.",
+      "visual": {
+        "type": "sequence",
+        "heading": "One checkout, end to end",
+        "participants": [{"id": "gw", "label": "Gateway"}, {"id": "ord", "label": "Order service"}, {"id": "pay", "label": "Payment service"}, {"id": "db", "label": "Database"}],
+        "messages": [
+          {"from": "gw", "to": "ord", "label": "checkout"},
+          {"from": "ord", "to": "pay", "label": "charge the card"},
+          {"from": "pay", "to": "ord", "label": "confirmed", "reply": true},
+          {"from": "ord", "to": "db", "label": "store the order"}
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "section": "trade-offs",
+      "narration": "Two trade-offs. We call the payment service directly because it is simple, but a slow payment slows checkout. We store orders in one database because it is consistent, but it is a single point to scale.",
+      "visual": {"type": "compare", "heading": "Trade-offs", "columns": [{"title": "Direct payment call", "tag": "Chosen", "items": ["Simple", "A slow payment slows checkout"]}, {"title": "One database", "tag": "Chosen", "items": ["Consistent orders", "One place to scale"]}]}
+    },
+    {
+      "id": "s06",
+      "section": "recap",
+      "narration": "To remember: four parts, the order service owns the rules, and every checkout passes through all of them.",
+      "visual": {"type": "bullets", "heading": "Recap", "items": ["Four parts", "The order service owns the rules", "Every checkout crosses all four"]}
+    }
+  ]
+}

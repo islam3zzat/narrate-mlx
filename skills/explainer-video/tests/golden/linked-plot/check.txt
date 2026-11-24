@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok linked-plot: 2 scenes, 48 words, about 18s
+--stderr--

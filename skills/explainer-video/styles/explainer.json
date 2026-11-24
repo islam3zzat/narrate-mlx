@@ -1,0 +1,56 @@
+{
+  "name": "explainer",
+  "description": "Teach a topic to a learner: hook, map, example before abstraction, a recap. Depth sets the length. This is what a script without a style is.",
+  "audience": "a learner who wants to understand the topic",
+  "defaults": {
+    "speed": 1.0
+  },
+  "bounds": {
+    "scenes": [
+      2,
+      40
+    ],
+    "seconds": [
+      30,
+      900
+    ],
+    "wordsPerScene": [
+      15,
+      60
+    ]
+  },
+  "preferredVisuals": [
+    "title",
+    "bullets",
+    "compare",
+    "steps",
+    "flow",
+    "fanout",
+    "table",
+    "callout",
+    "mermaid",
+    "graph",
+    "sequence",
+    "class",
+    "svg",
+    "timeline",
+    "layers3d"
+  ],
+  "ledger": {
+    "required": false,
+    "kinds": [],
+    "mustCover": [],
+    "coverHigh": false,
+    "allowDeferred": false
+  },
+  "sections": [
+    "hook",
+    "map",
+    "example",
+    "concept",
+    "close"
+  ],
+  "lint": {
+    "blameless": false
+  }
+}

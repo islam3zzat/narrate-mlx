@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# Opt-in git pre-push hook (installed via `make install-hooks`).
+set -euo pipefail
+. "$(cd "$(dirname "$0")/.." && pwd -P)/lib.sh"
+use_node_path
+
+cd "$ROOT"
+make test-unit && python3 scripts/golden_gate.py --dry-run

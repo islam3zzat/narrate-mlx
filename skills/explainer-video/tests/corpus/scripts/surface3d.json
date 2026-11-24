@@ -1,0 +1,46 @@
+{
+  "title": "Surface3D corpus",
+  "mode": "3d",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Look at a curved surface in space. An orthogonal slice exposes a partial derivative curve, while the tangent plane rests flat against the surface at a point.",
+      "visual": {
+        "type": "surface3d",
+        "heading": "Partial slices & tangent plane",
+        "xDomain": [-2, 2],
+        "yDomain": [-2, 2],
+        "xLabel": "x",
+        "yLabel": "y",
+        "zLabel": "f(x,y)",
+        "expr": "1.2 + 0.7 * cos(x) * cos(y) + 0.25 * sin(x + y)",
+        "resolution": 20,
+        "overlays": [
+          {"kind": "slice", "label": "Orthogonal slice", "axis": "x", "at": 0.4},
+          {"kind": "tangent", "label": "Tangent plane", "at": [-0.5, 0.4], "size": 1.25}
+        ],
+        "caption": "Slices isolate one variable; tangent planes capture both slopes."
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "To compute the volume under a dome, pack vertical Riemann columns beneath the surface, or stack discrete voxels in three dimensions.",
+      "visual": {
+        "type": "surface3d",
+        "heading": "Double & triple integral volume",
+        "xDomain": [-2, 2],
+        "yDomain": [-2, 2],
+        "xLabel": "x",
+        "yLabel": "y",
+        "zLabel": "height",
+        "expr": "2.2 - 0.25 * (x^2 + y^2)",
+        "resolution": 18,
+        "overlays": [
+          {"kind": "columns", "label": "Riemann columns", "nx": 3, "ny": 6, "xRange": [-2, 0], "mode": "columns"},
+          {"kind": "columns", "label": "Discrete voxels", "nx": 3, "ny": 6, "nz": 4, "xRange": [0, 2], "mode": "voxels"}
+        ],
+        "caption": "Summing columns approximates double integrals; voxels approximate triple integrals."
+      }
+    }
+  ]
+}

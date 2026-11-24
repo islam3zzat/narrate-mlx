@@ -1,0 +1,74 @@
+{
+  "title": "Code corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "This function adds two numbers. The signature declares the types. Then the body returns the sum.",
+      "visual": {
+        "type": "code",
+        "heading": "A small function",
+        "language": "ts",
+        "code": "export function add(a: number, b: number): number {\n  const sum = a + b; // add them\n  return sum;\n}",
+        "highlights": [
+          {
+            "lines": "1",
+            "label": "Signature"
+          },
+          {
+            "lines": "2-3",
+            "label": "Returns"
+          }
+        ],
+        "caption": "Two highlights, moved as spoken."
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "The retry signature takes a count and a delay. Inside, the loop calls the function. When it fails, the backoff waits longer each time. Once the attempts run out, we look at the loop again.",
+      "visual": {
+        "type": "code",
+        "heading": "A retry decorator",
+        "language": "python",
+        "code": "import time\nimport random\n\n\ndef retry(times, delay=0.5):\n    \"\"\"Retry a function when it raises.\"\"\"\n\n    def decorator(fn):\n        def wrapper(*args, **kwargs):\n            last = None\n            for attempt in range(times):\n                try:\n                    return fn(*args, **kwargs)\n                except Exception as err:\n                    last = err\n                    wait = delay * 2 ** attempt\n                    wait += random.random() * 0.1\n                    time.sleep(wait)\n            raise last\n\n        return wrapper\n\n    return decorator\n\n\n@retry(times=3)\ndef fetch(url):\n    return download(url)",
+        "highlights": [
+          {
+            "lines": "5",
+            "label": "Signature"
+          },
+          {
+            "lines": "11-13",
+            "label": "Loop"
+          },
+          {
+            "lines": "14-18",
+            "label": "Backoff"
+          },
+          {
+            "lines": "11-13",
+            "label": "Again"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "Plain text is not coloured. The failure is on the third line. The summary closes the log.",
+      "visual": {
+        "type": "code",
+        "heading": "A build log",
+        "language": "text",
+        "code": "build started\ncompiling 12 files\nerror: missing semicolon\nretrying once\nbuild failed after 1 retry",
+        "highlights": [
+          {
+            "lines": "3",
+            "label": "Failure"
+          },
+          {
+            "lines": "4-5",
+            "label": "Summary"
+          }
+        ]
+      }
+    }
+  ]
+}

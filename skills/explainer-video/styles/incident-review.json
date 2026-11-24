@@ -1,0 +1,82 @@
+{
+  "name": "incident-review",
+  "description": "A lossless, blameless review of an incident for engineers: absolute-time chronology, contributing factors (never one root cause), mitigations, actions, and every conflict between accounts. Every ledger fact is narrated or deferred to the report.",
+  "audience": "engineers who need the full account, not a summary",
+  "defaults": {
+    "speed": 0.95
+  },
+  "bounds": {
+    "scenes": [
+      12,
+      45
+    ],
+    "seconds": [
+      300,
+      720
+    ],
+    "wordsPerScene": [
+      20,
+      60
+    ]
+  },
+  "preferredVisuals": [
+    "timeline",
+    "sequence",
+    "table",
+    "graph",
+    "steps",
+    "callout",
+    "compare"
+  ],
+  "ledger": {
+    "required": true,
+    "kinds": [
+      "event",
+      "decision",
+      "action",
+      "owner",
+      "number",
+      "system",
+      "root_cause",
+      "factor",
+      "mitigation",
+      "open_question",
+      "contradiction",
+      "ambiguity"
+    ],
+    "mustCover": [
+      "event",
+      "decision",
+      "action",
+      "owner",
+      "number",
+      "system",
+      "root_cause",
+      "factor",
+      "mitigation",
+      "open_question",
+      "contradiction",
+      "ambiguity"
+    ],
+    "coverHigh": true,
+    "quoteKinds": [
+      "decision",
+      "action"
+    ],
+    "allowDeferred": true
+  },
+  "sections": [
+    "title",
+    "detection",
+    "timeline",
+    "impact",
+    "factors",
+    "mitigations",
+    "actions",
+    "ambiguities",
+    "close"
+  ],
+  "lint": {
+    "blameless": true
+  }
+}

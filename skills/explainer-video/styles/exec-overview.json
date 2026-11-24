@@ -1,0 +1,64 @@
+{
+  "name": "exec-overview",
+  "description": "A manager's overview of a meeting: outcome first, every decision, owner and deadline, open questions. Selection is required, chatter is dropped.",
+  "audience": "a manager who was not in the meeting and has two minutes",
+  "defaults": {
+    "speed": 1.05
+  },
+  "bounds": {
+    "scenes": [
+      5,
+      9
+    ],
+    "seconds": [
+      60,
+      180
+    ],
+    "wordsPerScene": [
+      15,
+      40
+    ]
+  },
+  "preferredVisuals": [
+    "title",
+    "bullets",
+    "table",
+    "callout",
+    "steps",
+    "stat"
+  ],
+  "ledger": {
+    "required": true,
+    "kinds": [
+      "decision",
+      "action",
+      "owner",
+      "open_question",
+      "number",
+      "ambiguity"
+    ],
+    "mustCover": [
+      "decision",
+      "action",
+      "owner",
+      "open_question"
+    ],
+    "coverHigh": true,
+    "quoteKinds": [
+      "decision",
+      "action"
+    ],
+    "allowDeferred": false
+  },
+  "sections": [
+    "title",
+    "decisions",
+    "outcomes",
+    "next-steps",
+    "open-questions",
+    "close"
+  ],
+  "lint": {
+    "blameless": false
+  }
+}

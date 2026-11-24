@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok matrix: 2 scenes, 43 words, about 17s
+--stderr--

@@ -1,0 +1,27 @@
+{
+  "title": "اختبار الشيفرة",
+  "language": "ar",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "أَوَّلًا الدَّالَّةُ، ثُمَّ النَّتِيجَةُ.",
+      "visual": {
+        "type": "code",
+        "heading": "شِيفْرَةٌ قَصِيرَةٌ",
+        "language": "ts",
+        "code": "function add(a, b) {\n  return a + b;\n}",
+        "highlights": [
+          {
+            "lines": "1",
+            "label": "الدالة"
+          },
+          {
+            "lines": "2",
+            "label": "النتيجة"
+          }
+        ],
+        "caption": "الشيفرة تبقى من اليسار إلى اليمين"
+      }
+    }
+  ]
+}

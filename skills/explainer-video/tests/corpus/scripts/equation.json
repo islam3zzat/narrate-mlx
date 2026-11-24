@@ -1,0 +1,55 @@
+{
+  "title": "Reading Equations Through Spotlighted Terms",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Scaled dot-product attention starts with the query-key inner product. We divide by root dimension to keep logits calm, apply softmax normalization, and gather the weighted value vectors.",
+      "focus": [
+        {"at": "query-key inner product", "on": ["qk"]},
+        {"at": "root dimension", "on": ["scale"]},
+        {"at": "weighted value", "on": ["val"]}
+      ],
+      "visual": {
+        "type": "equation",
+        "heading": "Scaled Dot-Product Attention",
+        "equations": [
+          {
+            "label": "Transformer Layer Core",
+            "latex": "\\operatorname{Attention}(Q, K, V) = \\term{soft}{\\operatorname{softmax}}\\!\\left(\\frac{\\term{qk}{Q K^\\top}}{\\term{scale}{\\sqrt{d_k}}}\\right) \\term{val}{V}"
+          }
+        ],
+        "terms": [
+          {"id": "qk", "label": "Query-key product", "gloss": "Scores pairwise similarity between every query token and key token.", "tone": "primary"},
+          {"id": "scale", "label": "Root dimension", "gloss": "Stabilizes softmax variance before large vector widths saturate.", "tone": "accent"},
+          {"id": "soft", "label": "Softmax normalization", "gloss": "Turns similarity logits into non-negative weights summing to one.", "tone": "secondary"},
+          {"id": "val", "label": "Weighted value", "gloss": "Blends value representations proportional to those attention weights.", "tone": "primary"}
+        ],
+        "caption": "Terms highlight in narration order alongside plain-English definitions."
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "Bayes rule updates a prior belief with incoming likelihood evidence, then rescales by total evidence so posterior beliefs still sum to one.",
+      "visual": {
+        "type": "equation",
+        "heading": "Posterior Updating with Bayes Rule",
+        "equations": [
+          {
+            "label": "Hypothesis Update",
+            "latex": "P(H \\mid E) = \\frac{\\term{lik}{P(E \\mid H)}\\,\\term{prior}{P(H)}}{\\term{evid}{P(E)}}"
+          },
+          {
+            "label": "Total Evidence",
+            "latex": "\\term{evid}{P(E)} = \\sum_i P(E \\mid H_i) P(H_i)"
+          }
+        ],
+        "terms": [
+          {"id": "prior", "label": "Prior belief", "gloss": "Baseline plausibility assigned to hypothesis H before observing evidence.", "tone": "accent"},
+          {"id": "lik", "label": "Likelihood evidence", "gloss": "How expected the observed data E would be if H were true.", "tone": "primary"},
+          {"id": "evid", "label": "Total evidence", "gloss": "Normalizing probability of E across every competing hypothesis.", "tone": "secondary"}
+        ],
+        "caption": "Both equations share the tagged total evidence term cleanly."
+      }
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+exit 0
+--stdout--
+ok chart: 3 scenes, 77 words, about 30s
+--stderr--
+warning: chart/s03: a 33-word sentence is hard to follow by ear (over 30); split it: "Comparing quality against latency, tiny student runs fast, distille..."

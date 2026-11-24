@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok plot2d: 4 scenes, 79 words, about 30s
+--stderr--

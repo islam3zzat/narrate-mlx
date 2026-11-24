@@ -1,0 +1,19 @@
+{
+  "title": "اختبار الخط الزمني",
+  "language": "ar",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "أَوَّلًا جَاءَ التَّنْبِيهُ، ثُمَّ الِاسْتِجَابَةُ، ثُمَّ الْإِصْلَاحُ.",
+      "visual": {
+        "type": "timeline",
+        "heading": "خَطٌّ زَمَنِيٌّ",
+        "events": [
+          {"at": "14:02 UTC", "label": "التنبيه", "detail": "ارتفاع الأخطاء", "status": "confirmed", "marker": "detected"},
+          {"at": "14:09 UTC", "label": "الاستجابة", "status": "reported"},
+          {"at": "14:44 UTC", "label": "الإصلاح", "status": "unknown", "marker": "resolved"}
+        ]
+      }
+    }
+  ]
+}

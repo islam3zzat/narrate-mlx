@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok svg: 3 scenes, 80 words, about 31s
+--stderr--

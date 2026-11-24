@@ -1,0 +1,596 @@
+{
+ "id": "field2d",
+ "title": "Field2D corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 919,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "Take a horizontal slice across two hills. Gradient arrows point perpendicular to contour rings, guiding ascent paths toward either the local maximum or global peak.",
+   "visual": {
+    "type": "field2d",
+    "heading": "Contours, gradients & extrema",
+    "mode": "scalar",
+    "xDomain": [
+     -3,
+     3
+    ],
+    "yDomain": [
+     -2.2,
+     2.2
+    ],
+    "xLabel": "x",
+    "yLabel": "y",
+    "expr": "exp(-((x - 1.2)^2 + y^2)) + 0.65 * exp(-((x + 1.4)^2 + y^2))",
+    "levels": 8,
+    "overlays": [
+     {
+      "id": "sl",
+      "kind": "slice",
+      "label": "Horizontal slice",
+      "axis": "y",
+      "at": 0
+     },
+     {
+      "id": "gr",
+      "kind": "gradient",
+      "label": "Gradient arrows"
+     },
+     {
+      "id": "pa",
+      "kind": "path",
+      "label": "Ascent paths",
+      "direction": "ascent",
+      "starts": [
+       [
+        -2.2,
+        -1.2
+       ],
+       [
+        0.3,
+        -1.1
+       ]
+      ],
+      "steps": 45
+     },
+     {
+      "id": "ex",
+      "kind": "extrema",
+      "label": "Local maximum",
+      "points": [
+       {
+        "at": [
+         -1.4,
+         0
+        ],
+        "tag": "Local max",
+        "tone": "primary"
+       },
+       {
+        "at": [
+         1.2,
+         0
+        ],
+        "tag": "Global max",
+        "tone": "secondary"
+       }
+      ]
+     }
+    ],
+    "caption": "Gradient ascent always climbs perpendicular to level curves."
+   },
+   "focus": [
+    {
+     "at": "toward either the local",
+     "on": [
+      "pa",
+      "ex"
+     ]
+    }
+   ],
+   "audio": "audio/field2d/s01.wav",
+   "durationSec": 11.025,
+   "frames": 358,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Take",
+     "start": 0.25,
+     "end": 0.438
+    },
+    {
+     "w": "a",
+     "start": 0.438,
+     "end": 0.512
+    },
+    {
+     "w": "horizontal",
+     "start": 0.512,
+     "end": 1.212
+    },
+    {
+     "w": "slice",
+     "start": 1.212,
+     "end": 1.75
+    },
+    {
+     "w": "across",
+     "start": 1.75,
+     "end": 2.138
+    },
+    {
+     "w": "two",
+     "start": 2.138,
+     "end": 2.35
+    },
+    {
+     "w": "hills.",
+     "start": 2.35,
+     "end": 3.125
+    },
+    {
+     "w": "Gradient",
+     "start": 3.288,
+     "end": 3.7
+    },
+    {
+     "w": "arrows",
+     "start": 3.7,
+     "end": 4.213
+    },
+    {
+     "w": "point",
+     "start": 4.213,
+     "end": 4.5
+    },
+    {
+     "w": "perpendicular",
+     "start": 4.5,
+     "end": 5.225
+    },
+    {
+     "w": "to",
+     "start": 5.225,
+     "end": 5.35
+    },
+    {
+     "w": "contour",
+     "start": 5.35,
+     "end": 5.85
+    },
+    {
+     "w": "rings,",
+     "start": 5.85,
+     "end": 6.5
+    },
+    {
+     "w": "guiding",
+     "start": 6.638,
+     "end": 7.0
+    },
+    {
+     "w": "ascent",
+     "start": 7.0,
+     "end": 7.3
+    },
+    {
+     "w": "paths",
+     "start": 7.3,
+     "end": 7.725
+    },
+    {
+     "w": "toward",
+     "start": 7.725,
+     "end": 8.088
+    },
+    {
+     "w": "either",
+     "start": 8.088,
+     "end": 8.375
+    },
+    {
+     "w": "the",
+     "start": 8.375,
+     "end": 8.5
+    },
+    {
+     "w": "local",
+     "start": 8.5,
+     "end": 8.85
+    },
+    {
+     "w": "maximum",
+     "start": 8.85,
+     "end": 9.6
+    },
+    {
+     "w": "or",
+     "start": 9.6,
+     "end": 9.775
+    },
+    {
+     "w": "global",
+     "start": 9.775,
+     "end": 10.15
+    },
+    {
+     "w": "peak.",
+     "start": 10.15,
+     "end": 10.775
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Take a horizontal slice across two hills.",
+     "start": 0.25
+    },
+    {
+     "text": "Gradient arrows point perpendicular to contour rings, guiding ascent paths toward either the local maximum or global peak.",
+     "start": 3.288
+    }
+   ],
+   "revealSec": [
+    0.392,
+    3.168,
+    6.88,
+    8.38
+   ],
+   "focusSec": [
+    {
+     "t": 7.645,
+     "on": [
+      "pa",
+      "ex"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "In a vector flow field, track local Jacobian stretch, outward divergence rings, and a spinning curl paddlewheel.",
+   "visual": {
+    "type": "field2d",
+    "heading": "Jacobian, divergence & curl",
+    "mode": "vector",
+    "xDomain": [
+     -3,
+     3
+    ],
+    "yDomain": [
+     -2.4,
+     2.4
+    ],
+    "xLabel": "x",
+    "yLabel": "y",
+    "fx": "-y + 0.45 * x",
+    "fy": "x + 0.45 * y",
+    "density": 9,
+    "particles": true,
+    "overlays": [
+     {
+      "id": "jac",
+      "kind": "jacobian",
+      "label": "Jacobian stretch",
+      "at": [
+       -1.4,
+       -0.8
+      ],
+      "size": 0.7
+     },
+     {
+      "id": "div",
+      "kind": "divergence",
+      "label": "Divergence rings",
+      "at": [
+       1.4,
+       0.9
+      ],
+      "radius": 0.6
+     },
+     {
+      "id": "curl",
+      "kind": "curl",
+      "label": "Curl paddlewheel",
+      "at": [
+       0,
+       0
+      ],
+      "radius": 0.55
+     }
+    ],
+    "caption": "Positive divergence expands area; non-zero curl spins the wheel."
+   },
+   "audio": "audio/field2d/s02.wav",
+   "durationSec": 7.2,
+   "frames": 243,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "In",
+     "start": 0.3,
+     "end": 0.388
+    },
+    {
+     "w": "a",
+     "start": 0.388,
+     "end": 0.45
+    },
+    {
+     "w": "vector",
+     "start": 0.45,
+     "end": 0.825
+    },
+    {
+     "w": "flow",
+     "start": 0.825,
+     "end": 1.113
+    },
+    {
+     "w": "field,",
+     "start": 1.113,
+     "end": 1.675
+    },
+    {
+     "w": "track",
+     "start": 1.788,
+     "end": 2.1
+    },
+    {
+     "w": "local",
+     "start": 2.1,
+     "end": 2.425
+    },
+    {
+     "w": "Jacobian",
+     "start": 2.425,
+     "end": 3.0
+    },
+    {
+     "w": "stretch,",
+     "start": 3.0,
+     "end": 3.575
+    },
+    {
+     "w": "outward",
+     "start": 3.712,
+     "end": 4.1
+    },
+    {
+     "w": "divergence",
+     "start": 4.1,
+     "end": 4.6
+    },
+    {
+     "w": "rings,",
+     "start": 4.6,
+     "end": 5.1
+    },
+    {
+     "w": "and",
+     "start": 5.175,
+     "end": 5.287
+    },
+    {
+     "w": "a",
+     "start": 5.287,
+     "end": 5.362
+    },
+    {
+     "w": "spinning",
+     "start": 5.362,
+     "end": 5.763
+    },
+    {
+     "w": "curl",
+     "start": 5.763,
+     "end": 6.1
+    },
+    {
+     "w": "paddlewheel.",
+     "start": 6.1,
+     "end": 6.95
+    }
+   ],
+   "sentences": [
+    {
+     "text": "In a vector flow field, track local Jacobian stretch, outward divergence rings, and a spinning curl paddlewheel.",
+     "start": 0.3
+    }
+   ],
+   "revealSec": [
+    2.305,
+    3.98,
+    5.643
+   ]
+  },
+  {
+   "id": "s03",
+   "narration": "A line integral measures tangential work along a path while ignoring perpendicular force, whereas a flux integral measures flow crossing a curve.",
+   "visual": {
+    "type": "field2d",
+    "heading": "Line integral & flux",
+    "mode": "vector",
+    "xDomain": [
+     -3,
+     3
+    ],
+    "yDomain": [
+     -2.4,
+     2.4
+    ],
+    "xLabel": "x",
+    "yLabel": "y",
+    "fx": "-y",
+    "fy": "x",
+    "density": 8,
+    "particles": true,
+    "overlays": [
+     {
+      "id": "li",
+      "kind": "line-integral",
+      "label": "Tangential work",
+      "points": [
+       [
+        -1.8,
+        -1.2
+       ],
+       [
+        1.8,
+        -1.2
+       ],
+       [
+        1.8,
+        1.2
+       ]
+      ]
+     },
+     {
+      "id": "fl",
+      "kind": "flux",
+      "label": "Flux integral",
+      "points": [
+       [
+        -0.2,
+        -1.6
+       ],
+       [
+        -0.2,
+        1.6
+       ]
+      ]
+     }
+    ],
+    "caption": "Work sums parallel flow; flux sums perpendicular crossings."
+   },
+   "audio": "audio/field2d/s03.wav",
+   "durationSec": 9.7,
+   "frames": 318,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.362
+    },
+    {
+     "w": "line",
+     "start": 0.362,
+     "end": 0.75
+    },
+    {
+     "w": "integral",
+     "start": 0.75,
+     "end": 1.15
+    },
+    {
+     "w": "measures",
+     "start": 1.15,
+     "end": 1.613
+    },
+    {
+     "w": "tangential",
+     "start": 1.613,
+     "end": 2.25
+    },
+    {
+     "w": "work",
+     "start": 2.25,
+     "end": 2.612
+    },
+    {
+     "w": "along",
+     "start": 2.612,
+     "end": 2.938
+    },
+    {
+     "w": "a",
+     "start": 2.938,
+     "end": 3.013
+    },
+    {
+     "w": "path",
+     "start": 3.013,
+     "end": 3.737
+    },
+    {
+     "w": "while",
+     "start": 3.737,
+     "end": 3.95
+    },
+    {
+     "w": "ignoring",
+     "start": 3.95,
+     "end": 4.5
+    },
+    {
+     "w": "perpendicular",
+     "start": 4.5,
+     "end": 5.237
+    },
+    {
+     "w": "force,",
+     "start": 5.237,
+     "end": 5.975
+    },
+    {
+     "w": "whereas",
+     "start": 6.1,
+     "end": 6.45
+    },
+    {
+     "w": "a",
+     "start": 6.45,
+     "end": 6.575
+    },
+    {
+     "w": "flux",
+     "start": 6.575,
+     "end": 6.95
+    },
+    {
+     "w": "integral",
+     "start": 6.95,
+     "end": 7.35
+    },
+    {
+     "w": "measures",
+     "start": 7.35,
+     "end": 7.787
+    },
+    {
+     "w": "flow",
+     "start": 7.787,
+     "end": 8.262
+    },
+    {
+     "w": "crossing",
+     "start": 8.262,
+     "end": 8.7
+    },
+    {
+     "w": "a",
+     "start": 8.7,
+     "end": 8.775
+    },
+    {
+     "w": "curve.",
+     "start": 8.775,
+     "end": 9.45
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A line integral measures tangential work along a path while ignoring perpendicular force, whereas a flux integral measures flow crossing a curve.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    1.493,
+    6.455
+   ]
+  }
+ ]
+}

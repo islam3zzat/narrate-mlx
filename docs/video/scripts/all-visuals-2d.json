@@ -1,0 +1,222 @@
+{
+  "title": "All Visuals — 2D",
+  "mode": "2d",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Here is every two-dimensional visual type rendered in the cel-sky theme.",
+      "visual": {
+        "type": "title",
+        "kicker": "SHOWCASE // ALL 16 2D VISUALS",
+        "headline": "All 2D Visuals",
+        "sub": "Every supported 2D scene type in one clean tour"
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "Bullets introduce key ideas with diamond markers, indigo ink, and cel drop shadows.",
+      "visual": {
+        "type": "bullets",
+        "heading": "Bullets",
+        "items": [
+          "Diamond markers in cel-sky accents",
+          "Crisp indigo ink outlines",
+          "Clean cel-painted sky backdrop"
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "Compare places options side by side, from flat paper styling to cel-sky panels.",
+      "visual": {
+        "type": "compare",
+        "heading": "Compare",
+        "columns": [
+          {"title": "Paper", "tag": "NEO-BRUTALIST", "items": ["Flat dotted grid", "Pure black ink", "Sharp square corners"]},
+          {"title": "Cel-Sky", "tag": "2.5D CEL-SHADED", "items": ["Luminous sky matte", "Indigo ink shadows", "Specular rim cards"]}
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "Steps walk through a sequence: sketch the layout, paint the cel bands, and ink the outlines.",
+      "visual": {
+        "type": "steps",
+        "heading": "Steps",
+        "items": [
+          "Sketch the layout",
+          "Paint the cel bands",
+          "Ink the outlines"
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "narration": "Flow connects stages in a line, from script to audio to rendered video.",
+      "visual": {
+        "type": "flow",
+        "heading": "Flow",
+        "nodes": [
+          {"label": "Script", "sub": "JSON scenes"},
+          {"label": "Audio", "sub": "Local speech"},
+          {"label": "Video", "sub": "Remotion MP4"}
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "narration": "Fanout routes one theme context into backdrop layers, cards, and captions.",
+      "visual": {
+        "type": "fanout",
+        "heading": "Fanout",
+        "source": {"label": "ThemeContext"},
+        "targets": [
+          {"label": "Backdrop", "sub": "Sky gradient and perspective grid"},
+          {"label": "Cards", "sub": "Cel bands and indigo shadows"},
+          {"label": "Captions", "sub": "Dark indigo dialogue bar"}
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "narration": "Tables organize structured comparisons across primary, secondary, and accent tokens.",
+      "visual": {
+        "type": "table",
+        "heading": "Table",
+        "headers": ["Token", "Role", "Cel-Sky Hue"],
+        "rows": [
+          ["Primary", "Highlights & badges", "Golden amber"],
+          ["Secondary", "Emphasis & slashes", "Sakura crimson"],
+          ["Accent", "Energy & progress", "Sky cyan"]
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "narration": "Graph lays out branching nodes automatically, sending data from router to cache or worker.",
+      "visual": {
+        "type": "graph",
+        "heading": "Graph",
+        "direction": "LR",
+        "nodes": [
+          {"id": "router", "label": "Router", "tone": "primary"},
+          {"id": "cache", "label": "Cache", "sub": "Fast hit", "tone": "accent"},
+          {"id": "worker", "label": "Worker", "sub": "Compute", "tone": "secondary"}
+        ],
+        "edges": [
+          {"from": "router", "to": "cache", "label": "hit", "tone": "accent"},
+          {"from": "router", "to": "worker", "label": "miss", "tone": "secondary"}
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "narration": "Sequence traces messages over time: client sends a request, server checks state, and returns a reply.",
+      "cues": ["request", "checks state", "reply"],
+      "visual": {
+        "type": "sequence",
+        "heading": "Sequence",
+        "participants": [
+          {"id": "client", "label": "Client", "tone": "primary"},
+          {"id": "server", "label": "Server", "tone": "accent"}
+        ],
+        "messages": [
+          {"from": "client", "to": "server", "label": "POST /render"},
+          {"from": "server", "to": "server", "label": "Check state", "tone": "primary"},
+          {"from": "server", "to": "client", "label": "200 OK", "reply": true, "tone": "accent"}
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "narration": "Class diagrams show data models, where ThemeDef holds palette tokens and CelTokens.",
+      "visual": {
+        "type": "class",
+        "heading": "Class",
+        "direction": "LR",
+        "classes": [
+          {"id": "theme", "name": "ThemeDef", "attributes": ["name: ThemeName", "isAnime: boolean"], "methods": ["shadow()", "onAccent()"], "tone": "primary"},
+          {"id": "cel", "name": "CelTokens", "attributes": ["skyTop: string", "shadowTint: string"], "methods": [], "tone": "accent"}
+        ],
+        "relations": [
+          {"from": "theme", "to": "cel", "type": "composes", "label": "cel"}
+        ]
+      }
+    },
+    {
+      "id": "s11",
+      "narration": "Mermaid handles complex state machines with loops: queued jobs validate, check the cache, start rendering, retry on timeout, and finish as done or failed, keeping every branch clear on screen.",
+      "cues": ["queued", "validate", "cache", "rendering", "retry", "done", "failed"],
+      "visual": {
+        "type": "mermaid",
+        "heading": "Mermaid",
+        "build": true,
+        "code": "stateDiagram-v2\n  direction LR\n  [*] --> Queued\n  Queued --> Validating: submit\n  Validating --> CacheCheck: valid\n  CacheCheck --> Rendering: miss\n  Rendering --> Retrying: timeout\n  Retrying --> Rendering: retry\n  CacheCheck --> Done: hit\n  Rendering --> Done: encoded\n  Validating --> Failed: invalid\n  Retrying --> Failed: limit\n  Done --> [*]",
+        "caption": "Complex state machine with cache bypass and retry loop"
+      }
+    },
+    {
+      "id": "s12",
+      "narration": "Timeline tracks milestones: design starts first, implementation lands next, and demo ships.",
+      "visual": {
+        "type": "timeline",
+        "heading": "Timeline",
+        "events": [
+          {"at": "09:00", "label": "Design", "detail": "Pick cel palette", "marker": "detected"},
+          {"at": "10:30", "label": "Implementation", "detail": "Wire ThemeContext", "marker": "mitigated", "status": "confirmed"},
+          {"at": "12:00", "label": "Demo", "detail": "Render showcase", "marker": "resolved", "status": "confirmed"}
+        ]
+      }
+    },
+    {
+      "id": "s13",
+      "narration": "Code spotlights lines as you narrate them, first importing the theme and then rendering a cel box.",
+      "visual": {
+        "type": "code",
+        "heading": "Code",
+        "language": "tsx",
+        "code": "import {useTheme} from './theme';\n\nexport const Card = () => {\n  const {C, shadow} = useTheme();\n  return <div style={{background: C.panel, boxShadow: shadow()}} />;\n};",
+        "highlights": [
+          {"lines": "1", "label": "Importing the theme"},
+          {"lines": "4-5", "label": "Rendering a cel box"}
+        ]
+      }
+    },
+    {
+      "id": "s14",
+      "narration": "Stat animates headline numbers, showing sixteen visuals and a ninety-five percent speedup.",
+      "visual": {
+        "type": "stat",
+        "heading": "Stat",
+        "stats": [
+          {"label": "Visuals", "value": 16, "tone": "good"},
+          {"label": "Speedup", "value": 95, "from": 20, "unit": "%", "better": "up"}
+        ]
+      }
+    },
+    {
+      "id": "s15",
+      "narration": "Custom vector graphics draw diagrams directly in theme tokens: sun, beam, and prism.",
+      "visual": {
+        "type": "svg",
+        "heading": "SVG",
+        "parts": [
+          {"id": "sun", "label": "Sun"},
+          {"id": "beam", "label": "Beam"},
+          {"id": "prism", "label": "Prism"}
+        ],
+        "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"sun\"><circle cx=\"340\" cy=\"280\" r=\"90\" fill=\"primary\" stroke=\"ink\" /><text x=\"340\" y=\"292\" font=\"sans\" size=\"label\" text-anchor=\"middle\" fill=\"ink\">SUN</text></g><g id=\"beam\"><line x1=\"450\" y1=\"280\" x2=\"760\" y2=\"280\" stroke=\"ink\" arrow=\"end\" /></g><g id=\"prism\"><polygon points=\"960,130 1160,420 760,420\" fill=\"accent\" stroke=\"ink\" /><text x=\"960\" y=\"345\" font=\"sans\" size=\"label\" text-anchor=\"middle\" fill=\"ink\">PRISM</text></g></svg>"
+      }
+    },
+    {
+      "id": "s16",
+      "narration": "And callout closes on one big takeaway: all sixteen two-dimensional visuals work out of the box.",
+      "visual": {
+        "type": "callout",
+        "heading": "Callout",
+        "big": "All 16 2D Visuals Ready",
+        "text": "Cel-sky is now the default theme for every scene."
+      }
+    }
+  ]
+}

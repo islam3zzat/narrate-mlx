@@ -1,0 +1,48 @@
+{
+  "title": "Weekly status (sample: replace with your update)",
+  "style": "status-update",
+  "scenes": [
+    {
+      "id": "s01",
+      "section": "headline",
+      "narration": "The project is at risk. The beta slips two weeks because the data import is blocked. Everything else is on track.",
+      "visual": {"type": "callout", "heading": "Status", "big": "At risk", "text": "Beta slips two weeks: the data import is blocked", "tone": "warn"}
+    },
+    {
+      "id": "s02",
+      "section": "done",
+      "narration": "Since last week we shipped the login redesign and the new settings page. Both are live for all users.",
+      "visual": {"type": "bullets", "heading": "Done", "items": ["Login redesign: live", "Settings page: live"]}
+    },
+    {
+      "id": "s03",
+      "section": "done",
+      "narration": "The numbers moved the right way. Open bugs fell from 18 to 11, and weekly active users grew from 1200 to 1350.",
+      "visual": {"type": "stat", "heading": "Since last week", "stats": [{"label": "Open bugs", "value": 11, "from": 18, "unit": "bugs", "better": "down"}, {"label": "Weekly active users", "value": 1350, "from": 1200, "unit": "users", "better": "up"}]}
+    },
+    {
+      "id": "s04",
+      "section": "in-progress",
+      "narration": "Two things are moving. The reporting screen is in review, owned by Sam, and expected Friday. The audit log starts Monday.",
+      "visual": {"type": "table", "heading": "In progress", "headers": ["Item", "Owner", "Expected"], "rows": [["Reporting screen", "Sam", "Friday"], ["Audit log", "Alex", "Monday start"]]}
+    },
+    {
+      "id": "s05",
+      "section": "blocked",
+      "narration": "One blocker and one slipped date. The data import waits on the vendor's export format, and only the vendor can unblock it. Because of that, the beta moves from May fifth to May nineteenth.",
+      "visual": {"type": "compare", "heading": "Blocked and slipped", "columns": [{"title": "Blocker", "tag": "Needs the vendor", "items": ["Data import: export format unknown"]}, {"title": "Beta date", "tag": "Slipped", "items": ["Was May 5", "Now May 19"]}]}
+    },
+    {
+      "id": "s06",
+      "section": "next",
+      "narration": "Next week we finish the reporting screen. The ask: please chase the vendor for the export format this week.",
+      "visual": {"type": "bullets", "heading": "Next", "items": ["Finish the reporting screen", "Ask: chase the vendor for the export format"]}
+    },
+    {
+      "id": "s07",
+      "section": "close",
+      "narration": "The next update is next Tuesday.",
+      "visual": {"type": "callout", "heading": "Next update", "big": "Tuesday", "text": "Same time, same place"}
+    }
+  ]
+}

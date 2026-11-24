@@ -1,0 +1,5 @@
+exit 0
+--stdout--
+ok mermaid: 1 diagrams, N cached
+ok edge3d: 13 scenes, 123 words, about 47s
+--stderr--

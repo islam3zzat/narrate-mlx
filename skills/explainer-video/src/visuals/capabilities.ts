@@ -1,0 +1,57 @@
+// What each visual type supports. Pure leaf (no schema or React behind it), so src/schema.ts can derive its rules from it
+// without an import cycle; each type's own list is src/visuals/<type>/capabilities.ts (re-exported by its meta).
+import {capabilities as title} from './title/capabilities';
+import {capabilities as bullets} from './bullets/capabilities';
+import {capabilities as compare} from './compare/capabilities';
+import {capabilities as steps} from './steps/capabilities';
+import {capabilities as flow} from './flow/capabilities';
+import {capabilities as fanout} from './fanout/capabilities';
+import {capabilities as table} from './table/capabilities';
+import {capabilities as callout} from './callout/capabilities';
+import {capabilities as mermaid} from './mermaid/capabilities';
+import {capabilities as graph} from './graph/capabilities';
+import {capabilities as sequence} from './sequence/capabilities';
+import {capabilities as class_} from './class/capabilities';
+import {capabilities as layers3d} from './layers3d/capabilities';
+import {capabilities as svg} from './svg/capabilities';
+import {capabilities as timeline} from './timeline/capabilities';
+import {capabilities as code} from './code/capabilities';
+import {capabilities as stat} from './stat/capabilities';
+import {capabilities as plot2d} from './plot2d/capabilities';
+import {capabilities as linkedPlot} from './linked-plot/capabilities';
+import {capabilities as cancellationGrid} from './cancellation-grid/capabilities';
+import {capabilities as field2d} from './field2d/capabilities';
+import {capabilities as surface3d} from './surface3d/capabilities';
+import {capabilities as chart} from './chart/capabilities';
+import {capabilities as ablation} from './ablation/capabilities';
+import {capabilities as matrix} from './matrix/capabilities';
+import {capabilities as equation} from './equation/capabilities';
+import {capabilities as figure} from './figure/capabilities';
+
+export type Capabilities = {
+  /** Where the type can be drawn: layers3d is 3D only. */
+  modes: readonly ('2d' | '3d')[];
+  /** The scene may set `continues` (carry the previous scene's diagram across the cut): false, or '2d' (not in 3D yet). Only types whose parts have ids (graph, class, sequence). */
+  continues: false | '2d';
+  /** The scene may set `focus`: 'both' in 2D and 3D, '2d' only in 2D (mermaid, whose 3D view is flat), false never. */
+  focus: false | '2d' | 'both';
+  /** Arabic (right to left): 'yes' laid out mirrored, 'warn' drawn but not mirrored (the type's lint then says what to do). */
+  rtl: 'yes' | 'warn';
+  /** How the 3D overlay renders `heading`: 'banner' (default) or 'badge' (small mono label, used by callout). */
+  headingStyle?: 'banner' | 'badge';
+};
+
+export const CAPABILITIES = {
+  layers3d, title, bullets, compare, steps, flow, fanout, table, callout, mermaid, graph, sequence, class: class_, svg, timeline, code, stat, plot2d, 'linked-plot': linkedPlot, 'cancellation-grid': cancellationGrid, field2d, surface3d, chart, ablation, matrix, equation, figure,
+} satisfies Record<string, Capabilities>;
+export type CapType = keyof typeof CAPABILITIES;
+const entries = Object.entries(CAPABILITIES) as [CapType, Capabilities][];
+const typesWhere = (f: (c: Capabilities) => boolean) => entries.filter(([, c]) => f(c)).map(([t]) => t);
+type TypesWhere<C> = {[T in CapType]: (typeof CAPABILITIES)[T] extends C ? T : never}[CapType];
+
+/** Types whose parts have ids (graph, class, sequence): they support `continues` and ids in `focus`. */
+export const DIAGRAM_TYPES = typesWhere((c) => c.continues !== false) as TypesWhere<{continues: '2d'}>[];
+/** Types that only exist in 3D scripts. */
+export const THREE_D_TYPES = typesWhere((c) => !c.modes.includes('2d')) as TypesWhere<{modes: readonly ['3d']}>[];
+/** How the 3D overlay renders a visual type's heading ('banner' by default, or 'badge' for callout). */
+export const headingStyleOf = (t: CapType): 'banner' | 'badge' => (CAPABILITIES[t] as Capabilities).headingStyle ?? 'banner';

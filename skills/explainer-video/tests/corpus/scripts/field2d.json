@@ -1,0 +1,75 @@
+{
+  "title": "Field2D corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Take a horizontal slice across two hills. Gradient arrows point perpendicular to contour rings, guiding ascent paths toward either the local maximum or global peak.",
+      "visual": {
+        "type": "field2d",
+        "heading": "Contours, gradients & extrema",
+        "mode": "scalar",
+        "xDomain": [-3, 3],
+        "yDomain": [-2.2, 2.2],
+        "xLabel": "x",
+        "yLabel": "y",
+        "expr": "exp(-((x - 1.2)^2 + y^2)) + 0.65 * exp(-((x + 1.4)^2 + y^2))",
+        "levels": 8,
+        "overlays": [
+          {"id": "sl", "kind": "slice", "label": "Horizontal slice", "axis": "y", "at": 0},
+          {"id": "gr", "kind": "gradient", "label": "Gradient arrows"},
+          {"id": "pa", "kind": "path", "label": "Ascent paths", "direction": "ascent", "starts": [[-2.2, -1.2], [0.3, -1.1]], "steps": 45},
+          {"id": "ex", "kind": "extrema", "label": "Local maximum", "points": [{"at": [-1.4, 0], "tag": "Local max", "tone": "primary"}, {"at": [1.2, 0], "tag": "Global max", "tone": "secondary"}]}
+        ],
+        "caption": "Gradient ascent always climbs perpendicular to level curves."
+      },
+      "focus": [
+        {"at": "toward either the local", "on": ["pa", "ex"]}
+      ]
+    },
+    {
+      "id": "s02",
+      "narration": "In a vector flow field, track local Jacobian stretch, outward divergence rings, and a spinning curl paddlewheel.",
+      "visual": {
+        "type": "field2d",
+        "heading": "Jacobian, divergence & curl",
+        "mode": "vector",
+        "xDomain": [-3, 3],
+        "yDomain": [-2.4, 2.4],
+        "xLabel": "x",
+        "yLabel": "y",
+        "fx": "-y + 0.45 * x",
+        "fy": "x + 0.45 * y",
+        "density": 9,
+        "particles": true,
+        "overlays": [
+          {"id": "jac", "kind": "jacobian", "label": "Jacobian stretch", "at": [-1.4, -0.8], "size": 0.7},
+          {"id": "div", "kind": "divergence", "label": "Divergence rings", "at": [1.4, 0.9], "radius": 0.6},
+          {"id": "curl", "kind": "curl", "label": "Curl paddlewheel", "at": [0, 0], "radius": 0.55}
+        ],
+        "caption": "Positive divergence expands area; non-zero curl spins the wheel."
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "A line integral measures tangential work along a path while ignoring perpendicular force, whereas a flux integral measures flow crossing a curve.",
+      "visual": {
+        "type": "field2d",
+        "heading": "Line integral & flux",
+        "mode": "vector",
+        "xDomain": [-3, 3],
+        "yDomain": [-2.4, 2.4],
+        "xLabel": "x",
+        "yLabel": "y",
+        "fx": "-y",
+        "fy": "x",
+        "density": 8,
+        "particles": true,
+        "overlays": [
+          {"id": "li", "kind": "line-integral", "label": "Tangential work", "points": [[-1.8, -1.2], [1.8, -1.2], [1.8, 1.2]]},
+          {"id": "fl", "kind": "flux", "label": "Flux integral", "points": [[-0.2, -1.6], [-0.2, 1.6]]}
+        ],
+        "caption": "Work sums parallel flow; flux sums perpendicular crossings."
+      }
+    }
+  ]
+}

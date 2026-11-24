@@ -1,0 +1,587 @@
+{
+ "id": "svg",
+ "title": "Svg corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 865,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "A browser sends a request along the wire to the server. The server answers, and next to it a cache remembers the reply, so the next request is fast.",
+   "visual": {
+    "type": "svg",
+    "heading": "A request path",
+    "parts": [
+     {
+      "id": "client",
+      "label": "browser"
+     },
+     {
+      "id": "wire",
+      "label": "wire"
+     },
+     {
+      "id": "server",
+      "label": "server"
+     },
+     {
+      "id": "cache",
+      "label": "cache"
+     }
+    ],
+    "svg": "<svg viewBox=\"0 0 1700 560\"><line x1=\"60\" y1=\"500\" x2=\"1640\" y2=\"500\" stroke=\"dim\" stroke-width=\"2\"/><text x=\"60\" y=\"538\" text-anchor=\"start\" font=\"mono\" size=\"small\" fill=\"dim\">one request, one reply</text><g id=\"client\"><rect x=\"100\" y=\"170\" width=\"320\" height=\"220\" fill=\"primary\"/><text x=\"260\" y=\"270\" text-anchor=\"middle\" size=\"title\">Browser</text><text x=\"260\" y=\"325\" text-anchor=\"middle\" font=\"mono\" size=\"small\">client</text></g><g id=\"wire\"><line x1=\"450\" y1=\"250\" x2=\"890\" y2=\"250\" arrow=\"end\"/><line x1=\"890\" y1=\"320\" x2=\"450\" y2=\"320\" arrow=\"end\" stroke=\"secondary\"/></g><g id=\"server\"><rect x=\"920\" y=\"170\" width=\"320\" height=\"220\" fill=\"accent\"/><text x=\"1080\" y=\"270\" text-anchor=\"middle\" size=\"title\">Server</text><text x=\"1080\" y=\"325\" text-anchor=\"middle\" font=\"mono\" size=\"small\">origin</text></g><g id=\"cache\"><rect x=\"1350\" y=\"215\" width=\"260\" height=\"130\" fill=\"muted\" stroke-width=\"2\"/><text x=\"1480\" y=\"290\" text-anchor=\"middle\" size=\"body\" font=\"mono\">cache</text><line x1=\"1250\" y1=\"280\" x2=\"1340\" y2=\"280\" arrow=\"both\" stroke-width=\"2\"/></g></svg>",
+    "caption": "One drawing, four parts, revealed as spoken."
+   },
+   "audio": "audio/svg/s01.wav",
+   "durationSec": 9.875,
+   "frames": 324,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.362
+    },
+    {
+     "w": "browser",
+     "start": 0.362,
+     "end": 0.887
+    },
+    {
+     "w": "sends",
+     "start": 0.887,
+     "end": 1.137
+    },
+    {
+     "w": "a",
+     "start": 1.137,
+     "end": 1.2
+    },
+    {
+     "w": "request",
+     "start": 1.2,
+     "end": 1.775
+    },
+    {
+     "w": "along",
+     "start": 1.775,
+     "end": 2.087
+    },
+    {
+     "w": "the",
+     "start": 2.087,
+     "end": 2.188
+    },
+    {
+     "w": "wire",
+     "start": 2.188,
+     "end": 2.575
+    },
+    {
+     "w": "to",
+     "start": 2.575,
+     "end": 2.663
+    },
+    {
+     "w": "the",
+     "start": 2.663,
+     "end": 2.763
+    },
+    {
+     "w": "server.",
+     "start": 2.763,
+     "end": 3.6
+    },
+    {
+     "w": "The",
+     "start": 3.763,
+     "end": 3.913
+    },
+    {
+     "w": "server",
+     "start": 3.913,
+     "end": 4.3
+    },
+    {
+     "w": "answers,",
+     "start": 4.3,
+     "end": 5.025
+    },
+    {
+     "w": "and",
+     "start": 5.125,
+     "end": 5.25
+    },
+    {
+     "w": "next",
+     "start": 5.25,
+     "end": 5.513
+    },
+    {
+     "w": "to",
+     "start": 5.513,
+     "end": 5.65
+    },
+    {
+     "w": "it",
+     "start": 5.65,
+     "end": 5.775
+    },
+    {
+     "w": "a",
+     "start": 5.775,
+     "end": 5.888
+    },
+    {
+     "w": "cache",
+     "start": 5.888,
+     "end": 6.325
+    },
+    {
+     "w": "remembers",
+     "start": 6.325,
+     "end": 6.775
+    },
+    {
+     "w": "the",
+     "start": 6.775,
+     "end": 6.875
+    },
+    {
+     "w": "reply,",
+     "start": 6.875,
+     "end": 7.6
+    },
+    {
+     "w": "so",
+     "start": 7.737,
+     "end": 7.925
+    },
+    {
+     "w": "the",
+     "start": 7.925,
+     "end": 8.025
+    },
+    {
+     "w": "next",
+     "start": 8.025,
+     "end": 8.312
+    },
+    {
+     "w": "request",
+     "start": 8.312,
+     "end": 8.775
+    },
+    {
+     "w": "is",
+     "start": 8.775,
+     "end": 8.925
+    },
+    {
+     "w": "fast.",
+     "start": 8.925,
+     "end": 9.625
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A browser sends a request along the wire to the server.",
+     "start": 0.275
+    },
+    {
+     "text": "The server answers, and next to it a cache remembers the reply, so the next request is fast.",
+     "start": 3.763
+    }
+   ],
+   "revealSec": [
+    0.242,
+    2.068,
+    2.643,
+    5.768
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "A thermostat has to read the room, then diff it against the target, then heat the room. That closes the loop, and the loop repeats all day long.",
+   "visual": {
+    "type": "svg",
+    "heading": "A feedback loop",
+    "parts": [
+     {
+      "id": "measure",
+      "label": "read"
+     },
+     {
+      "id": "compare",
+      "label": "diff"
+     },
+     {
+      "id": "adjust",
+      "label": "heat"
+     },
+     {
+      "id": "loop",
+      "label": "loop"
+     }
+    ],
+    "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"measure\"><circle cx=\"300\" cy=\"260\" r=\"120\" fill=\"primary\"/><text x=\"300\" y=\"272\" text-anchor=\"middle\" size=\"title\">read</text></g><g id=\"compare\"><line x1=\"440\" y1=\"260\" x2=\"710\" y2=\"260\" arrow=\"end\"/><circle cx=\"850\" cy=\"260\" r=\"120\" fill=\"secondary\"/><text x=\"850\" y=\"272\" text-anchor=\"middle\" size=\"title\">diff</text></g><g id=\"adjust\"><line x1=\"990\" y1=\"260\" x2=\"1260\" y2=\"260\" arrow=\"end\"/><circle cx=\"1400\" cy=\"260\" r=\"120\" fill=\"accent\"/><text x=\"1400\" y=\"272\" text-anchor=\"middle\" size=\"title\">heat</text></g><g id=\"loop\"><path d=\"M 1400 400 C 1400 560, 300 560, 300 400\" arrow=\"end\" stroke=\"danger\"/></g></svg>"
+   },
+   "focus": [
+    {
+     "at": "closes the loop",
+     "on": [
+      "loop"
+     ]
+    }
+   ],
+   "audio": "audio/svg/s02.wav",
+   "durationSec": 8.975,
+   "frames": 297,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.362
+    },
+    {
+     "w": "thermostat",
+     "start": 0.362,
+     "end": 0.95
+    },
+    {
+     "w": "has",
+     "start": 0.95,
+     "end": 1.15
+    },
+    {
+     "w": "to",
+     "start": 1.15,
+     "end": 1.275
+    },
+    {
+     "w": "read",
+     "start": 1.275,
+     "end": 1.462
+    },
+    {
+     "w": "the",
+     "start": 1.462,
+     "end": 1.55
+    },
+    {
+     "w": "room,",
+     "start": 1.55,
+     "end": 2.1
+    },
+    {
+     "w": "then",
+     "start": 2.2,
+     "end": 2.438
+    },
+    {
+     "w": "diff",
+     "start": 2.438,
+     "end": 2.663
+    },
+    {
+     "w": "it",
+     "start": 2.663,
+     "end": 2.737
+    },
+    {
+     "w": "against",
+     "start": 2.737,
+     "end": 3.062
+    },
+    {
+     "w": "the",
+     "start": 3.062,
+     "end": 3.15
+    },
+    {
+     "w": "target,",
+     "start": 3.15,
+     "end": 3.775
+    },
+    {
+     "w": "then",
+     "start": 3.875,
+     "end": 4.112
+    },
+    {
+     "w": "heat",
+     "start": 4.112,
+     "end": 4.35
+    },
+    {
+     "w": "the",
+     "start": 4.35,
+     "end": 4.45
+    },
+    {
+     "w": "room.",
+     "start": 4.45,
+     "end": 5.225
+    },
+    {
+     "w": "That",
+     "start": 5.388,
+     "end": 5.675
+    },
+    {
+     "w": "closes",
+     "start": 5.675,
+     "end": 6.125
+    },
+    {
+     "w": "the",
+     "start": 6.125,
+     "end": 6.225
+    },
+    {
+     "w": "loop,",
+     "start": 6.225,
+     "end": 6.625
+    },
+    {
+     "w": "and",
+     "start": 6.7,
+     "end": 6.812
+    },
+    {
+     "w": "the",
+     "start": 6.812,
+     "end": 6.912
+    },
+    {
+     "w": "loop",
+     "start": 6.912,
+     "end": 7.15
+    },
+    {
+     "w": "repeats",
+     "start": 7.15,
+     "end": 7.625
+    },
+    {
+     "w": "all",
+     "start": 7.625,
+     "end": 7.875
+    },
+    {
+     "w": "day",
+     "start": 7.875,
+     "end": 8.1
+    },
+    {
+     "w": "long.",
+     "start": 8.1,
+     "end": 8.725
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A thermostat has to read the room, then diff it against the target, then heat the room.",
+     "start": 0.275
+    },
+    {
+     "text": "That closes the loop, and the loop repeats all day long.",
+     "start": 5.388
+    }
+   ],
+   "revealSec": [
+    1.155,
+    2.318,
+    3.992,
+    6.105
+   ],
+   "focusSec": [
+    {
+     "t": 5.595,
+     "on": [
+      "loop"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "narration": "Here is a small bar, then a medium bar, and finally the large bar. The large bar is the tallest of them all.",
+   "visual": {
+    "type": "svg",
+    "heading": "Three bars",
+    "parts": [
+     {
+      "id": "small",
+      "label": "small"
+     },
+     {
+      "id": "medium",
+      "label": "medium"
+     },
+     {
+      "id": "large",
+      "label": "large"
+     }
+    ],
+    "svg": "<svg viewBox=\"0 0 1700 560\"><line x1=\"100\" y1=\"480\" x2=\"1600\" y2=\"480\"/><line x1=\"100\" y1=\"480\" x2=\"100\" y2=\"40\" stroke-width=\"2\"/><text x=\"100\" y=\"28\" text-anchor=\"start\" font=\"mono\" size=\"small\">value</text><g id=\"small\"><rect x=\"300\" y=\"380\" width=\"260\" height=\"100\" fill=\"muted\"/><text x=\"430\" y=\"350\" text-anchor=\"middle\" size=\"body\">9</text></g><g id=\"medium\"><rect x=\"700\" y=\"260\" width=\"260\" height=\"220\" fill=\"primary\"/><text x=\"830\" y=\"230\" text-anchor=\"middle\" size=\"body\">21</text></g><g id=\"large\"><rect x=\"1100\" y=\"140\" width=\"260\" height=\"340\" fill=\"accent\"/><text x=\"1230\" y=\"110\" text-anchor=\"middle\" size=\"body\">Peak <tspan fill=\"danger\">42</tspan></text><polygon points=\"1230,60 1210,20 1250,20\" fill=\"danger\"/></g></svg>",
+    "caption": "Colour names only; borders are 2 or 4 pixels."
+   },
+   "focus": [
+    {
+     "at": "the tallest",
+     "on": [
+      "large"
+     ]
+    }
+   ],
+   "audio": "audio/svg/s03.wav",
+   "durationSec": 7.225,
+   "frames": 244,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Here",
+     "start": 0.275,
+     "end": 0.463
+    },
+    {
+     "w": "is",
+     "start": 0.463,
+     "end": 0.562
+    },
+    {
+     "w": "a",
+     "start": 0.562,
+     "end": 0.662
+    },
+    {
+     "w": "small",
+     "start": 0.662,
+     "end": 1.05
+    },
+    {
+     "w": "bar,",
+     "start": 1.05,
+     "end": 1.5
+    },
+    {
+     "w": "then",
+     "start": 1.575,
+     "end": 1.712
+    },
+    {
+     "w": "a",
+     "start": 1.712,
+     "end": 1.8
+    },
+    {
+     "w": "medium",
+     "start": 1.8,
+     "end": 2.175
+    },
+    {
+     "w": "bar,",
+     "start": 2.175,
+     "end": 2.675
+    },
+    {
+     "w": "and",
+     "start": 2.775,
+     "end": 2.95
+    },
+    {
+     "w": "finally",
+     "start": 2.95,
+     "end": 3.45
+    },
+    {
+     "w": "the",
+     "start": 3.45,
+     "end": 3.575
+    },
+    {
+     "w": "large",
+     "start": 3.575,
+     "end": 3.925
+    },
+    {
+     "w": "bar.",
+     "start": 3.925,
+     "end": 4.55
+    },
+    {
+     "w": "The",
+     "start": 4.713,
+     "end": 4.85
+    },
+    {
+     "w": "large",
+     "start": 4.85,
+     "end": 5.2
+    },
+    {
+     "w": "bar",
+     "start": 5.2,
+     "end": 5.525
+    },
+    {
+     "w": "is",
+     "start": 5.525,
+     "end": 5.662
+    },
+    {
+     "w": "the",
+     "start": 5.662,
+     "end": 5.763
+    },
+    {
+     "w": "tallest",
+     "start": 5.763,
+     "end": 6.213
+    },
+    {
+     "w": "of",
+     "start": 6.213,
+     "end": 6.287
+    },
+    {
+     "w": "them",
+     "start": 6.287,
+     "end": 6.45
+    },
+    {
+     "w": "all.",
+     "start": 6.45,
+     "end": 6.975
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Here is a small bar, then a medium bar, and finally the large bar.",
+     "start": 0.275
+    },
+    {
+     "text": "The large bar is the tallest of them all.",
+     "start": 4.713
+    }
+   ],
+   "revealSec": [
+    0.542,
+    1.68,
+    3.455
+   ],
+   "focusSec": [
+    {
+     "t": 5.582,
+     "on": [
+      "large"
+     ]
+    }
+   ]
+  }
+ ]
+}

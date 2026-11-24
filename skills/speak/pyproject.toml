@@ -1,0 +1,27 @@
+[project]
+name = "speak"
+version = "0.1.0"
+description = "Local text-to-speech on Apple Silicon using MLX (Kokoro), with a read-along window"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # misaki[en] minus spacy-curated-transformers, which pulls in torch (~540 MB)
+    # and is only used by misaki's optional transformer G2P.
+    "espeakng-loader",
+    "misaki>=0.9.4",
+    "num2words",
+    "phonemizer-fork",
+    "spacy",
+    # spaCy's English model. Declared here because spaCy would otherwise download
+    # it at run time, and `uv sync` removes anything it didn't install itself.
+    "en-core-web-sm",
+    "markdown-it-py>=4.2.0",
+    "mlx-audio",
+    "pyobjc-framework-avfoundation>=12.2.2",
+    "pyobjc-framework-cocoa>=12.2.2",
+]
+
+[tool.uv.sources]
+# Pinned to a commit newer than the last PyPI release (0.5.8). Check that Kokoro and the
+# explainer's Qwen3 forced aligner still work before switching back to PyPI.
+mlx-audio = { git = "https://github.com/Blaizzy/mlx-audio", rev = "3674813a24db8cb9e6ff816a8dfe1834741b179d" }
+en-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl" }

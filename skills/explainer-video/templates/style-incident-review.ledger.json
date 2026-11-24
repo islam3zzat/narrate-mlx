@@ -1,0 +1,15 @@
+{
+  "source": "source.txt",
+  "facts": [
+    {"id": "e01", "kind": "event", "text": "The pager fired for the checkout API error rate", "at": "14:02 UTC", "importance": "high", "status": "confirmed", "quote": "The pager fired at 14:02 UTC for the checkout API error rate."},
+    {"id": "e02", "kind": "event", "text": "A config change lowered the connection pool limit", "at": "13:55 UTC", "importance": "high", "status": "confirmed", "quote": "A config change went out at 13:55 UTC that lowered the connection pool limit to 20."},
+    {"id": "e03", "kind": "event", "text": "The on-call engineer acknowledged the page", "at": "14:09 UTC", "importance": "low", "status": "reported", "quote": "I acknowledged the page at 14:09 UTC and started looking at the dashboards."},
+    {"id": "e04", "kind": "mitigation", "text": "The config was rolled back", "at": "14:31 UTC", "importance": "high", "status": "confirmed", "quote": "We rolled the config back at 14:31 UTC."},
+    {"id": "e05", "kind": "event", "text": "The error rate fell below 1 percent", "at": "14:44 UTC", "importance": "high", "status": "confirmed", "quote": "The error rate was under 1 percent by 14:44 UTC."},
+    {"id": "n01", "kind": "number", "text": "About 12000 orders failed in total", "importance": "high", "status": "reported", "quote": "About 12000 orders failed in total."},
+    {"id": "f01", "kind": "factor", "text": "A pool of 20 connections was too low for the evening peak", "importance": "high", "status": "reported", "quote": "The pool of 20 connections was too low for the evening peak."},
+    {"id": "f02", "kind": "factor", "text": "The alert threshold may have been too loose", "importance": "low", "status": "unknown", "deferred": "report", "quote": "I think the alert threshold was too loose, but I am not sure it would have changed anything."},
+    {"id": "c01", "kind": "contradiction", "text": "Acknowledgement time: 14:09 UTC in the engineer's note, 14:07 UTC in the pager log", "importance": "high", "conflictsWith": ["e03"], "quote": "Riley says 14:09 for the acknowledgement, but the pager log shows 14:07."},
+    {"id": "a01", "kind": "action", "text": "Add a pool limit check to config review (prevent)", "at": "00:55:00", "importance": "high", "owner": "Platform team", "due": "2026-04-01", "quote": "Action: the platform team adds a pool limit check to config review by April 1."}
+  ]
+}

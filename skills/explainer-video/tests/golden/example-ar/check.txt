@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok example-ar [ar, right to left]: 6 scenes, 110 words, about 69s
+--stderr--

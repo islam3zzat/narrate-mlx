@@ -1,0 +1,33 @@
+{
+  "name": "cel-sky",
+  "isAnime": true,
+  "C": {
+    "bg": "#ebf4ff",
+    "ink": "#141229",
+    "panel": "#fffdf9",
+    "muted": "#d8e7ff",
+    "dim": "#49507a",
+    "primary": "#ffd43b",
+    "secondary": "#ff3366",
+    "accent": "#00c8ff",
+    "danger": "#ff5a26"
+  },
+  "BORDER": 3.5,
+  "SHADOW": 8,
+  "cel": {
+    "skyTop": "#b7dcff",
+    "skyMid": "#ebf5ff",
+    "skyBot": "#fff0e5",
+    "shadowTint": "#2a2658",
+    "rimLight": "rgba(255, 255, 255, 0.88)",
+    "celBand": "rgba(42, 38, 88, 0.08)",
+    "speedline": "rgba(20, 18, 41, 0.05)",
+    "halftone": "rgba(42, 38, 88, 0.10)",
+    "glow": "#00c8ff",
+    "captionBg": "#141229",
+    "captionInk": "#fffdf9",
+    "captionShadow": "#00c8ff",
+    "horizonGround": "#dbe9ff",
+    "shaftHighlight": "#ffffff"
+  }
+}

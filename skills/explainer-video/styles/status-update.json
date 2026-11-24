@@ -1,0 +1,59 @@
+{
+  "name": "status-update",
+  "description": "A short update for a team or stakeholders: the headline status in words, what is done, in progress, blocked or at risk, and next. Every blocker and slipped date is named.",
+  "audience": "a team or stakeholders who want the state of play",
+  "defaults": {
+    "speed": 1.05
+  },
+  "bounds": {
+    "scenes": [
+      4,
+      7
+    ],
+    "seconds": [
+      45,
+      120
+    ],
+    "wordsPerScene": [
+      15,
+      35
+    ]
+  },
+  "preferredVisuals": [
+    "compare",
+    "bullets",
+    "table",
+    "callout",
+    "stat"
+  ],
+  "ledger": {
+    "required": false,
+    "kinds": [
+      "event",
+      "action",
+      "owner",
+      "open_question",
+      "number",
+      "ambiguity"
+    ],
+    "mustCover": [
+      "open_question"
+    ],
+    "coverHigh": true,
+    "quoteKinds": [
+      "action"
+    ],
+    "allowDeferred": false
+  },
+  "sections": [
+    "headline",
+    "done",
+    "in-progress",
+    "blocked",
+    "next",
+    "close"
+  ],
+  "lint": {
+    "blameless": false
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "title": "Checkout incident review (sample: replace with your incident)",
+  "style": "incident-review",
+  "scenes": [
+    {
+      "id": "s01",
+      "section": "title",
+      "facts": [
+        "n01"
+      ],
+      "narration": "This is a blameless review of the checkout incident. It describes roles and systems, not people. About twelve thousand orders failed in total.",
+      "visual": {
+        "type": "title",
+        "kicker": "Incident review",
+        "headline": "Checkout errors",
+        "sub": "Severity two, one afternoon"
+      }
+    },
+    {
+      "id": "s02",
+      "section": "detection",
+      "facts": [
+        "e01"
+      ],
+      "narration": "The pager fired for the checkout API error rate at fourteen oh two UTC. That time is confirmed by the pager log.",
+      "visual": {
+        "type": "callout",
+        "heading": "Detection",
+        "big": "14:02 UTC",
+        "text": "Pager fired: checkout API error rate (confirmed)"
+      }
+    },
+    {
+      "id": "s03",
+      "section": "timeline",
+      "facts": [
+        "e02",
+        "e01",
+        "e03",
+        "e04",
+        "e05"
+      ],
+      "narration": "The config change went out first, then the alert fired. The on-call engineer acknowledged it, the config was rolled back, and finally the error rate recovered. The change and the rollback are confirmed. The acknowledgement time is only reported.",
+      "visual": {
+        "type": "timeline",
+        "heading": "What happened, in order",
+        "events": [
+          {
+            "at": "13:55 UTC",
+            "label": "Config change",
+            "detail": "Pool limit lowered to 20",
+            "status": "confirmed"
+          },
+          {
+            "at": "14:02 UTC",
+            "label": "Alert fired",
+            "status": "confirmed",
+            "marker": "detected"
+          },
+          {
+            "at": "14:09 UTC",
+            "label": "Acknowledged",
+            "status": "reported"
+          },
+          {
+            "at": "14:31 UTC",
+            "label": "Rolled back",
+            "status": "confirmed",
+            "marker": "mitigated"
+          },
+          {
+            "at": "14:44 UTC",
+            "label": "Recovered",
+            "detail": "Error rate under one percent",
+            "status": "confirmed",
+            "marker": "resolved"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "section": "impact",
+      "facts": [
+        "n01"
+      ],
+      "narration": "The impact was on customers. About twelve thousand orders failed in total, and every one of them was a checkout the customer had to try again.",
+      "visual": {
+        "type": "bullets",
+        "heading": "Impact",
+        "items": [
+          "About 12000 orders failed",
+          "Customers had to retry checkout"
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "section": "factors",
+      "facts": [
+        "f01"
+      ],
+      "narration": "Two factors contributed. The pool limit was set to twenty connections, and the evening peak was higher than that. Together they exhausted the pool, and checkout errors followed.",
+      "visual": {
+        "type": "graph",
+        "heading": "Contributing factors",
+        "direction": "LR",
+        "nodes": [
+          {
+            "id": "pool",
+            "label": "Pool limit"
+          },
+          {
+            "id": "peak",
+            "label": "Evening peak"
+          },
+          {
+            "id": "full",
+            "label": "Pool exhausted",
+            "tone": "danger"
+          },
+          {
+            "id": "err",
+            "label": "Checkout errors",
+            "tone": "danger"
+          }
+        ],
+        "edges": [
+          {
+            "from": "pool",
+            "to": "full"
+          },
+          {
+            "from": "peak",
+            "to": "full"
+          },
+          {
+            "from": "full",
+            "to": "err"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "section": "mitigations",
+      "facts": [
+        "e04",
+        "e05"
+      ],
+      "narration": "The first mitigation was to roll back the config. That is done. After that, the error rate fell below one percent. A second mitigation is still pending: a pool limit check in config review.",
+      "visual": {
+        "type": "steps",
+        "heading": "Mitigations",
+        "items": [
+          "Roll back the config (done)",
+          "Error rate below one percent (done)",
+          "Pool limit check in config review (pending)"
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "section": "ambiguities",
+      "facts": [
+        "c01"
+      ],
+      "narration": "The sources disagree on one time. The engineer's note says fourteen oh nine for the acknowledgement. The pager log says fourteen oh seven. We keep both and do not choose.",
+      "visual": {
+        "type": "compare",
+        "heading": "Acknowledgement time",
+        "columns": [
+          {
+            "title": "Engineer's note",
+            "tag": "Reported",
+            "items": [
+              "Acknowledged at 14:09 UTC"
+            ]
+          },
+          {
+            "title": "Pager log",
+            "tag": "Logged",
+            "items": [
+              "Acknowledged at 14:07 UTC"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "section": "actions",
+      "facts": [
+        "a01"
+      ],
+      "narration": "One action is open. The platform team adds a pool limit check to config review by April first. It is a prevent action.",
+      "visual": {
+        "type": "table",
+        "heading": "Actions",
+        "headers": [
+          "Action",
+          "Owner",
+          "Due",
+          "Type"
+        ],
+        "rows": [
+          [
+            "Pool limit check in config review",
+            "Platform team",
+            "2026-04-01",
+            "prevent"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "section": "close",
+      "narration": "That is the review: one action, one disagreement between sources, and one fact left to the full report.",
+      "visual": {
+        "type": "callout",
+        "heading": "Counts",
+        "big": "1 action, 1 conflict",
+        "text": "One low fact is deferred to the report (report.md)"
+      }
+    }
+  ]
+}

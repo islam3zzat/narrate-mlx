@@ -1,0 +1,10 @@
+{
+  "source": "source.txt",
+  "facts": [
+    {"id": "d01", "kind": "decision", "text": "Billing moves to the new provider on March first", "at": "00:00:20", "importance": "high", "status": "confirmed", "quote": "We agreed to move billing to the new provider on March 1."},
+    {"id": "a01", "kind": "action", "text": "Write the migration plan", "at": "00:02:10", "importance": "high", "owner": "Lee", "due": "February 10", "quote": "I will own the migration plan, due February 10."},
+    {"id": "a02", "kind": "action", "text": "Get finance sign-off on the vendor contract", "at": "00:04:30", "importance": "high", "owner": "Priya", "due": "February 20", "quote": "I will get finance sign-off on the vendor contract by February 20."},
+    {"id": "q01", "kind": "open_question", "text": "Legal has not reviewed the data processing terms and no one owns it", "at": "00:06:00", "importance": "high", "status": "unknown", "quote": "Legal has not reviewed the data processing terms yet, and I do not know who should."},
+    {"id": "q02", "kind": "open_question", "text": "Dropping the old invoice format was suggested, not decided", "at": "00:07:15", "importance": "low", "status": "reported", "quote": "We might also drop the old invoice format, but that is not decided."}
+  ]
+}

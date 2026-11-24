@@ -1,0 +1,10 @@
+{
+  "C": {
+    "bg": "#fafafa", "ink": "#000000", "panel": "#ffffff", "muted": "#ededed", "dim": "#5c5c5c",
+    "primary": "#f5d000", "secondary": "#e8005e", "accent": "#00e060", "danger": "#ff3b1f"
+  },
+  "FONT": "\"Space Grotesk\", -apple-system, \"Helvetica Neue\", Arial, sans-serif",
+  "MONO": "\"Space Mono\", \"SF Mono\", Menlo, monospace",
+  "BORDER": 4,
+  "SHADOW": 10
+}

@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 40,
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 300
+    },
+    "audience": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "defaults": {
+      "type": "object",
+      "properties": {
+        "speed": {
+          "type": "number",
+          "minimum": 0.75,
+          "maximum": 1.5,
+          "description": "Speaking speed used when --speed is not given (cache key includes it)"
+        },
+        "voice": {
+          "description": "Voice used when --voice is not given",
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "speed"
+      ],
+      "additionalProperties": false
+    },
+    "bounds": {
+      "type": "object",
+      "properties": {
+        "scenes": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "seconds": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "wordsPerScene": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "scenes",
+        "seconds",
+        "wordsPerScene"
+      ],
+      "additionalProperties": false,
+      "description": "Per video; outside these, `check` warns (never an error)"
+    },
+    "preferredVisuals": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "layers3d",
+          "title",
+          "bullets",
+          "compare",
+          "steps",
+          "flow",
+          "fanout",
+          "table",
+          "callout",
+          "mermaid",
+          "graph",
+          "sequence",
+          "class",
+          "svg",
+          "timeline",
+          "code",
+          "stat",
+          "plot2d",
+          "linked-plot",
+          "cancellation-grid",
+          "field2d",
+          "surface3d",
+          "chart",
+          "ablation",
+          "matrix",
+          "equation",
+          "figure"
+        ]
+      }
+    },
+    "ledger": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean",
+          "description": "The workdir must have ledger.json"
+        },
+        "kinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "event",
+              "decision",
+              "action",
+              "owner",
+              "number",
+              "system",
+              "root_cause",
+              "factor",
+              "mitigation",
+              "open_question",
+              "contradiction",
+              "ambiguity"
+            ]
+          },
+          "description": "Fact kinds this style uses (others only warn)"
+        },
+        "mustCover": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "event",
+              "decision",
+              "action",
+              "owner",
+              "number",
+              "system",
+              "root_cause",
+              "factor",
+              "mitigation",
+              "open_question",
+              "contradiction",
+              "ambiguity"
+            ]
+          },
+          "description": "Every fact of these kinds must be referenced by a scene (or deferred, when allowed)"
+        },
+        "coverHigh": {
+          "type": "boolean",
+          "description": "Every importance:high fact must be referenced by a scene (never deferrable)"
+        },
+        "quoteKinds": {
+          "default": [],
+          "description": "Every fact of these kinds must carry a `quote` and an `at` (error otherwise)",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "event",
+              "decision",
+              "action",
+              "owner",
+              "number",
+              "system",
+              "root_cause",
+              "factor",
+              "mitigation",
+              "open_question",
+              "contradiction",
+              "ambiguity"
+            ]
+          }
+        },
+        "allowDeferred": {
+          "type": "boolean",
+          "description": "A low fact may carry deferred:\"report\" instead of a scene"
+        }
+      },
+      "required": [
+        "required",
+        "kinds",
+        "mustCover",
+        "coverHigh",
+        "allowDeferred"
+      ],
+      "additionalProperties": false
+    },
+    "sections": {
+      "description": "Scene `section` tags this style expects, in order; one never used warns",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 40
+      }
+    },
+    "lint": {
+      "type": "object",
+      "properties": {
+        "blameless": {
+          "type": "boolean",
+          "description": "Turn on the blame-phrase lint"
+        }
+      },
+      "required": [
+        "blameless"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "name",
+    "description",
+    "audience",
+    "defaults",
+    "bounds",
+    "preferredVisuals",
+    "ledger",
+    "lint"
+  ],
+  "additionalProperties": false
+}

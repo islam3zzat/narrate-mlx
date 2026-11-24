@@ -1,0 +1,172 @@
+{
+ "id": "svg-ar",
+ "title": "\u0627\u062e\u062a\u0628\u0627\u0631 \u0627\u0644\u0631\u0633\u0645",
+ "language": "ar",
+ "dir": "rtl",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 257,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "\u0627\u0644\u0652\u0639\u064e\u0645\u0650\u064a\u0644\u064f \u064a\u064f\u0631\u0652\u0633\u0650\u0644\u064f \u0637\u064e\u0644\u064e\u0628\u064b\u0627 \u0639\u064e\u0628\u0652\u0631\u064e \u0627\u0644\u0633\u0650\u0651\u0644\u0652\u0643\u0650 \u0625\u0650\u0644\u064e\u0649 \u0627\u0644\u0652\u062e\u064e\u0627\u062f\u0650\u0645\u0650.",
+   "visual": {
+    "type": "svg",
+    "heading": "\u0631\u0650\u062d\u0652\u0644\u064e\u0629\u064f \u0627\u0644\u0637\u064e\u0651\u0644\u064e\u0628\u0650",
+    "parts": [
+     {
+      "id": "client",
+      "label": "\u0627\u0644\u0639\u0645\u064a\u0644"
+     },
+     {
+      "id": "wire",
+      "label": "\u0627\u0644\u0633\u0644\u0643"
+     },
+     {
+      "id": "server",
+      "label": "\u0627\u0644\u062e\u0627\u062f\u0645"
+     }
+    ],
+    "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"client\"><rect x=\"1280\" y=\"170\" width=\"320\" height=\"220\" fill=\"primary\"/><text x=\"1440\" y=\"285\" text-anchor=\"middle\" size=\"title\">\u0627\u0644\u0639\u0645\u064a\u0644</text></g><g id=\"wire\"><line x1=\"1250\" y1=\"280\" x2=\"470\" y2=\"280\" arrow=\"end\"/></g><g id=\"server\"><rect x=\"100\" y=\"170\" width=\"320\" height=\"220\" fill=\"accent\"/><text x=\"260\" y=\"285\" text-anchor=\"middle\" size=\"title\">\u0627\u0644\u062e\u0627\u062f\u0645</text></g></svg>"
+   },
+   "audio": "audio/svg-ar/s01.wav",
+   "durationSec": 3.32,
+   "frames": 127,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "\u0627\u0644\u0652\u0639\u064e\u0645\u0650\u064a\u0644\u064f",
+     "start": 0.0,
+     "end": 0.616
+    },
+    {
+     "w": "\u064a\u064f\u0631\u0652\u0633\u0650\u0644\u064f",
+     "start": 0.616,
+     "end": 1.043
+    },
+    {
+     "w": "\u0637\u064e\u0644\u064e\u0628\u064b\u0627",
+     "start": 1.043,
+     "end": 1.469
+    },
+    {
+     "w": "\u0639\u064e\u0628\u0652\u0631\u064e",
+     "start": 1.469,
+     "end": 1.801
+    },
+    {
+     "w": "\u0627\u0644\u0633\u0650\u0651\u0644\u0652\u0643\u0650",
+     "start": 1.801,
+     "end": 2.322
+    },
+    {
+     "w": "\u0625\u0650\u0644\u064e\u0649",
+     "start": 2.322,
+     "end": 2.654
+    },
+    {
+     "w": "\u0627\u0644\u0652\u062e\u064e\u0627\u062f\u0650\u0645\u0650.",
+     "start": 2.654,
+     "end": 3.27
+    }
+   ],
+   "sentences": [
+    {
+     "text": "\u0627\u0644\u0652\u0639\u064e\u0645\u0650\u064a\u0644\u064f \u064a\u064f\u0631\u0652\u0633\u0650\u0644\u064f \u0637\u064e\u0644\u064e\u0628\u064b\u0627 \u0639\u064e\u0628\u0652\u0631\u064e \u0627\u0644\u0633\u0650\u0651\u0644\u0652\u0643\u0650 \u0625\u0650\u0644\u064e\u0649 \u0627\u0644\u0652\u062e\u064e\u0627\u062f\u0650\u0645\u0650.",
+     "start": 0.0
+    }
+   ],
+   "revealSec": [
+    0.0,
+    1.681,
+    2.534
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "\u0623\u064e\u0648\u064e\u0651\u0644\u064b\u0627 \u0642\u0650\u0631\u064e\u0627\u0621\u064e\u0629\u064c\u060c \u062b\u064f\u0645\u064e\u0651 \u0645\u064f\u0642\u064e\u0627\u0631\u064e\u0646\u064e\u0629\u064c\u060c \u062b\u064f\u0645\u064e\u0651 \u062a\u064e\u0639\u0652\u062f\u0650\u064a\u0644\u064c.",
+   "visual": {
+    "type": "svg",
+    "heading": "\u062b\u064e\u0644\u064e\u0627\u062b\u064f \u062e\u064f\u0637\u064f\u0648\u064e\u0627\u062a\u064d",
+    "parts": [
+     {
+      "id": "one",
+      "label": "\u0642\u0631\u0627\u0621\u0629"
+     },
+     {
+      "id": "two",
+      "label": "\u0645\u0642\u0627\u0631\u0646\u0629"
+     },
+     {
+      "id": "three",
+      "label": "\u062a\u0639\u062f\u064a\u0644"
+     }
+    ],
+    "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"one\"><circle cx=\"1400\" cy=\"260\" r=\"120\" fill=\"primary\"/><text x=\"1400\" y=\"272\" text-anchor=\"middle\" size=\"title\">\u0642\u0631\u0627\u0621\u0629</text></g><g id=\"two\"><line x1=\"1260\" y1=\"260\" x2=\"990\" y2=\"260\" arrow=\"end\"/><circle cx=\"850\" cy=\"260\" r=\"120\" fill=\"secondary\"/><text x=\"850\" y=\"272\" text-anchor=\"middle\" size=\"title\">\u0645\u0642\u0627\u0631\u0646\u0629</text></g><g id=\"three\"><line x1=\"710\" y1=\"260\" x2=\"440\" y2=\"260\" arrow=\"end\"/><circle cx=\"300\" cy=\"260\" r=\"120\" fill=\"accent\"/><text x=\"300\" y=\"272\" text-anchor=\"middle\" size=\"title\">\u062a\u0639\u062f\u064a\u0644</text></g></svg>"
+   },
+   "focus": [
+    {
+     "at": "\u062b\u064f\u0645\u064e\u0651 \u062a\u064e\u0639\u0652\u062f\u0650\u064a\u0644\u064c",
+     "on": [
+      "three"
+     ]
+    }
+   ],
+   "audio": "audio/svg-ar/s02.wav",
+   "durationSec": 3.43,
+   "frames": 130,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "\u0623\u064e\u0648\u064e\u0651\u0644\u064b\u0627",
+     "start": 0.0,
+     "end": 0.533
+    },
+    {
+     "w": "\u0642\u0650\u0631\u064e\u0627\u0621\u064e\u0629\u064c\u060c",
+     "start": 0.533,
+     "end": 1.185
+    },
+    {
+     "w": "\u062b\u064f\u0645\u064e\u0651",
+     "start": 1.185,
+     "end": 1.481
+    },
+    {
+     "w": "\u0645\u064f\u0642\u064e\u0627\u0631\u064e\u0646\u064e\u0629\u064c\u060c",
+     "start": 1.481,
+     "end": 2.252
+    },
+    {
+     "w": "\u062b\u064f\u0645\u064e\u0651",
+     "start": 2.252,
+     "end": 2.39
+    },
+    {
+     "w": "\u062a\u064e\u0639\u0652\u062f\u0650\u064a\u0644\u064c.",
+     "start": 2.728,
+     "end": 3.38
+    }
+   ],
+   "sentences": [
+    {
+     "text": "\u0623\u064e\u0648\u064e\u0651\u0644\u064b\u0627 \u0642\u0650\u0631\u064e\u0627\u0621\u064e\u0629\u064c\u060c \u062b\u064f\u0645\u064e\u0651 \u0645\u064f\u0642\u064e\u0627\u0631\u064e\u0646\u064e\u0629\u064c\u060c \u062b\u064f\u0645\u064e\u0651 \u062a\u064e\u0639\u0652\u062f\u0650\u064a\u0644\u064c.",
+     "start": 0.0
+    }
+   ],
+   "revealSec": [
+    0.413,
+    1.361,
+    2.608
+   ],
+   "focusSec": [
+    {
+     "t": 2.172,
+     "on": [
+      "three"
+     ]
+    }
+   ]
+  }
+ ]
+}

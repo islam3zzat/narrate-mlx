@@ -1,0 +1,9 @@
+[00:00:12] Sam: The pager fired at 14:02 UTC for the checkout API error rate.
+[00:03:40] Riley: I acknowledged the page at 14:09 UTC and started looking at the dashboards.
+[00:21:05] Riley: A config change went out at 13:55 UTC that lowered the connection pool limit to 20.
+[00:22:10] Riley: The pool of 20 connections was too low for the evening peak.
+[00:29:30] Sam: We rolled the config back at 14:31 UTC.
+[00:41:10] Sam: The error rate was under 1 percent by 14:44 UTC. About 12000 orders failed in total.
+[00:50:02] Riley: I think the alert threshold was too loose, but I am not sure it would have changed anything.
+[00:52:30] Sam: Riley says 14:09 for the acknowledgement, but the pager log shows 14:07.
+[00:55:00] Sam: Action: the platform team adds a pool limit check to config review by April 1.

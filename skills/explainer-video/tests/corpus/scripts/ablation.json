@@ -1,0 +1,56 @@
+{
+  "title": "Isolating Which Components Drive the Gain",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Starting from our baseline model at sixty-four percent, rotary embeddings lift accuracy by four point eight percent. Adding normalized attention adds another three point six, hard weight decay drops point nine, and curriculum scheduling reaches seventy-five point seven in the full system.",
+      "focus": [
+        {"at": "baseline", "on": ["base"]},
+        {"at": "rotary", "on": ["rope"]},
+        {"at": "hard weight", "on": ["decay"]},
+        {"at": "full system", "on": ["full"]}
+      ],
+      "visual": {
+        "type": "ablation",
+        "heading": "Ablation Waterfall on Reasoning Accuracy",
+        "metric": "Accuracy (%)",
+        "unit": "%",
+        "baseline": {"id": "base", "label": "Baseline", "value": 64.0},
+        "steps": [
+          {"id": "rope", "label": "Rotary", "delta": 4.8, "note": "Position"},
+          {"id": "norm", "label": "Normalized", "delta": 3.6, "note": "Stability"},
+          {"id": "decay", "label": "Hard Decay", "delta": -0.9, "note": "Over-reg"},
+          {"id": "curr", "label": "Curriculum", "delta": 4.2, "note": "Schedule"}
+        ],
+        "totalId": "full",
+        "totalLabel": "Full System",
+        "caption": "Each bar begins from the previous cumulative accuracy so true contributions stay visible."
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "Measuring latency instead, uncached decoding takes forty-eight milliseconds. Key-value caching saves sixteen milliseconds, fused kernels trim nine more, eager logging overhead adds three back, bringing fast serving down to twenty-six milliseconds.",
+      "focus": [
+        {"at": "uncached decoding", "on": ["uncached"]},
+        {"at": "fast serving", "on": ["serving"]}
+      ],
+      "visual": {
+        "type": "ablation",
+        "heading": "Inference Latency Reduction Breakdown",
+        "metric": "P95 Latency (ms)",
+        "unit": "ms",
+        "higherIsBetter": false,
+        "decimals": 1,
+        "baseline": {"id": "uncached", "label": "Uncached", "value": 48.0},
+        "steps": [
+          {"id": "kv", "label": "Caching", "delta": -16.0},
+          {"id": "fused", "label": "Fused", "delta": -9.0},
+          {"id": "log", "label": "Logging", "delta": 3.0}
+        ],
+        "totalId": "serving",
+        "totalLabel": "Fast Serving",
+        "caption": "Negative latency deltas are colour-coded green because lower latency is better."
+      }
+    }
+  ]
+}

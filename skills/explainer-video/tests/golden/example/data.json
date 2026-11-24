@@ -1,0 +1,1458 @@
+{
+ "id": "example",
+ "title": "How an API gateway handles a request",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 2650,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "This is a short example of an explainer video. It shows how a gateway handles one request, using most of the kinds of scene this tool can draw.",
+   "visual": {
+    "type": "title",
+    "kicker": "Example",
+    "headline": "The API gateway",
+    "sub": "One request, start to finish"
+   },
+   "audio": "audio/example/s01.wav",
+   "durationSec": 9.5,
+   "frames": 312,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "This",
+     "start": 0.275,
+     "end": 0.475
+    },
+    {
+     "w": "is",
+     "start": 0.475,
+     "end": 0.6
+    },
+    {
+     "w": "a",
+     "start": 0.6,
+     "end": 0.738
+    },
+    {
+     "w": "short",
+     "start": 0.738,
+     "end": 1.012
+    },
+    {
+     "w": "example",
+     "start": 1.012,
+     "end": 1.55
+    },
+    {
+     "w": "of",
+     "start": 1.55,
+     "end": 1.637
+    },
+    {
+     "w": "an",
+     "start": 1.637,
+     "end": 1.725
+    },
+    {
+     "w": "explainer",
+     "start": 1.725,
+     "end": 2.275
+    },
+    {
+     "w": "video.",
+     "start": 2.275,
+     "end": 3.1
+    },
+    {
+     "w": "It",
+     "start": 3.25,
+     "end": 3.462
+    },
+    {
+     "w": "shows",
+     "start": 3.462,
+     "end": 3.825
+    },
+    {
+     "w": "how",
+     "start": 3.825,
+     "end": 4.013
+    },
+    {
+     "w": "a",
+     "start": 4.013,
+     "end": 4.075
+    },
+    {
+     "w": "gateway",
+     "start": 4.075,
+     "end": 4.525
+    },
+    {
+     "w": "handles",
+     "start": 4.525,
+     "end": 4.963
+    },
+    {
+     "w": "one",
+     "start": 4.963,
+     "end": 5.175
+    },
+    {
+     "w": "request,",
+     "start": 5.175,
+     "end": 5.975
+    },
+    {
+     "w": "using",
+     "start": 6.112,
+     "end": 6.475
+    },
+    {
+     "w": "most",
+     "start": 6.475,
+     "end": 6.737
+    },
+    {
+     "w": "of",
+     "start": 6.737,
+     "end": 6.812
+    },
+    {
+     "w": "the",
+     "start": 6.812,
+     "end": 6.9
+    },
+    {
+     "w": "kinds",
+     "start": 6.9,
+     "end": 7.213
+    },
+    {
+     "w": "of",
+     "start": 7.213,
+     "end": 7.312
+    },
+    {
+     "w": "scene",
+     "start": 7.312,
+     "end": 7.85
+    },
+    {
+     "w": "this",
+     "start": 7.85,
+     "end": 8.113
+    },
+    {
+     "w": "tool",
+     "start": 8.113,
+     "end": 8.425
+    },
+    {
+     "w": "can",
+     "start": 8.425,
+     "end": 8.625
+    },
+    {
+     "w": "draw.",
+     "start": 8.625,
+     "end": 9.25
+    }
+   ],
+   "sentences": [
+    {
+     "text": "This is a short example of an explainer video.",
+     "start": 0.275
+    },
+    {
+     "text": "It shows how a gateway handles one request, using most of the kinds of scene this tool can draw.",
+     "start": 3.25
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "A request passes through three stages. The gateway checks who is calling, applies its rules, and then forwards the request to the right service.",
+   "visual": {
+    "type": "flow",
+    "heading": "The path of a request",
+    "nodes": [
+     {
+      "label": "Client",
+      "sub": "sends a request"
+     },
+     {
+      "label": "Gateway",
+      "sub": "authenticates, applies rules"
+     },
+     {
+      "label": "Service",
+      "sub": "does the work"
+     }
+    ]
+   },
+   "audio": "audio/example/s02.wav",
+   "durationSec": 8.85,
+   "frames": 293,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.35
+    },
+    {
+     "w": "request",
+     "start": 0.35,
+     "end": 0.863
+    },
+    {
+     "w": "passes",
+     "start": 0.863,
+     "end": 1.35
+    },
+    {
+     "w": "through",
+     "start": 1.35,
+     "end": 1.562
+    },
+    {
+     "w": "three",
+     "start": 1.562,
+     "end": 1.8
+    },
+    {
+     "w": "stages.",
+     "start": 1.8,
+     "end": 2.725
+    },
+    {
+     "w": "The",
+     "start": 2.85,
+     "end": 2.95
+    },
+    {
+     "w": "gateway",
+     "start": 2.95,
+     "end": 3.337
+    },
+    {
+     "w": "checks",
+     "start": 3.337,
+     "end": 3.638
+    },
+    {
+     "w": "who",
+     "start": 3.638,
+     "end": 3.737
+    },
+    {
+     "w": "is",
+     "start": 3.737,
+     "end": 3.888
+    },
+    {
+     "w": "calling,",
+     "start": 3.888,
+     "end": 4.5
+    },
+    {
+     "w": "applies",
+     "start": 4.6,
+     "end": 5.013
+    },
+    {
+     "w": "its",
+     "start": 5.013,
+     "end": 5.2
+    },
+    {
+     "w": "rules,",
+     "start": 5.2,
+     "end": 5.875
+    },
+    {
+     "w": "and",
+     "start": 5.975,
+     "end": 6.088
+    },
+    {
+     "w": "then",
+     "start": 6.088,
+     "end": 6.3
+    },
+    {
+     "w": "forwards",
+     "start": 6.3,
+     "end": 6.737
+    },
+    {
+     "w": "the",
+     "start": 6.737,
+     "end": 6.825
+    },
+    {
+     "w": "request",
+     "start": 6.825,
+     "end": 7.4
+    },
+    {
+     "w": "to",
+     "start": 7.4,
+     "end": 7.487
+    },
+    {
+     "w": "the",
+     "start": 7.487,
+     "end": 7.575
+    },
+    {
+     "w": "right",
+     "start": 7.575,
+     "end": 7.85
+    },
+    {
+     "w": "service.",
+     "start": 7.85,
+     "end": 8.6
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A request passes through three stages.",
+     "start": 0.275
+    },
+    {
+     "text": "The gateway checks who is calling, applies its rules, and then forwards the request to the right service.",
+     "start": 2.85
+    }
+   ],
+   "revealSec": [
+    0.23,
+    2.83,
+    7.73
+   ]
+  },
+  {
+   "id": "s03",
+   "narration": "First, authentication. The gateway reads the token and decides whether the caller is allowed in.",
+   "visual": {
+    "type": "steps",
+    "heading": "Inside the gateway",
+    "active": 0,
+    "items": [
+     "Authenticate the caller",
+     "Apply rate limits and rules",
+     "Route to a service"
+    ]
+   },
+   "audio": "audio/example/s03.wav",
+   "durationSec": 6.55,
+   "frames": 224,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "First,",
+     "start": 0.3,
+     "end": 0.8
+    },
+    {
+     "w": "authentication.",
+     "start": 0.875,
+     "end": 2.125
+    },
+    {
+     "w": "The",
+     "start": 2.25,
+     "end": 2.35
+    },
+    {
+     "w": "gateway",
+     "start": 2.35,
+     "end": 2.837
+    },
+    {
+     "w": "reads",
+     "start": 2.837,
+     "end": 3.188
+    },
+    {
+     "w": "the",
+     "start": 3.188,
+     "end": 3.275
+    },
+    {
+     "w": "token",
+     "start": 3.275,
+     "end": 3.862
+    },
+    {
+     "w": "and",
+     "start": 3.862,
+     "end": 3.987
+    },
+    {
+     "w": "decides",
+     "start": 3.987,
+     "end": 4.6
+    },
+    {
+     "w": "whether",
+     "start": 4.6,
+     "end": 4.787
+    },
+    {
+     "w": "the",
+     "start": 4.787,
+     "end": 4.888
+    },
+    {
+     "w": "caller",
+     "start": 4.888,
+     "end": 5.3
+    },
+    {
+     "w": "is",
+     "start": 5.3,
+     "end": 5.425
+    },
+    {
+     "w": "allowed",
+     "start": 5.425,
+     "end": 5.787
+    },
+    {
+     "w": "in.",
+     "start": 5.787,
+     "end": 6.3
+    }
+   ],
+   "sentences": [
+    {
+     "text": "First, authentication.",
+     "start": 0.3
+    },
+    {
+     "text": "The gateway reads the token and decides whether the caller is allowed in.",
+     "start": 2.25
+    }
+   ],
+   "revealSec": [
+    0.755,
+    2.717,
+    3.867
+   ]
+  },
+  {
+   "id": "s04",
+   "narration": "Second, the rules. Rate limits and policies decide whether this particular request may continue.",
+   "visual": {
+    "type": "steps",
+    "heading": "Inside the gateway",
+    "active": 1,
+    "items": [
+     "Authenticate the caller",
+     "Apply rate limits and rules",
+     "Route to a service"
+    ]
+   },
+   "audio": "audio/example/s04.wav",
+   "durationSec": 6.65,
+   "frames": 227,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Second,",
+     "start": 0.3,
+     "end": 0.775
+    },
+    {
+     "w": "the",
+     "start": 0.812,
+     "end": 0.912
+    },
+    {
+     "w": "rules.",
+     "start": 0.912,
+     "end": 1.75
+    },
+    {
+     "w": "Rate",
+     "start": 1.925,
+     "end": 2.25
+    },
+    {
+     "w": "limits",
+     "start": 2.25,
+     "end": 2.65
+    },
+    {
+     "w": "and",
+     "start": 2.65,
+     "end": 2.775
+    },
+    {
+     "w": "policies",
+     "start": 2.775,
+     "end": 3.375
+    },
+    {
+     "w": "decide",
+     "start": 3.375,
+     "end": 3.9
+    },
+    {
+     "w": "whether",
+     "start": 3.9,
+     "end": 4.088
+    },
+    {
+     "w": "this",
+     "start": 4.088,
+     "end": 4.275
+    },
+    {
+     "w": "particular",
+     "start": 4.275,
+     "end": 4.8
+    },
+    {
+     "w": "request",
+     "start": 4.8,
+     "end": 5.375
+    },
+    {
+     "w": "may",
+     "start": 5.375,
+     "end": 5.55
+    },
+    {
+     "w": "continue.",
+     "start": 5.55,
+     "end": 6.375
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Second, the rules.",
+     "start": 0.3
+    },
+    {
+     "text": "Rate limits and policies decide whether this particular request may continue.",
+     "start": 1.925
+    }
+   ],
+   "revealSec": [
+    0.692,
+    0.942,
+    2.655
+   ]
+  },
+  {
+   "id": "s05",
+   "narration": "Third, routing. The gateway picks the backend by path and version. Old and new versions can run side by side.",
+   "visual": {
+    "type": "fanout",
+    "heading": "Routing",
+    "source": {
+     "label": "Gateway"
+    },
+    "targets": [
+     {
+      "label": "orders v1",
+      "sub": "legacy, to be retired"
+     },
+     {
+      "label": "orders v2",
+      "sub": "current"
+     }
+    ]
+   },
+   "audio": "audio/example/s05.wav",
+   "durationSec": 7.4,
+   "frames": 250,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Third,",
+     "start": 0.3,
+     "end": 0.675
+    },
+    {
+     "w": "routing.",
+     "start": 0.725,
+     "end": 1.425
+    },
+    {
+     "w": "The",
+     "start": 1.55,
+     "end": 1.65
+    },
+    {
+     "w": "gateway",
+     "start": 1.65,
+     "end": 2.025
+    },
+    {
+     "w": "picks",
+     "start": 2.025,
+     "end": 2.263
+    },
+    {
+     "w": "the",
+     "start": 2.263,
+     "end": 2.35
+    },
+    {
+     "w": "backend",
+     "start": 2.35,
+     "end": 2.75
+    },
+    {
+     "w": "by",
+     "start": 2.75,
+     "end": 2.938
+    },
+    {
+     "w": "path",
+     "start": 2.938,
+     "end": 3.325
+    },
+    {
+     "w": "and",
+     "start": 3.325,
+     "end": 3.45
+    },
+    {
+     "w": "version.",
+     "start": 3.45,
+     "end": 4.175
+    },
+    {
+     "w": "Old",
+     "start": 4.312,
+     "end": 4.7
+    },
+    {
+     "w": "and",
+     "start": 4.7,
+     "end": 4.825
+    },
+    {
+     "w": "new",
+     "start": 4.825,
+     "end": 5.0
+    },
+    {
+     "w": "versions",
+     "start": 5.0,
+     "end": 5.525
+    },
+    {
+     "w": "can",
+     "start": 5.525,
+     "end": 5.725
+    },
+    {
+     "w": "run",
+     "start": 5.725,
+     "end": 5.987
+    },
+    {
+     "w": "side",
+     "start": 5.987,
+     "end": 6.325
+    },
+    {
+     "w": "by",
+     "start": 6.325,
+     "end": 6.513
+    },
+    {
+     "w": "side.",
+     "start": 6.513,
+     "end": 7.15
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Third, routing.",
+     "start": 0.3
+    },
+    {
+     "text": "The gateway picks the backend by path and version.",
+     "start": 1.55
+    },
+    {
+     "text": "Old and new versions can run side by side.",
+     "start": 4.312
+    }
+   ],
+   "revealSec": [
+    2.143,
+    4.192
+   ]
+  },
+  {
+   "id": "s05b",
+   "narration": "Here is the order of calls. The client sends a request to the gateway. The gateway asks the auth service to check the token. Once auth says yes, the gateway forwards the request to orders, and the answer travels back the same way.",
+   "visual": {
+    "type": "mermaid",
+    "heading": "One request, in order",
+    "code": "sequenceDiagram\n  Client->>Gateway: request\n  Gateway->>Auth: check token\n  Auth-->>Gateway: allowed\n  Gateway->>Orders: forward\n  Orders-->>Client: response",
+    "caption": "Auth happens before routing"
+   },
+   "mermaidRendered": {
+    "svg": "mermaid/7dbef8c2812ef63213e5e353.svg"
+   },
+   "audio": "audio/example/s05b.wav",
+   "durationSec": 14.85,
+   "frames": 473,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Here",
+     "start": 0.275,
+     "end": 0.613
+    },
+    {
+     "w": "is",
+     "start": 0.613,
+     "end": 0.762
+    },
+    {
+     "w": "the",
+     "start": 0.762,
+     "end": 0.912
+    },
+    {
+     "w": "order",
+     "start": 0.912,
+     "end": 1.3
+    },
+    {
+     "w": "of",
+     "start": 1.3,
+     "end": 1.45
+    },
+    {
+     "w": "calls.",
+     "start": 1.45,
+     "end": 2.325
+    },
+    {
+     "w": "The",
+     "start": 2.45,
+     "end": 2.587
+    },
+    {
+     "w": "client",
+     "start": 2.587,
+     "end": 3.087
+    },
+    {
+     "w": "sends",
+     "start": 3.087,
+     "end": 3.362
+    },
+    {
+     "w": "a",
+     "start": 3.362,
+     "end": 3.425
+    },
+    {
+     "w": "request",
+     "start": 3.425,
+     "end": 3.9
+    },
+    {
+     "w": "to",
+     "start": 3.9,
+     "end": 3.987
+    },
+    {
+     "w": "the",
+     "start": 3.987,
+     "end": 4.075
+    },
+    {
+     "w": "gateway.",
+     "start": 4.075,
+     "end": 4.85
+    },
+    {
+     "w": "The",
+     "start": 5.013,
+     "end": 5.125
+    },
+    {
+     "w": "gateway",
+     "start": 5.125,
+     "end": 5.612
+    },
+    {
+     "w": "asks",
+     "start": 5.612,
+     "end": 5.963
+    },
+    {
+     "w": "the",
+     "start": 5.963,
+     "end": 6.112
+    },
+    {
+     "w": "auth",
+     "start": 6.112,
+     "end": 6.4
+    },
+    {
+     "w": "service",
+     "start": 6.4,
+     "end": 6.825
+    },
+    {
+     "w": "to",
+     "start": 6.825,
+     "end": 6.963
+    },
+    {
+     "w": "check",
+     "start": 6.963,
+     "end": 7.225
+    },
+    {
+     "w": "the",
+     "start": 7.225,
+     "end": 7.325
+    },
+    {
+     "w": "token.",
+     "start": 7.325,
+     "end": 8.125
+    },
+    {
+     "w": "Once",
+     "start": 8.262,
+     "end": 8.55
+    },
+    {
+     "w": "auth",
+     "start": 8.55,
+     "end": 8.825
+    },
+    {
+     "w": "says",
+     "start": 8.825,
+     "end": 9.125
+    },
+    {
+     "w": "yes,",
+     "start": 9.125,
+     "end": 9.6
+    },
+    {
+     "w": "the",
+     "start": 9.7,
+     "end": 9.8
+    },
+    {
+     "w": "gateway",
+     "start": 9.8,
+     "end": 10.225
+    },
+    {
+     "w": "forwards",
+     "start": 10.225,
+     "end": 10.662
+    },
+    {
+     "w": "the",
+     "start": 10.662,
+     "end": 10.75
+    },
+    {
+     "w": "request",
+     "start": 10.75,
+     "end": 11.175
+    },
+    {
+     "w": "to",
+     "start": 11.175,
+     "end": 11.3
+    },
+    {
+     "w": "orders,",
+     "start": 11.3,
+     "end": 12.0
+    },
+    {
+     "w": "and",
+     "start": 12.1,
+     "end": 12.213
+    },
+    {
+     "w": "the",
+     "start": 12.213,
+     "end": 12.338
+    },
+    {
+     "w": "answer",
+     "start": 12.338,
+     "end": 12.762
+    },
+    {
+     "w": "travels",
+     "start": 12.762,
+     "end": 13.225
+    },
+    {
+     "w": "back",
+     "start": 13.225,
+     "end": 13.525
+    },
+    {
+     "w": "the",
+     "start": 13.525,
+     "end": 13.662
+    },
+    {
+     "w": "same",
+     "start": 13.662,
+     "end": 14.0
+    },
+    {
+     "w": "way.",
+     "start": 14.0,
+     "end": 14.6
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Here is the order of calls.",
+     "start": 0.275
+    },
+    {
+     "text": "The client sends a request to the gateway.",
+     "start": 2.45
+    },
+    {
+     "text": "The gateway asks the auth service to check the token.",
+     "start": 5.013
+    },
+    {
+     "text": "Once auth says yes, the gateway forwards the request to orders, and the answer travels back the same way.",
+     "start": 8.262
+    }
+   ]
+  },
+  {
+   "id": "s05c",
+   "narration": "What if the token is bad? The gateway checks it first. If it is valid, the request goes on to orders. If not, the gateway stops it right there and answers with an error.",
+   "visual": {
+    "type": "graph",
+    "heading": "Token check decides the path",
+    "direction": "TB",
+    "nodes": [
+     {
+      "id": "req",
+      "label": "Request",
+      "tone": "primary"
+     },
+     {
+      "id": "chk",
+      "label": "Token valid?"
+     },
+     {
+      "id": "ord",
+      "label": "Orders service",
+      "tone": "accent"
+     },
+     {
+      "id": "err",
+      "label": "401 error",
+      "tone": "danger"
+     }
+    ],
+    "edges": [
+     {
+      "from": "req",
+      "to": "chk"
+     },
+     {
+      "from": "chk",
+      "to": "ord",
+      "label": "yes"
+     },
+     {
+      "from": "chk",
+      "to": "err",
+      "label": "no"
+     }
+    ]
+   },
+   "audio": "audio/example/s05c.wav",
+   "durationSec": 10.75,
+   "frames": 350,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "What",
+     "start": 0.25,
+     "end": 0.388
+    },
+    {
+     "w": "if",
+     "start": 0.388,
+     "end": 0.525
+    },
+    {
+     "w": "the",
+     "start": 0.525,
+     "end": 0.637
+    },
+    {
+     "w": "token",
+     "start": 0.637,
+     "end": 1.025
+    },
+    {
+     "w": "is",
+     "start": 1.025,
+     "end": 1.175
+    },
+    {
+     "w": "bad?",
+     "start": 1.175,
+     "end": 1.8
+    },
+    {
+     "w": "The",
+     "start": 1.925,
+     "end": 2.025
+    },
+    {
+     "w": "gateway",
+     "start": 2.025,
+     "end": 2.413
+    },
+    {
+     "w": "checks",
+     "start": 2.413,
+     "end": 2.725
+    },
+    {
+     "w": "it",
+     "start": 2.725,
+     "end": 2.875
+    },
+    {
+     "w": "first.",
+     "start": 2.875,
+     "end": 3.575
+    },
+    {
+     "w": "If",
+     "start": 3.675,
+     "end": 3.837
+    },
+    {
+     "w": "it",
+     "start": 3.837,
+     "end": 3.925
+    },
+    {
+     "w": "is",
+     "start": 3.925,
+     "end": 4.075
+    },
+    {
+     "w": "valid,",
+     "start": 4.075,
+     "end": 4.575
+    },
+    {
+     "w": "the",
+     "start": 4.65,
+     "end": 4.75
+    },
+    {
+     "w": "request",
+     "start": 4.75,
+     "end": 5.25
+    },
+    {
+     "w": "goes",
+     "start": 5.25,
+     "end": 5.5
+    },
+    {
+     "w": "on",
+     "start": 5.5,
+     "end": 5.7
+    },
+    {
+     "w": "to",
+     "start": 5.7,
+     "end": 5.825
+    },
+    {
+     "w": "orders.",
+     "start": 5.825,
+     "end": 6.7
+    },
+    {
+     "w": "If",
+     "start": 6.8,
+     "end": 7.0
+    },
+    {
+     "w": "not,",
+     "start": 7.0,
+     "end": 7.4
+    },
+    {
+     "w": "the",
+     "start": 7.475,
+     "end": 7.575
+    },
+    {
+     "w": "gateway",
+     "start": 7.575,
+     "end": 7.975
+    },
+    {
+     "w": "stops",
+     "start": 7.975,
+     "end": 8.312
+    },
+    {
+     "w": "it",
+     "start": 8.312,
+     "end": 8.4
+    },
+    {
+     "w": "right",
+     "start": 8.4,
+     "end": 8.65
+    },
+    {
+     "w": "there",
+     "start": 8.65,
+     "end": 8.988
+    },
+    {
+     "w": "and",
+     "start": 8.988,
+     "end": 9.162
+    },
+    {
+     "w": "answers",
+     "start": 9.162,
+     "end": 9.625
+    },
+    {
+     "w": "with",
+     "start": 9.625,
+     "end": 9.762
+    },
+    {
+     "w": "an",
+     "start": 9.762,
+     "end": 9.85
+    },
+    {
+     "w": "error.",
+     "start": 9.85,
+     "end": 10.5
+    }
+   ],
+   "sentences": [
+    {
+     "text": "What if the token is bad?",
+     "start": 0.25
+    },
+    {
+     "text": "The gateway checks it first.",
+     "start": 1.925
+    },
+    {
+     "text": "If it is valid, the request goes on to orders.",
+     "start": 3.675
+    },
+    {
+     "text": "If not, the gateway stops it right there and answers with an error.",
+     "start": 6.8
+    }
+   ],
+   "revealSec": [
+    4.63,
+    5.38,
+    5.705,
+    9.73
+   ]
+  },
+  {
+   "id": "s06",
+   "narration": "Compared with calling services directly, a gateway adds a single place for security and traffic control, at the cost of one more hop.",
+   "visual": {
+    "type": "compare",
+    "heading": "Gateway or direct calls?",
+    "columns": [
+     {
+      "title": "With a gateway",
+      "tag": "Central control",
+      "items": [
+       "One place for auth",
+       "Shared rate limits",
+       "One extra hop"
+      ]
+     },
+     {
+      "title": "Direct calls",
+      "tag": "Simple",
+      "items": [
+       "No extra hop",
+       "Every service handles auth",
+       "Harder to change policy"
+      ]
+     }
+    ]
+   },
+   "audio": "audio/example/s06.wav",
+   "durationSec": 8.625,
+   "frames": 286,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Compared",
+     "start": 0.275,
+     "end": 0.713
+    },
+    {
+     "w": "with",
+     "start": 0.713,
+     "end": 0.887
+    },
+    {
+     "w": "calling",
+     "start": 0.887,
+     "end": 1.312
+    },
+    {
+     "w": "services",
+     "start": 1.312,
+     "end": 1.825
+    },
+    {
+     "w": "directly,",
+     "start": 1.825,
+     "end": 2.65
+    },
+    {
+     "w": "a",
+     "start": 2.788,
+     "end": 2.913
+    },
+    {
+     "w": "gateway",
+     "start": 2.913,
+     "end": 3.487
+    },
+    {
+     "w": "adds",
+     "start": 3.487,
+     "end": 3.75
+    },
+    {
+     "w": "a",
+     "start": 3.75,
+     "end": 3.875
+    },
+    {
+     "w": "single",
+     "start": 3.875,
+     "end": 4.275
+    },
+    {
+     "w": "place",
+     "start": 4.275,
+     "end": 4.6
+    },
+    {
+     "w": "for",
+     "start": 4.6,
+     "end": 4.725
+    },
+    {
+     "w": "security",
+     "start": 4.725,
+     "end": 5.3
+    },
+    {
+     "w": "and",
+     "start": 5.3,
+     "end": 5.425
+    },
+    {
+     "w": "traffic",
+     "start": 5.425,
+     "end": 5.8
+    },
+    {
+     "w": "control,",
+     "start": 5.8,
+     "end": 6.5
+    },
+    {
+     "w": "at",
+     "start": 6.625,
+     "end": 6.713
+    },
+    {
+     "w": "the",
+     "start": 6.713,
+     "end": 6.812
+    },
+    {
+     "w": "cost",
+     "start": 6.812,
+     "end": 7.225
+    },
+    {
+     "w": "of",
+     "start": 7.225,
+     "end": 7.35
+    },
+    {
+     "w": "one",
+     "start": 7.35,
+     "end": 7.575
+    },
+    {
+     "w": "more",
+     "start": 7.575,
+     "end": 7.8
+    },
+    {
+     "w": "hop.",
+     "start": 7.8,
+     "end": 8.35
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Compared with calling services directly, a gateway adds a single place for security and traffic control, at the cost of one more hop.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    2.793,
+    7.68
+   ]
+  },
+  {
+   "id": "s07",
+   "narration": "To remember: the gateway authenticates, applies rules and routes. Everything else is the service's job.",
+   "visual": {
+    "type": "callout",
+    "heading": "Remember",
+    "big": "Authenticate, apply rules, route",
+    "text": "Everything else belongs to the service"
+   },
+   "audio": "audio/example/s07.wav",
+   "durationSec": 6.925,
+   "frames": 235,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "To",
+     "start": 0.275,
+     "end": 0.4
+    },
+    {
+     "w": "remember:",
+     "start": 0.4,
+     "end": 1.075
+    },
+    {
+     "w": "the",
+     "start": 1.2,
+     "end": 1.3
+    },
+    {
+     "w": "gateway",
+     "start": 1.3,
+     "end": 1.688
+    },
+    {
+     "w": "authenticates,",
+     "start": 1.688,
+     "end": 2.5
+    },
+    {
+     "w": "applies",
+     "start": 2.575,
+     "end": 3.025
+    },
+    {
+     "w": "rules",
+     "start": 3.025,
+     "end": 3.525
+    },
+    {
+     "w": "and",
+     "start": 3.525,
+     "end": 3.65
+    },
+    {
+     "w": "routes.",
+     "start": 3.65,
+     "end": 4.35
+    },
+    {
+     "w": "Everything",
+     "start": 4.487,
+     "end": 4.95
+    },
+    {
+     "w": "else",
+     "start": 4.95,
+     "end": 5.25
+    },
+    {
+     "w": "is",
+     "start": 5.25,
+     "end": 5.388
+    },
+    {
+     "w": "the",
+     "start": 5.388,
+     "end": 5.487
+    },
+    {
+     "w": "service's",
+     "start": 5.487,
+     "end": 6.037
+    },
+    {
+     "w": "job.",
+     "start": 6.037,
+     "end": 6.65
+    }
+   ],
+   "sentences": [
+    {
+     "text": "To remember: the gateway authenticates, applies rules and routes.",
+     "start": 0.275
+    },
+    {
+     "text": "Everything else is the service's job.",
+     "start": 4.487
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+  "name": "quick-brief",
+  "description": "A 30 to 60 second brief: the bottom line first, at most three points, one takeaway. Heavy selection.",
+  "audience": "anyone with a minute",
+  "defaults": {
+    "speed": 1.1
+  },
+  "bounds": {
+    "scenes": [
+      3,
+      5
+    ],
+    "seconds": [
+      30,
+      60
+    ],
+    "wordsPerScene": [
+      12,
+      30
+    ]
+  },
+  "preferredVisuals": [
+    "title",
+    "bullets",
+    "callout"
+  ],
+  "ledger": {
+    "required": false,
+    "kinds": [
+      "decision",
+      "action",
+      "number"
+    ],
+    "mustCover": [],
+    "coverHigh": false,
+    "allowDeferred": false
+  },
+  "sections": [
+    "bluf",
+    "points",
+    "takeaway"
+  ],
+  "lint": {
+    "blameless": false
+  }
+}

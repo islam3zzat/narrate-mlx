@@ -1,0 +1,77 @@
+{
+  "title": "Cancellation-grid corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Break a curve into five intervals. Interior endpoints meet in opposing pairs and cancel out, leaving only the outer boundary endpoints.",
+      "visual": {
+        "type": "cancellation-grid",
+        "heading": "Fundamental Theorem in 1D",
+        "theorem": "ftc-1d",
+        "cols": 5,
+        "stages": [
+          {"label": "Five intervals", "phase": "cells", "note": "sum small changes"},
+          {"label": "Interior endpoints", "phase": "interior", "note": "+x and -x meet"},
+          {"label": "Cancel out", "phase": "cancel", "note": "adjacent terms vanish"},
+          {"label": "Outer boundary", "phase": "boundary", "note": "only F(b) - F(a) remains"}
+        ],
+        "caption": "Every interior point is added once and subtracted once."
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "Tile a surface with tiny spin loops. Shared interior walls carry opposite flows that cancel completely, leaving only the outer perimeter loop.",
+      "visual": {
+        "type": "cancellation-grid",
+        "heading": "Green's & Stokes' Curl",
+        "theorem": "curl-2d",
+        "cols": 3,
+        "rows": 3,
+        "stages": [
+          {"label": "Tiny spin", "phase": "cells", "note": "CCW micro-loops"},
+          {"label": "Interior walls", "phase": "interior", "note": "opposing edge directions"},
+          {"label": "Cancel completely", "phase": "cancel", "note": "shared edges sum to zero"},
+          {"label": "Outer perimeter", "phase": "boundary", "note": "net boundary circulation"}
+        ],
+        "caption": "Internal circulation cancels along every shared edge."
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "Measure outward flux from each square tile. Flow leaving one cell enters its neighbor and cancels, leaving only flux across the outer rim.",
+      "visual": {
+        "type": "cancellation-grid",
+        "heading": "2D Divergence",
+        "theorem": "divergence-2d",
+        "cols": 4,
+        "rows": 3,
+        "stages": [
+          {"label": "Square tile", "phase": "cells", "note": "outward arrows per tile"},
+          {"label": "Neighbor", "phase": "interior", "note": "head-to-head flux pairs"},
+          {"label": "Cancels", "phase": "cancel", "note": "interior flux vanishes"},
+          {"label": "Outer rim", "phase": "boundary", "note": "total outward boundary flux"}
+        ],
+        "caption": "What leaves one interior tile immediately enters the next."
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "Stack unit cubes in space. Opposing fluxes on shared inner faces cancel out, leaving only outward flux through the outer shell.",
+      "visual": {
+        "type": "cancellation-grid",
+        "heading": "3D Divergence Theorem",
+        "theorem": "divergence-3d",
+        "cols": 2,
+        "rows": 2,
+        "depth": 2,
+        "stages": [
+          {"label": "Unit cubes", "phase": "cells", "note": "2x2x2 volume cells"},
+          {"label": "Inner faces", "phase": "interior", "note": "shared faces oppose"},
+          {"label": "Cancel out", "phase": "cancel", "note": "interior walls vanish"},
+          {"label": "Outer shell", "phase": "boundary", "note": "flux escapes outer shell"}
+        ],
+        "caption": "Isometric volume cells cancel on shared interior faces."
+      }
+    }
+  ]
+}

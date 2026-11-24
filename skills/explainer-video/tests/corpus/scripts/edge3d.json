@@ -1,0 +1,318 @@
+{
+  "title": "Edge corpus 3D",
+  "mode": "3d",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "A stack of layers, bottom first.",
+      "visual": {
+        "type": "layers3d",
+        "heading": "Layers",
+        "layers": [
+          {
+            "id": "hw",
+            "label": "Hardware",
+            "tone": "neutral"
+          },
+          {
+            "id": "os",
+            "label": "Kernel",
+            "sub": "drivers",
+            "tone": "secondary"
+          },
+          {
+            "id": "app",
+            "label": "Applications",
+            "tone": "accent"
+          }
+        ],
+        "caption": "A stack"
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "Every visual type, in three dimensions.",
+      "visual": {
+        "type": "title",
+        "kicker": "corpus",
+        "headline": "Edge cases",
+        "sub": "Three dimensions"
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "First, parsing. Second, validating the input. Third, writing the output.",
+      "visual": {
+        "type": "bullets",
+        "heading": "Three bullets",
+        "items": [
+          "Parsing",
+          "Validating the input",
+          "Writing the output"
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "Cache is fast but small. Disk is slow but large.",
+      "visual": {
+        "type": "compare",
+        "heading": "Two options",
+        "columns": [
+          {
+            "title": "Cache",
+            "tag": "fast",
+            "items": [
+              "Small",
+              "Volatile"
+            ]
+          },
+          {
+            "title": "Disk",
+            "tag": "slow",
+            "items": [
+              "Large",
+              "Durable"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "narration": "Plan the work, build it, then ship it.",
+      "visual": {
+        "type": "steps",
+        "heading": "Steps",
+        "items": [
+          "Plan the work",
+          "Build it",
+          "Ship it"
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "narration": "A client calls a gateway, which calls a service.",
+      "visual": {
+        "type": "flow",
+        "heading": "A chain",
+        "nodes": [
+          {
+            "label": "Client",
+            "sub": "asks"
+          },
+          {
+            "label": "Gateway",
+            "sub": "routes"
+          },
+          {
+            "label": "Service",
+            "sub": "answers"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "narration": "The router sends traffic to billing or to search.",
+      "visual": {
+        "type": "fanout",
+        "heading": "One to many",
+        "source": {
+          "label": "Router"
+        },
+        "targets": [
+          {
+            "label": "Billing",
+            "sub": "invoices"
+          },
+          {
+            "label": "Search",
+            "sub": "queries"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "narration": "Two methods differ in speed and in safety.",
+      "visual": {
+        "type": "table",
+        "heading": "A table",
+        "headers": [
+          "Method",
+          "Speed",
+          "Safety"
+        ],
+        "rows": [
+          [
+            "Alpha",
+            "Fast",
+            "Low"
+          ],
+          [
+            "Beta",
+            "Slow",
+            "High"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "narration": "Never reuse a token. It is a real risk.",
+      "visual": {
+        "type": "callout",
+        "heading": "Warning",
+        "big": "Never reuse a token",
+        "text": "A reused token can be replayed.",
+        "tone": "warn"
+      }
+    },
+    {
+      "id": "s10",
+      "narration": "The machine is idle, then running, then done.",
+      "visual": {
+        "type": "mermaid",
+        "heading": "A static state diagram",
+        "code": "stateDiagram-v2\n  [*] --> Idle\n  Idle --> Running\n  Running --> Done"
+      }
+    },
+    {
+      "id": "s11",
+      "narration": "A user logs in. The app checks the cache and the store. Look at the cache.",
+      "visual": {
+        "type": "graph",
+        "heading": "Graph",
+        "nodes": [
+          {
+            "id": "user",
+            "label": "User",
+            "tone": "primary"
+          },
+          {
+            "id": "app",
+            "label": "App",
+            "tone": "secondary"
+          },
+          {
+            "id": "cache",
+            "label": "Cache",
+            "tone": "accent"
+          },
+          {
+            "id": "store",
+            "label": "Store"
+          }
+        ],
+        "edges": [
+          {
+            "from": "user",
+            "to": "app",
+            "label": "login"
+          },
+          {
+            "from": "app",
+            "to": "cache"
+          },
+          {
+            "from": "app",
+            "to": "store",
+            "dashed": true
+          }
+        ]
+      },
+      "focus": [
+        {
+          "at": "Look at the cache",
+          "on": [
+            "cache"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "narration": "A token inherits from a credential, and a client owns many tokens.",
+      "visual": {
+        "type": "class",
+        "heading": "Classes",
+        "classes": [
+          {
+            "id": "cred",
+            "name": "Credential",
+            "methods": [
+              "verify()"
+            ]
+          },
+          {
+            "id": "token",
+            "name": "Token",
+            "attributes": [
+              "expires: int"
+            ]
+          },
+          {
+            "id": "client",
+            "name": "Client"
+          }
+        ],
+        "relations": [
+          {
+            "from": "token",
+            "to": "cred",
+            "type": "inherits"
+          },
+          {
+            "from": "client",
+            "to": "token",
+            "type": "composes",
+            "label": "owns"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s13",
+      "narration": "The client asks the server. The server replies. Look at the reply.",
+      "visual": {
+        "type": "sequence",
+        "heading": "Messages",
+        "participants": [
+          {
+            "id": "c",
+            "label": "Client",
+            "tone": "primary"
+          },
+          {
+            "id": "s",
+            "label": "Server",
+            "tone": "secondary"
+          }
+        ],
+        "messages": [
+          {
+            "from": "c",
+            "to": "s",
+            "label": "request"
+          },
+          {
+            "from": "s",
+            "to": "c",
+            "label": "response",
+            "reply": true
+          }
+        ]
+      },
+      "focus": [
+        {
+          "at": "Look at the reply",
+          "on": [
+            "s->c"
+          ]
+        }
+      ]
+    }
+  ]
+}

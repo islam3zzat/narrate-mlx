@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok cancellation-grid: 4 scenes, 87 words, about 33s
+--stderr--

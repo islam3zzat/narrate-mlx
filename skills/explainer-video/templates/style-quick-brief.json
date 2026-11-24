@@ -1,0 +1,24 @@
+{
+  "title": "Quick brief (sample: replace with your topic)",
+  "style": "quick-brief",
+  "scenes": [
+    {
+      "id": "s01",
+      "section": "bluf",
+      "narration": "We are moving the weekly meeting to Tuesday, starting next month. Here is why, in three points.",
+      "visual": {"type": "title", "kicker": "Brief", "headline": "Weekly meeting moves to Tuesday", "sub": "Starting next month"}
+    },
+    {
+      "id": "s02",
+      "section": "points",
+      "narration": "First, Monday is too early for the numbers to be ready. Second, Tuesday avoids the holiday clash. Third, nobody has to lose a day of focus.",
+      "visual": {"type": "bullets", "heading": "Three reasons", "items": ["Numbers are ready by Tuesday", "No holiday clash", "No lost focus day"]}
+    },
+    {
+      "id": "s03",
+      "section": "takeaway",
+      "narration": "To remember: Tuesday, from next month. Please update your calendar this week.",
+      "visual": {"type": "callout", "heading": "Remember", "big": "Tuesday", "text": "Update your calendar this week"}
+    }
+  ]
+}

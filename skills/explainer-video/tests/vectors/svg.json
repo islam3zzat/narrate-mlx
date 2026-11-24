@@ -1,0 +1,768 @@
+{
+ "accept": [
+  {
+   "name": "minimal empty",
+   "svg": "<svg viewBox=\"0 0 100 100\"/>",
+   "parts": []
+  },
+  {
+   "name": "minimal with namespace",
+   "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"></svg>",
+   "parts": []
+  },
+  {
+   "name": "static shapes outside parts",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect x=\"10\" y=\"10\" width=\"300\" height=\"120\" fill=\"primary\"/><circle cx=\"500\" cy=\"100\" r=\"40\"/><ellipse cx=\"700\" cy=\"100\" rx=\"60\" ry=\"30\" fill=\"none\"/><line x1=\"0\" y1=\"0\" x2=\"100\" y2=\"100\" stroke=\"danger\" stroke-width=\"2\"/></svg>",
+   "parts": []
+  },
+  {
+   "name": "two parts",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"a\"><rect width=\"100\" height=\"50\"/></g><g id=\"b\"><text x=\"5\" y=\"5\">Hello</text></g></svg>",
+   "parts": [
+    "a",
+    "b"
+   ]
+  },
+  {
+   "name": "single quotes and newlines",
+   "svg": "<svg\n viewBox='0 0 800 400'>\n  <g id='x_1'>\n   <rect  width='10'  height='10'  />\n  </g>\n</svg>\n",
+   "parts": [
+    "x_1"
+   ]
+  },
+  {
+   "name": "path with arrow",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"p\"><path d=\"M 0 0 L 100 0 C 10 10, 20 20, 30 30 Q 1 1 2 2 T 5 5 S 1 2 3 4 H 9 V 8 A 5 5 0 0 1 10 10 Z\" arrow=\"both\" stroke=\"accent\"/></g></svg>",
+   "parts": [
+    "p"
+   ]
+  },
+  {
+   "name": "path relative and compact",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"m0,0l10-10.5h-3v2.5z\" fill=\"none\"/></svg>",
+   "parts": []
+  },
+  {
+   "name": "polyline and polygon",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><polyline points=\"0,0 10,10 20,0\" arrow=\"end\"/><polygon points=\"0 0 10 0 5 8\" fill=\"secondary\"/></svg>",
+   "parts": []
+  },
+  {
+   "name": "text with tspan",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"10\" y=\"20\" font=\"mono\" size=\"title\" fill=\"ink\" text-anchor=\"middle\">Hi <tspan fill=\"danger\" dy=\"4\">there</tspan> you</text></svg>",
+   "parts": []
+  },
+  {
+   "name": "builtin entities",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">a &amp; b &lt; c &gt; d &quot;e&quot; &apos;f&apos;</text></svg>",
+   "parts": []
+  },
+  {
+   "name": "colon in text content",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">Step 1: parse</text></svg>",
+   "parts": []
+  },
+  {
+   "name": "arabic text",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"800\" y=\"50\" text-anchor=\"start\">مَرْحَبًا</text></svg>",
+   "parts": []
+  },
+  {
+   "name": "transforms",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"t\" transform=\"translate(10 20) scale(2) rotate(45)\"><rect width=\"5\" height=\"5\" transform=\"rotate(90, 2, 2) translate(1,1)\"/></g></svg>",
+   "parts": [
+    "t"
+   ]
+  },
+  {
+   "name": "nested groups",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"n\"><g><g><rect width=\"5\" height=\"5\"/></g></g></g></svg>",
+   "parts": [
+    "n"
+   ]
+  },
+  {
+   "name": "group without id is static",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g><rect width=\"5\" height=\"5\"/></g><g id=\"k\"><rect width=\"5\" height=\"5\"/></g></svg>",
+   "parts": [
+    "k"
+   ]
+  },
+  {
+   "name": "every colour token",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill=\"ink\" stroke=\"ink\"/><rect width=\"5\" height=\"5\" fill=\"panel\" stroke=\"panel\"/><rect width=\"5\" height=\"5\" fill=\"bg\" stroke=\"bg\"/><rect width=\"5\" height=\"5\" fill=\"muted\" stroke=\"muted\"/><rect width=\"5\" height=\"5\" fill=\"dim\" stroke=\"dim\"/><rect width=\"5\" height=\"5\" fill=\"primary\" stroke=\"primary\"/><rect width=\"5\" height=\"5\" fill=\"secondary\" stroke=\"secondary\"/><rect width=\"5\" height=\"5\" fill=\"accent\" stroke=\"accent\"/><rect width=\"5\" height=\"5\" fill=\"danger\" stroke=\"danger\"/><rect width=\"5\" height=\"5\" fill=\"none\" stroke=\"none\"/></svg>",
+   "parts": []
+  },
+  {
+   "name": "viewBox with offset",
+   "svg": "<svg viewBox=\"-50 -50 400 300\"><rect x=\"-10\" y=\"-10\" width=\"5\" height=\"5\"/></svg>",
+   "parts": []
+  },
+  {
+   "name": "decimal numbers",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><circle cx=\".5\" cy=\"-1.25\" r=\"3.\"/></svg>",
+   "parts": []
+  },
+  {
+   "name": "16 parts",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"p0\"><rect width=\"5\" height=\"5\"/></g><g id=\"p1\"><rect width=\"5\" height=\"5\"/></g><g id=\"p2\"><rect width=\"5\" height=\"5\"/></g><g id=\"p3\"><rect width=\"5\" height=\"5\"/></g><g id=\"p4\"><rect width=\"5\" height=\"5\"/></g><g id=\"p5\"><rect width=\"5\" height=\"5\"/></g><g id=\"p6\"><rect width=\"5\" height=\"5\"/></g><g id=\"p7\"><rect width=\"5\" height=\"5\"/></g><g id=\"p8\"><rect width=\"5\" height=\"5\"/></g><g id=\"p9\"><rect width=\"5\" height=\"5\"/></g><g id=\"p10\"><rect width=\"5\" height=\"5\"/></g><g id=\"p11\"><rect width=\"5\" height=\"5\"/></g><g id=\"p12\"><rect width=\"5\" height=\"5\"/></g><g id=\"p13\"><rect width=\"5\" height=\"5\"/></g><g id=\"p14\"><rect width=\"5\" height=\"5\"/></g><g id=\"p15\"><rect width=\"5\" height=\"5\"/></g></svg>",
+   "parts": [
+    "p0",
+    "p1",
+    "p2",
+    "p3",
+    "p4",
+    "p5",
+    "p6",
+    "p7",
+    "p8",
+    "p9",
+    "p10",
+    "p11",
+    "p12",
+    "p13",
+    "p14",
+    "p15"
+   ]
+  },
+  {
+   "name": "polyline tiny decimals (no exponent after parse)",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"a\"><polyline points=\"0 0.0000001 100 100.00000001\"/></g></svg>",
+   "parts": [
+    "a"
+   ]
+  }
+ ],
+ "reject": [
+  {
+   "name": "doctype",
+   "svg": "<!DOCTYPE svg><svg viewBox=\"0 0 100 100\"/>",
+   "expect": "DOCTYPE"
+  },
+  {
+   "name": "doctype lowercase",
+   "svg": "<!doctype svg><svg viewBox=\"0 0 100 100\"/>",
+   "expect": "DOCTYPE"
+  },
+  {
+   "name": "entity declaration",
+   "svg": "<!ENTITY x \"y\"><svg viewBox=\"0 0 100 100\"/>",
+   "expect": "ENTITY"
+  },
+  {
+   "name": "doctype with entity subset",
+   "svg": "<!DOCTYPE svg [<!ENTITY x \"y\">]><svg viewBox=\"0 0 100 100\"/>",
+   "expect": "DOCTYPE"
+  },
+  {
+   "name": "cdata",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\"><![CDATA[hi]]></text></svg>",
+   "expect": "CDATA"
+  },
+  {
+   "name": "xml declaration",
+   "svg": "<?xml version=\"1.0\"?><svg viewBox=\"0 0 100 100\"/>",
+   "expect": "processing instructions"
+  },
+  {
+   "name": "processing instruction",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><?php echo 1 ?></svg>",
+   "expect": "processing instructions"
+  },
+  {
+   "name": "comment",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><!-- hi --><rect width=\"5\" height=\"5\"/></svg>",
+   "expect": "comments"
+  },
+  {
+   "name": "prefixed element",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><svg:rect width=\"5\" height=\"5\"/></svg>",
+   "expect": "namespaced element"
+  },
+  {
+   "name": "prefixed closing element",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\"></svg:rect></svg>",
+   "expect": "namespaced element"
+  },
+  {
+   "name": "xmlns:xlink",
+   "svg": "<svg viewBox=\"0 0 100 100\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"/>",
+   "expect": "namespaced attributes"
+  },
+  {
+   "name": "xlink:href",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" xlink:href=\"#a\"/></svg>",
+   "expect": "namespaced attributes"
+  },
+  {
+   "name": "wrong xmlns value",
+   "svg": "<svg viewBox=\"0 0 100 100\" xmlns=\"http://evil.example/x\"/>",
+   "expect": "xmlns must be"
+  },
+  {
+   "name": "numeric character reference",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">&#60;script&#62;</text></svg>",
+   "expect": "entity"
+  },
+  {
+   "name": "hex character reference",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">&#x3c;</text></svg>",
+   "expect": "entity"
+  },
+  {
+   "name": "html entity",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">a&nbsp;b</text></svg>",
+   "expect": "&nbsp;"
+  },
+  {
+   "name": "custom entity use",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">&xxe;</text></svg>",
+   "expect": "&xxe;"
+  },
+  {
+   "name": "bare ampersand",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">a & b</text></svg>",
+   "expect": "entity"
+  },
+  {
+   "name": "ampersand in attribute",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill=\"ink&amp;x\"/></svg>",
+   "expect": "\"&\""
+  },
+  {
+   "name": "script",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><script>alert(1)</script></svg>",
+   "expect": "<script> is not allowed"
+  },
+  {
+   "name": "style element",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><style>rect{fill:red}</style></svg>",
+   "expect": "<style> is not allowed"
+  },
+  {
+   "name": "foreignObject",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><foreignObject width=\"5\" height=\"5\"/></svg>",
+   "expect": "<foreignObject> is not allowed"
+  },
+  {
+   "name": "image",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><image width=\"5\" height=\"5\"/></svg>",
+   "expect": "<image> is not allowed"
+  },
+  {
+   "name": "use",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><use/></svg>",
+   "expect": "<use> is not allowed"
+  },
+  {
+   "name": "defs",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><defs/></svg>",
+   "expect": "<defs> is not allowed"
+  },
+  {
+   "name": "anchor",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><a><rect width=\"5\" height=\"5\"/></a></svg>",
+   "expect": "<a> is not allowed"
+  },
+  {
+   "name": "animate",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\"><animate attributeName=\"x\"/></rect></svg>",
+   "expect": "<animate> is not allowed"
+  },
+  {
+   "name": "filter",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><filter/></svg>",
+   "expect": "<filter> is not allowed"
+  },
+  {
+   "name": "linearGradient",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><linearGradient/></svg>",
+   "expect": "<linearGradient> is not allowed"
+  },
+  {
+   "name": "marker",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><marker/></svg>",
+   "expect": "<marker> is not allowed"
+  },
+  {
+   "name": "title element",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><title>x</title></svg>",
+   "expect": "<title> is not allowed"
+  },
+  {
+   "name": "nested svg",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><svg viewBox=\"0 0 10 10\"/></svg>",
+   "expect": "root element"
+  },
+  {
+   "name": "root not svg",
+   "svg": "<g viewBox=\"0 0 100 100\"/>",
+   "expect": "root element must be <svg"
+  },
+  {
+   "name": "two roots",
+   "svg": "<svg viewBox=\"0 0 100 100\"/><svg viewBox=\"0 0 100 100\"/>",
+   "expect": "only one <svg>"
+  },
+  {
+   "name": "text after root",
+   "svg": "<svg viewBox=\"0 0 100 100\"/>hello",
+   "expect": "text after"
+  },
+  {
+   "name": "text before root",
+   "svg": "hello<svg viewBox=\"0 0 100 100\"/>",
+   "expect": "text before"
+  },
+  {
+   "name": "no markup",
+   "svg": "just words",
+   "expect": "text before"
+  },
+  {
+   "name": "empty string",
+   "svg": "",
+   "expect": "no <svg>"
+  },
+  {
+   "name": "missing viewBox",
+   "svg": "<svg><rect width=\"5\" height=\"5\"/></svg>",
+   "expect": "viewBox"
+  },
+  {
+   "name": "viewBox three numbers",
+   "svg": "<svg viewBox=\"0 0 100\"/>",
+   "expect": "four numbers"
+  },
+  {
+   "name": "viewBox too small",
+   "svg": "<svg viewBox=\"0 0 50 50\"/>",
+   "expect": "viewBox width and height"
+  },
+  {
+   "name": "viewBox too large",
+   "svg": "<svg viewBox=\"0 0 5000 400\"/>",
+   "expect": "viewBox width and height"
+  },
+  {
+   "name": "viewBox not numbers",
+   "svg": "<svg viewBox=\"0 0 a b\"/>",
+   "expect": "four numbers"
+  },
+  {
+   "name": "root width attribute",
+   "svg": "<svg viewBox=\"0 0 100 100\" width=\"100\"/>",
+   "expect": "attribute \"width\" is not allowed"
+  },
+  {
+   "name": "onclick",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" onclick=\"x()\"/></svg>",
+   "expect": "event handlers"
+  },
+  {
+   "name": "onload on root",
+   "svg": "<svg viewBox=\"0 0 100 100\" onload=\"x()\"/>",
+   "expect": "event handlers"
+  },
+  {
+   "name": "onmouseover uppercase",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" OnMouseOver=\"x()\"/></svg>",
+   "expect": "event handlers"
+  },
+  {
+   "name": "href",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" href=\"http://x\"/></svg>",
+   "expect": "attribute \"href\" is not allowed"
+  },
+  {
+   "name": "style attribute",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" style=\"fill:red\"/></svg>",
+   "expect": "attribute \"style\" is not allowed"
+  },
+  {
+   "name": "class attribute",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" class=\"a\"/></svg>",
+   "expect": "attribute \"class\" is not allowed"
+  },
+  {
+   "name": "id on nested group",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"a\"><g id=\"b\"/></g></svg>",
+   "expect": "top-level <g>"
+  },
+  {
+   "name": "id on rect",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect id=\"a\" width=\"5\" height=\"5\"/></svg>",
+   "expect": "attribute \"id\" is not allowed"
+  },
+  {
+   "name": "id on text",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text id=\"a\" x=\"1\" y=\"1\">a</text></svg>",
+   "expect": "attribute \"id\" is not allowed"
+  },
+  {
+   "name": "duplicate part ids",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"a\"/><g id=\"a\"/></svg>",
+   "expect": "duplicate id"
+  },
+  {
+   "name": "id with bad characters",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"a b\"/></svg>",
+   "expect": "[A-Za-z0-9_-]"
+  },
+  {
+   "name": "url( in value",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill=\"url(#a)\"/></svg>",
+   "expect": "url("
+  },
+  {
+   "name": "javascript colon value",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill=\"javascript:alert(1)\"/></svg>",
+   "expect": "\":\""
+  },
+  {
+   "name": "hex colour",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill=\"#ff0000\"/></svg>",
+   "expect": "colour name"
+  },
+  {
+   "name": "rgb colour",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill=\"rgb(1,2,3)\"/></svg>",
+   "expect": "colour name"
+  },
+  {
+   "name": "named css colour",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill=\"red\"/></svg>",
+   "expect": "colour name"
+  },
+  {
+   "name": "currentColor",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" stroke=\"currentColor\"/></svg>",
+   "expect": "colour name"
+  },
+  {
+   "name": "opacity",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" opacity=\"0.5\"/></svg>",
+   "expect": "attribute \"opacity\" is not allowed"
+  },
+  {
+   "name": "fill-opacity",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill-opacity=\"0.5\"/></svg>",
+   "expect": "not allowed"
+  },
+  {
+   "name": "font-family",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\" font-family=\"Arial\">a</text></svg>",
+   "expect": "attribute \"font-family\" is not allowed"
+  },
+  {
+   "name": "font-size",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\" font-size=\"40\">a</text></svg>",
+   "expect": "attribute \"font-size\" is not allowed"
+  },
+  {
+   "name": "font token invalid",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\" font=\"serif\">a</text></svg>",
+   "expect": "must be one of: sans mono"
+  },
+  {
+   "name": "size in pixels",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\" size=\"40\">a</text></svg>",
+   "expect": "must be one of: small body label title"
+  },
+  {
+   "name": "anchor invalid",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\" text-anchor=\"left\">a</text></svg>",
+   "expect": "must be one of: start middle end"
+  },
+  {
+   "name": "stroke-width 3",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" stroke-width=\"3\"/></svg>",
+   "expect": "must be 2 or 4"
+  },
+  {
+   "name": "stroke-width 10",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" stroke-width=\"10\"/></svg>",
+   "expect": "must be 2 or 4"
+  },
+  {
+   "name": "stroke-linejoin",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" stroke-linejoin=\"round\"/></svg>",
+   "expect": "not allowed"
+  },
+  {
+   "name": "stroke-dasharray",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"M0 0L5 5\" stroke-dasharray=\"5\"/></svg>",
+   "expect": "not allowed"
+  },
+  {
+   "name": "fill on line",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"5\" fill=\"ink\"/></svg>",
+   "expect": "attribute \"fill\" is not allowed"
+  },
+  {
+   "name": "rx on rect",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" rx=\"3\"/></svg>",
+   "expect": "attribute \"rx\" is not allowed"
+  },
+  {
+   "name": "transform skew",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" transform=\"skewX(30)\"/></svg>",
+   "expect": "translate"
+  },
+  {
+   "name": "transform matrix",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" transform=\"matrix(1 0 0 1 0 0)\"/></svg>",
+   "expect": "translate"
+  },
+  {
+   "name": "transform expression",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" transform=\"translate(1+2)\"/></svg>",
+   "expect": "plain number"
+  },
+  {
+   "name": "transform url",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" transform=\"translate(url(#a))\"/></svg>",
+   "expect": "url("
+  },
+  {
+   "name": "transform trailing junk",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" transform=\"translate(1 2) foo\"/></svg>",
+   "expect": "translate"
+  },
+  {
+   "name": "transform too many args",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" transform=\"translate(1 2 3)\"/></svg>",
+   "expect": "takes 1 or 2"
+  },
+  {
+   "name": "path injection quote",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d='M0 0 L1 1\" onload=\"x()'/></svg>",
+   "expect": "characters outside"
+  },
+  {
+   "name": "path with word",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"M0 0 javascript\"/></svg>",
+   "expect": "characters outside"
+  },
+  {
+   "name": "path with script",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"M0 0 L5 5 <script>\"/></svg>",
+   "expect": "values may not contain"
+  },
+  {
+   "name": "path not starting with M",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"L0 0 L5 5\"/></svg>",
+   "expect": "must start with M"
+  },
+  {
+   "name": "path wrong arity",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"M0 0 L5\"/></svg>",
+   "expect": "needs 2 numbers"
+  },
+  {
+   "name": "path arc glued flags",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"M0 0 a5 5 0 015 5\"/></svg>",
+   "expect": "arc flags"
+  },
+  {
+   "name": "path z with number",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"M0 0 L5 5 Z 3\"/></svg>",
+   "expect": "needs 0 numbers"
+  },
+  {
+   "name": "path empty",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"\"/></svg>",
+   "expect": "is empty"
+  },
+  {
+   "name": "path missing d",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path/></svg>",
+   "expect": "needs the attribute \"d\""
+  },
+  {
+   "name": "path number too large",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><path d=\"M0 0 L99999999 1\"/></svg>",
+   "expect": "out of range"
+  },
+  {
+   "name": "points odd count",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><polyline points=\"0 0 1 1 2\"/></svg>",
+   "expect": "x,y pairs"
+  },
+  {
+   "name": "points garbage",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><polyline points=\"a,b c,d\"/></svg>",
+   "expect": "numbers"
+  },
+  {
+   "name": "number NaN",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"NaN\" height=\"5\"/></svg>",
+   "expect": "plain number"
+  },
+  {
+   "name": "number Infinity",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"Infinity\" height=\"5\"/></svg>",
+   "expect": "plain number"
+  },
+  {
+   "name": "number exponent",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"1e999\" height=\"5\"/></svg>",
+   "expect": "plain number"
+  },
+  {
+   "name": "number huge",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"99999999\" height=\"5\"/></svg>",
+   "expect": "plain number"
+  },
+  {
+   "name": "number negative width",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"-5\" height=\"5\"/></svg>",
+   "expect": "0 or more"
+  },
+  {
+   "name": "number with unit",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5px\" height=\"5\"/></svg>",
+   "expect": "plain number"
+  },
+  {
+   "name": "number percent",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"50%\" height=\"5\"/></svg>",
+   "expect": "plain number"
+  },
+  {
+   "name": "rect missing size",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect/></svg>",
+   "expect": "needs the attribute \"width\""
+  },
+  {
+   "name": "unclosed group",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"a\"><rect width=\"5\" height=\"5\"/>",
+   "expect": "never closed"
+  },
+  {
+   "name": "unclosed root",
+   "svg": "<svg viewBox=\"0 0 100 100\"><rect width=\"5\" height=\"5\"/>",
+   "expect": "never closed"
+  },
+  {
+   "name": "mismatched tags",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"a\"><text x=\"1\" y=\"1\">a</g></text></svg>",
+   "expect": "does not match"
+  },
+  {
+   "name": "closing tag without open",
+   "svg": "<svg viewBox=\"0 0 1700 560\"></g></svg>",
+   "expect": "does not match"
+  },
+  {
+   "name": "unterminated tag",
+   "svg": "<svg viewBox=\"0 0 100 100\"",
+   "expect": "never closed"
+  },
+  {
+   "name": "unquoted attribute",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=5 height=\"5\"/></svg>",
+   "expect": "must be quoted"
+  },
+  {
+   "name": "attribute without value",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width height=\"5\"/></svg>",
+   "expect": "no value"
+  },
+  {
+   "name": "unterminated quote",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5 x/></svg>",
+   "expect": "closing quote"
+  },
+  {
+   "name": "duplicate attribute",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" width=\"6\" height=\"5\"/></svg>",
+   "expect": "twice"
+  },
+  {
+   "name": "shape with child",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\"><rect width=\"5\" height=\"5\"/></rect></svg>",
+   "expect": "cannot contain"
+  },
+  {
+   "name": "tspan outside text",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><tspan>a</tspan></svg>",
+   "expect": "must be inside <text>"
+  },
+  {
+   "name": "text with rect inside",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\"><rect width=\"5\" height=\"5\"/></text></svg>",
+   "expect": "only <tspan>"
+  },
+  {
+   "name": "tspan in tspan",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\"><tspan><tspan>a</tspan></tspan></text></svg>",
+   "expect": "inside <tspan>"
+  },
+  {
+   "name": "bare text in group",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><g id=\"a\">hello</g></svg>",
+   "expect": "must be inside a <text>"
+  },
+  {
+   "name": "empty text",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\"></text></svg>",
+   "expect": "empty"
+  },
+  {
+   "name": "text too long",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</text></svg>",
+   "expect": "limit 80"
+  },
+  {
+   "name": "text long over tspans",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<tspan>bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb</tspan></text></svg>",
+   "expect": "limit 80"
+  },
+  {
+   "name": "arrow invalid",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"5\" arrow=\"middle\"/></svg>",
+   "expect": "must be one of: end both"
+  },
+  {
+   "name": "arrow without stroke",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"5\" stroke=\"none\" arrow=\"end\"/></svg>",
+   "expect": "arrow needs a stroke"
+  },
+  {
+   "name": "arrow on rect",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" arrow=\"end\"/></svg>",
+   "expect": "attribute \"arrow\" is not allowed"
+  },
+  {
+   "name": "control character",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"1\">a\u0001b</text></svg>",
+   "expect": "control characters"
+  },
+  {
+   "name": "part id on root",
+   "svg": "<svg id=\"a\" viewBox=\"0 0 100 100\"/>",
+   "expect": "attribute \"id\" is not allowed"
+  },
+  {
+   "name": "lt in attribute",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><rect width=\"5\" height=\"5\" fill=\"a<b\"/></svg>",
+   "expect": "values may not contain"
+  },
+  {
+   "name": "bidi override in text",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"2\">‮evil‬</text></svg>",
+   "expect": "control"
+  },
+  {
+   "name": "zero width space in text",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"2\">a​b</text></svg>",
+   "expect": "control"
+  },
+  {
+   "name": "line separator in text",
+   "svg": "<svg viewBox=\"0 0 1700 560\"><text x=\"1\" y=\"2\">a b</text></svg>",
+   "expect": "control"
+  }
+ ]
+}

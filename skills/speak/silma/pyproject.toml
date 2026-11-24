@@ -1,0 +1,20 @@
+[project]
+name = "speak-silma"
+version = "0.1.0"
+description = "SILMA TTS v1 (Arabic) backend for speak. Separate env: its torch/onnx pins conflict with mlx-audio."
+requires-python = ">=3.12,<3.13"
+dependencies = ["silma-tts", "nemo-text-processing-stub", "onnxruntime", "numpy"]
+
+[tool.uv]
+# silma-tts wants onnxruntime-gpu (no macOS wheel) and NeMo's text normalizer, which needs
+# pynini (won't build: needs OpenFst). Swap the first for onnxruntime and stub NeMo out, so
+# digits and times are NOT expanded: write numbers as Arabic words.
+override-dependencies = [
+    "onnxruntime-gpu ; sys_platform == 'never'",
+    "onnxruntime",
+    "nemo-text-processing ; sys_platform == 'never'",
+    "pynini ; sys_platform == 'never'",
+]
+
+[tool.uv.sources]
+nemo-text-processing-stub = { path = "stub" }

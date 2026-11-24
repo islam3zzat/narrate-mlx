@@ -1,0 +1,415 @@
+{
+ "id": "equation",
+ "title": "Reading Equations Through Spotlighted Terms",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 717,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "Scaled dot-product attention starts with the query-key inner product. We divide by root dimension to keep logits calm, apply softmax normalization, and gather the weighted value vectors.",
+   "focus": [
+    {
+     "at": "query-key inner product",
+     "on": [
+      "qk"
+     ]
+    },
+    {
+     "at": "root dimension",
+     "on": [
+      "scale"
+     ]
+    },
+    {
+     "at": "weighted value",
+     "on": [
+      "val"
+     ]
+    }
+   ],
+   "visual": {
+    "type": "equation",
+    "heading": "Scaled Dot-Product Attention",
+    "equations": [
+     {
+      "label": "Transformer Layer Core",
+      "latex": "\\operatorname{Attention}(Q, K, V) = \\term{soft}{\\operatorname{softmax}}\\!\\left(\\frac{\\term{qk}{Q K^\\top}}{\\term{scale}{\\sqrt{d_k}}}\\right) \\term{val}{V}"
+     }
+    ],
+    "terms": [
+     {
+      "id": "qk",
+      "label": "Query-key product",
+      "gloss": "Scores pairwise similarity between every query token and key token.",
+      "tone": "primary"
+     },
+     {
+      "id": "scale",
+      "label": "Root dimension",
+      "gloss": "Stabilizes softmax variance before large vector widths saturate.",
+      "tone": "accent"
+     },
+     {
+      "id": "soft",
+      "label": "Softmax normalization",
+      "gloss": "Turns similarity logits into non-negative weights summing to one.",
+      "tone": "secondary"
+     },
+     {
+      "id": "val",
+      "label": "Weighted value",
+      "gloss": "Blends value representations proportional to those attention weights.",
+      "tone": "primary"
+     }
+    ],
+    "caption": "Terms highlight in narration order alongside plain-English definitions."
+   },
+   "audio": "audio/equation/s01.wav",
+   "durationSec": 12.375,
+   "frames": 399,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Scaled",
+     "start": 0.275,
+     "end": 0.675
+    },
+    {
+     "w": "dot-product",
+     "start": 0.675,
+     "end": 1.288
+    },
+    {
+     "w": "attention",
+     "start": 1.288,
+     "end": 2.0
+    },
+    {
+     "w": "starts",
+     "start": 2.0,
+     "end": 2.388
+    },
+    {
+     "w": "with",
+     "start": 2.388,
+     "end": 2.513
+    },
+    {
+     "w": "the",
+     "start": 2.513,
+     "end": 2.612
+    },
+    {
+     "w": "query-key",
+     "start": 2.612,
+     "end": 3.2
+    },
+    {
+     "w": "inner",
+     "start": 3.2,
+     "end": 3.45
+    },
+    {
+     "w": "product.",
+     "start": 3.45,
+     "end": 4.425
+    },
+    {
+     "w": "We",
+     "start": 4.55,
+     "end": 4.725
+    },
+    {
+     "w": "divide",
+     "start": 4.725,
+     "end": 5.175
+    },
+    {
+     "w": "by",
+     "start": 5.175,
+     "end": 5.4
+    },
+    {
+     "w": "root",
+     "start": 5.4,
+     "end": 5.625
+    },
+    {
+     "w": "dimension",
+     "start": 5.625,
+     "end": 6.175
+    },
+    {
+     "w": "to",
+     "start": 6.175,
+     "end": 6.3
+    },
+    {
+     "w": "keep",
+     "start": 6.3,
+     "end": 6.55
+    },
+    {
+     "w": "logits",
+     "start": 6.55,
+     "end": 6.95
+    },
+    {
+     "w": "calm,",
+     "start": 6.95,
+     "end": 7.55
+    },
+    {
+     "w": "apply",
+     "start": 7.688,
+     "end": 8.1
+    },
+    {
+     "w": "softmax",
+     "start": 8.1,
+     "end": 8.7
+    },
+    {
+     "w": "normalization,",
+     "start": 8.7,
+     "end": 9.8
+    },
+    {
+     "w": "and",
+     "start": 9.9,
+     "end": 10.037
+    },
+    {
+     "w": "gather",
+     "start": 10.037,
+     "end": 10.425
+    },
+    {
+     "w": "the",
+     "start": 10.425,
+     "end": 10.562
+    },
+    {
+     "w": "weighted",
+     "start": 10.562,
+     "end": 10.95
+    },
+    {
+     "w": "value",
+     "start": 10.95,
+     "end": 11.325
+    },
+    {
+     "w": "vectors.",
+     "start": 11.325,
+     "end": 12.125
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Scaled dot-product attention starts with the query-key inner product.",
+     "start": 0.275
+    },
+    {
+     "text": "We divide by root dimension to keep logits calm, apply softmax normalization, and gather the weighted value vectors.",
+     "start": 4.55
+    }
+   ],
+   "revealSec": [
+    2.492,
+    5.28,
+    7.98,
+    10.442
+   ],
+   "focusSec": [
+    {
+     "t": 2.532,
+     "on": [
+      "qk"
+     ]
+    },
+    {
+     "t": 5.32,
+     "on": [
+      "scale"
+     ]
+    },
+    {
+     "t": 10.482,
+     "on": [
+      "val"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "Bayes rule updates a prior belief with incoming likelihood evidence, then rescales by total evidence so posterior beliefs still sum to one.",
+   "visual": {
+    "type": "equation",
+    "heading": "Posterior Updating with Bayes Rule",
+    "equations": [
+     {
+      "label": "Hypothesis Update",
+      "latex": "P(H \\mid E) = \\frac{\\term{lik}{P(E \\mid H)}\\,\\term{prior}{P(H)}}{\\term{evid}{P(E)}}"
+     },
+     {
+      "label": "Total Evidence",
+      "latex": "\\term{evid}{P(E)} = \\sum_i P(E \\mid H_i) P(H_i)"
+     }
+    ],
+    "terms": [
+     {
+      "id": "prior",
+      "label": "Prior belief",
+      "gloss": "Baseline plausibility assigned to hypothesis H before observing evidence.",
+      "tone": "accent"
+     },
+     {
+      "id": "lik",
+      "label": "Likelihood evidence",
+      "gloss": "How expected the observed data E would be if H were true.",
+      "tone": "primary"
+     },
+     {
+      "id": "evid",
+      "label": "Total evidence",
+      "gloss": "Normalizing probability of E across every competing hypothesis.",
+      "tone": "secondary"
+     }
+    ],
+    "caption": "Both equations share the tagged total evidence term cleanly."
+   },
+   "audio": "audio/equation/s02.wav",
+   "durationSec": 9.7,
+   "frames": 318,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Bayes",
+     "start": 0.275,
+     "end": 0.6
+    },
+    {
+     "w": "rule",
+     "start": 0.6,
+     "end": 0.95
+    },
+    {
+     "w": "updates",
+     "start": 0.95,
+     "end": 1.387
+    },
+    {
+     "w": "a",
+     "start": 1.387,
+     "end": 1.462
+    },
+    {
+     "w": "prior",
+     "start": 1.462,
+     "end": 1.8
+    },
+    {
+     "w": "belief",
+     "start": 1.8,
+     "end": 2.225
+    },
+    {
+     "w": "with",
+     "start": 2.225,
+     "end": 2.4
+    },
+    {
+     "w": "incoming",
+     "start": 2.4,
+     "end": 2.95
+    },
+    {
+     "w": "likelihood",
+     "start": 2.95,
+     "end": 3.525
+    },
+    {
+     "w": "evidence,",
+     "start": 3.525,
+     "end": 4.425
+    },
+    {
+     "w": "then",
+     "start": 4.525,
+     "end": 4.725
+    },
+    {
+     "w": "rescales",
+     "start": 4.725,
+     "end": 5.375
+    },
+    {
+     "w": "by",
+     "start": 5.375,
+     "end": 5.562
+    },
+    {
+     "w": "total",
+     "start": 5.562,
+     "end": 5.975
+    },
+    {
+     "w": "evidence",
+     "start": 5.975,
+     "end": 6.725
+    },
+    {
+     "w": "so",
+     "start": 6.725,
+     "end": 6.925
+    },
+    {
+     "w": "posterior",
+     "start": 6.925,
+     "end": 7.55
+    },
+    {
+     "w": "beliefs",
+     "start": 7.55,
+     "end": 8.15
+    },
+    {
+     "w": "still",
+     "start": 8.15,
+     "end": 8.463
+    },
+    {
+     "w": "sum",
+     "start": 8.463,
+     "end": 8.725
+    },
+    {
+     "w": "to",
+     "start": 8.725,
+     "end": 8.85
+    },
+    {
+     "w": "one.",
+     "start": 8.85,
+     "end": 9.45
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Bayes rule updates a prior belief with incoming likelihood evidence, then rescales by total evidence so posterior beliefs still sum to one.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    1.342,
+    2.83,
+    3.405
+   ]
+  }
+ ]
+}

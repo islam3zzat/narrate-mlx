@@ -1,0 +1,51 @@
+{
+  "title": "Timeline corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "The alert fired first. Then the on-call engineer acknowledged it. The database was restarted, and finally traffic recovered.",
+      "visual": {
+        "type": "timeline",
+        "heading": "Incident timeline",
+        "events": [
+          {"id": "alert", "at": "14:02 UTC", "label": "Alert fired", "detail": "Error rate above the threshold", "status": "confirmed", "marker": "detected"},
+          {"id": "ack", "at": "14:09 UTC", "label": "Engineer acknowledged", "status": "confirmed"},
+          {"id": "restart", "at": "14:31 UTC", "label": "Database restarted", "detail": "Cause not yet known", "status": "reported", "marker": "mitigated"},
+          {"id": "recover", "at": "14:44 UTC", "label": "Traffic recovered", "status": "unknown", "marker": "resolved"}
+        ],
+        "caption": "Four events, revealed as spoken."
+      },
+      "focus": [{"at": "database was restarted", "on": ["restart"]}, {"at": "finally", "on": []}]
+    },
+    {
+      "id": "s02",
+      "narration": "Eight things happened that day. Deploy came first, then errors, paging, triage, rollback, verify, recovery and finally review.",
+      "visual": {
+        "type": "timeline",
+        "heading": "A longer day",
+        "events": [
+          {"at": "09:00", "label": "Deploy", "detail": "Release candidate rolled out", "marker": "none"},
+          {"at": "09:12", "label": "Errors", "detail": "Five percent of requests fail", "status": "confirmed", "marker": "impact"},
+          {"at": "09:15", "label": "Paging", "status": "reported"},
+          {"at": "09:30", "label": "Triage", "detail": "Suspect the cache layer"},
+          {"at": "09:50", "label": "Rollback", "status": "confirmed", "marker": "mitigated"},
+          {"at": "10:05", "label": "Verify", "detail": "Dashboards green"},
+          {"at": "10:20", "label": "Recovery", "status": "confirmed", "marker": "resolved"},
+          {"at": "Day 2", "label": "Review", "status": "unknown"}
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "A short one has two events. The start came first, and the end came second.",
+      "visual": {
+        "type": "timeline",
+        "heading": "Two events",
+        "events": [
+          {"at": "00:00", "label": "Start", "detail": "Begin"},
+          {"at": "00:30", "label": "End", "status": "confirmed"}
+        ]
+      }
+    }
+  ]
+}

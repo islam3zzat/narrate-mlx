@@ -1,0 +1,179 @@
+{
+  "title": "All Visuals — 3D",
+  "mode": "3d",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Here is every three-dimensional visual type rendered in the cel-sky theme.",
+      "visual": {
+        "type": "title",
+        "kicker": "SHOWCASE // ALL 13 3D VISUALS",
+        "headline": "All 3D Visuals",
+        "sub": "Every supported 3D scene type with three-tone cel shading"
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "Bullets climb a staircase in space: cel-lit tops, cool indigo shadows, and crisp ink edges.",
+      "visual": {
+        "type": "bullets",
+        "heading": "Bullets",
+        "items": [
+          "Cel-lit top faces",
+          "Cool indigo side shadows",
+          "Crisp screen-space ink edges"
+        ]
+      }
+    },
+    {
+      "id": "s03",
+      "narration": "Compare builds side-by-side islands, contrasting the flat paper theme with cel-sky.",
+      "visual": {
+        "type": "compare",
+        "heading": "Compare",
+        "columns": [
+          {"title": "Paper", "tag": "NEO-BRUTALIST", "items": ["Flat dotted grid", "Pure black ink", "Classic high contrast"]},
+          {"title": "Cel-Sky", "tag": "2.5D CEL-SHADED", "items": ["Luminous sky matte", "Three-tone cel blocks", "Indigo cast shadows"]}
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "Steps rise into a progression: sketch the scene, shade the surfaces, and ink the edges.",
+      "visual": {
+        "type": "steps",
+        "heading": "Steps",
+        "items": [
+          "Sketch the scene",
+          "Shade the surfaces",
+          "Ink the edges"
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "narration": "Flow places stages along a track, moving from script to audio to rendered video.",
+      "visual": {
+        "type": "flow",
+        "heading": "Flow",
+        "nodes": [
+          {"label": "Script", "sub": "JSON scenes"},
+          {"label": "Audio", "sub": "Local speech"},
+          {"label": "Video", "sub": "Remotion MP4"}
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "narration": "Fanout radiates from one central hub to backdrop, blocks, and captions.",
+      "visual": {
+        "type": "fanout",
+        "heading": "Fanout",
+        "source": {"label": "ThemeContext"},
+        "targets": [
+          {"label": "Backdrop", "sub": "Cel sky matte"},
+          {"label": "Blocks", "sub": "Three-tone shading"},
+          {"label": "Captions", "sub": "Dialogue bar"}
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "narration": "Tables become sliding drawers for primary, secondary, and accent tokens.",
+      "visual": {
+        "type": "table",
+        "heading": "Table",
+        "headers": ["Token", "Role", "Cel-Sky Hue"],
+        "rows": [
+          ["Primary", "Highlights & badges", "Golden amber"],
+          ["Secondary", "Emphasis & slashes", "Sakura crimson"],
+          ["Accent", "Energy & progress", "Sky cyan"]
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "narration": "Graph steps backward across raised terraces, routing from router to cache or worker.",
+      "visual": {
+        "type": "graph",
+        "heading": "Graph",
+        "nodes": [
+          {"id": "router", "label": "Router", "tone": "primary"},
+          {"id": "cache", "label": "Cache", "sub": "Fast hit", "tone": "accent"},
+          {"id": "worker", "label": "Worker", "sub": "Compute", "tone": "secondary"}
+        ],
+        "edges": [
+          {"from": "router", "to": "cache", "label": "hit", "tone": "accent"},
+          {"from": "router", "to": "worker", "label": "miss", "tone": "secondary"}
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "narration": "Sequence runs time into depth: client sends a request, server checks state, and returns a reply.",
+      "cues": ["request", "checks state", "reply"],
+      "visual": {
+        "type": "sequence",
+        "heading": "Sequence",
+        "participants": [
+          {"id": "client", "label": "Client", "tone": "primary"},
+          {"id": "server", "label": "Server", "tone": "accent"}
+        ],
+        "messages": [
+          {"from": "client", "to": "server", "label": "POST /render"},
+          {"from": "server", "to": "server", "label": "Check state", "tone": "primary"},
+          {"from": "server", "to": "client", "label": "200 OK", "reply": true, "tone": "accent"}
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "narration": "Class diagrams stand on pedestals, showing ThemeDef composed with CelTokens.",
+      "visual": {
+        "type": "class",
+        "heading": "Class",
+        "classes": [
+          {"id": "theme", "name": "ThemeDef", "attributes": ["name: ThemeName", "isAnime: boolean"], "methods": ["shadow()", "onAccent()"], "tone": "primary"},
+          {"id": "cel", "name": "CelTokens", "attributes": ["skyTop: string", "shadowTint: string"], "methods": [], "tone": "accent"}
+        ],
+        "relations": [
+          {"from": "theme", "to": "cel", "type": "composes", "label": "cel"}
+        ]
+      }
+    },
+    {
+      "id": "s11",
+      "narration": "Mermaid mounts complex state machines with cache bypasses and retry loops onto a framed three-dimensional board.",
+      "visual": {
+        "type": "mermaid",
+        "heading": "Mermaid",
+        "code": "stateDiagram-v2\n  direction LR\n  [*] --> Queued\n  Queued --> Validating: submit\n  Validating --> CacheCheck: valid\n  CacheCheck --> Rendering: miss\n  Rendering --> Retrying: timeout\n  Retrying --> Rendering: retry\n  CacheCheck --> Done: hit\n  Rendering --> Done: encoded\n  Validating --> Failed: invalid\n  Retrying --> Failed: limit\n  Done --> [*]",
+        "caption": "Complex state machine with cache bypass and retry loop"
+      }
+    },
+    {
+      "id": "s12",
+      "narration": "Layers stack abstraction from bottom to top: sky backdrop, cel surfaces, ink outlines, and captions.",
+      "visual": {
+        "type": "layers3d",
+        "heading": "Layers 3D",
+        "layers": [
+          {"id": "sky", "label": "Sky Backdrop", "sub": "Static cel matte painting", "tone": "accent"},
+          {"id": "cel", "label": "Cel Surfaces", "sub": "Three-tone directional shading", "tone": "primary"},
+          {"id": "ink", "label": "Ink Outlines", "sub": "Screen-space indigo edges", "tone": "secondary"},
+          {"id": "hud", "label": "HUD & Captions", "sub": "2D overlay on top", "tone": "neutral"}
+        ]
+      }
+    },
+    {
+      "id": "s13",
+      "narration": "And callout closes on a lit stage: all thirteen three-dimensional visuals share one cel-sky theme.",
+      "visual": {
+        "type": "callout",
+        "heading": "Callout",
+        "big": "All 13 3D Visuals Ready",
+        "text": "Every 3D scene inherits cel-sky shading automatically."
+      }
+    }
+  ]
+}

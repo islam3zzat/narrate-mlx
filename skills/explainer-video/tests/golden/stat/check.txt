@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok stat: 4 scenes, 65 words, about 25s
+--stderr--

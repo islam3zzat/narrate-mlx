@@ -1,0 +1,48 @@
+name: explainer-video CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    env:
+      NARRATE_FEATURES: "3d svg"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: skills/explainer-video/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install ffmpeg
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+
+      - name: Install explainer-video Node dependencies
+        working-directory: skills/explainer-video
+        run: npm ci --no-audit --no-fund
+
+      # Fast zero-Chrome checks only (skills/speak requires macOS/PyObjC and Chromium goldens run locally).
+      - name: TypeScript typecheck
+        working-directory: skills/explainer-video
+        run: node_modules/.bin/tsc -p tsconfig.tests.json --noEmit
+
+      - name: Check generated schema and SKILL.md docs
+        working-directory: skills/explainer-video
+        run: node_modules/.bin/tsx src/cli.ts check-generated
+
+      - name: Python unit tests (parallel)
+        working-directory: skills/explainer-video
+        run: python3 ../../scripts/run_pytests.py
+
+      - name: TypeScript vector & hygiene tests
+        working-directory: skills/explainer-video
+        run: node_modules/.bin/tsx --test tests/vectors/*.test.ts

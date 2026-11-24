@@ -1,0 +1,5 @@
+[project]
+name = "egy-namaa"
+version = "0"
+requires-python = ">=3.10,<3.13"
+dependencies = ["chatterbox-tts", "huggingface_hub", "safetensors", "torchaudio", "setuptools<81"]

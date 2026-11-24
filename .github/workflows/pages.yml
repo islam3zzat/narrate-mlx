@@ -1,0 +1,70 @@
+name: Deploy Visual Catalog to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills/explainer-video/src/**"
+      - "skills/explainer-video/catalog-public/**"
+      - "skills/explainer-video/package.json"
+      - "skills/explainer-video/package-lock.json"
+      - "skills/explainer-video/remotion.config.ts"
+      - "scripts/build-pages.sh"
+      - "scripts/lib.sh"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: skills/explainer-video/package-lock.json
+
+      - name: Install explainer-video Node dependencies
+        working-directory: skills/explainer-video
+        run: npm ci --no-audit --no-fund
+
+      - name: Build static Visual Catalog
+        run: |
+          base="${{ steps.pages.outputs.base_path }}"
+          if [ -z "$base" ]; then
+            PUBLIC_PATH="/"
+          else
+            PUBLIC_PATH="${base%/}/"
+          fi
+          PUBLIC_PATH="$PUBLIC_PATH" OUT_DIR="$PWD/out/pages" scripts/build-pages.sh
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out/pages
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

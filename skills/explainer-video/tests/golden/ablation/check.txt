@@ -1,0 +1,7 @@
+exit 0
+--stdout--
+ok ablation: 2 scenes, 73 words, about 28s
+--stderr--
+warning: ablation/s01: 3 numbers in one sentence (sixty four, four, eight): a listener holds two at most; split the sentence or leave the figures to the picture: "Starting from our baseline model at sixty-four percent, rotary embe..."
+warning: ablation/s01: 5 numbers in one sentence (three, six, nine, seventy five, seven): a listener holds two at most; split the sentence or leave the figures to the picture: "Adding normalized attention adds another three point six, hard weig..."
+warning: ablation/s02: 4 numbers in one sentence (sixteen, nine, three, twenty six): a listener holds two at most; split the sentence or leave the figures to the picture: "Key-value caching saves sixteen milliseconds, fused kernels trim ni..."

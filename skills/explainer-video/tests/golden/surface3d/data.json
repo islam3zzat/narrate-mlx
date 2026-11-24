@@ -1,0 +1,373 @@
+{
+ "id": "surface3d",
+ "title": "Surface3D corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "3d",
+ "fps": 30,
+ "totalFrames": 606,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "Look at a curved surface in space. An orthogonal slice exposes a partial derivative curve, while the tangent plane rests flat against the surface at a point.",
+   "visual": {
+    "type": "surface3d",
+    "heading": "Partial slices & tangent plane",
+    "xDomain": [
+     -2,
+     2
+    ],
+    "yDomain": [
+     -2,
+     2
+    ],
+    "xLabel": "x",
+    "yLabel": "y",
+    "zLabel": "f(x,y)",
+    "expr": "1.2 + 0.7 * cos(x) * cos(y) + 0.25 * sin(x + y)",
+    "resolution": 20,
+    "overlays": [
+     {
+      "kind": "slice",
+      "label": "Orthogonal slice",
+      "axis": "x",
+      "at": 0.4
+     },
+     {
+      "kind": "tangent",
+      "label": "Tangent plane",
+      "at": [
+       -0.5,
+       0.4
+      ],
+      "size": 1.25
+     }
+    ],
+    "caption": "Slices isolate one variable; tangent planes capture both slopes."
+   },
+   "audio": "audio/surface3d/s01.wav",
+   "durationSec": 10.0,
+   "frames": 327,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Look",
+     "start": 0.3,
+     "end": 0.438
+    },
+    {
+     "w": "at",
+     "start": 0.438,
+     "end": 0.512
+    },
+    {
+     "w": "a",
+     "start": 0.512,
+     "end": 0.613
+    },
+    {
+     "w": "curved",
+     "start": 0.613,
+     "end": 1.038
+    },
+    {
+     "w": "surface",
+     "start": 1.038,
+     "end": 1.525
+    },
+    {
+     "w": "in",
+     "start": 1.525,
+     "end": 1.675
+    },
+    {
+     "w": "space.",
+     "start": 1.675,
+     "end": 2.5
+    },
+    {
+     "w": "An",
+     "start": 2.638,
+     "end": 2.788
+    },
+    {
+     "w": "orthogonal",
+     "start": 2.788,
+     "end": 3.413
+    },
+    {
+     "w": "slice",
+     "start": 3.413,
+     "end": 3.825
+    },
+    {
+     "w": "exposes",
+     "start": 3.825,
+     "end": 4.475
+    },
+    {
+     "w": "a",
+     "start": 4.475,
+     "end": 4.588
+    },
+    {
+     "w": "partial",
+     "start": 4.588,
+     "end": 5.05
+    },
+    {
+     "w": "derivative",
+     "start": 5.05,
+     "end": 5.575
+    },
+    {
+     "w": "curve,",
+     "start": 5.575,
+     "end": 6.225
+    },
+    {
+     "w": "while",
+     "start": 6.325,
+     "end": 6.487
+    },
+    {
+     "w": "the",
+     "start": 6.487,
+     "end": 6.575
+    },
+    {
+     "w": "tangent",
+     "start": 6.575,
+     "end": 7.025
+    },
+    {
+     "w": "plane",
+     "start": 7.025,
+     "end": 7.425
+    },
+    {
+     "w": "rests",
+     "start": 7.425,
+     "end": 7.763
+    },
+    {
+     "w": "flat",
+     "start": 7.763,
+     "end": 8.075
+    },
+    {
+     "w": "against",
+     "start": 8.075,
+     "end": 8.363
+    },
+    {
+     "w": "the",
+     "start": 8.363,
+     "end": 8.463
+    },
+    {
+     "w": "surface",
+     "start": 8.463,
+     "end": 8.963
+    },
+    {
+     "w": "at",
+     "start": 8.963,
+     "end": 9.062
+    },
+    {
+     "w": "a",
+     "start": 9.062,
+     "end": 9.125
+    },
+    {
+     "w": "point.",
+     "start": 9.125,
+     "end": 9.75
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Look at a curved surface in space.",
+     "start": 0.3
+    },
+    {
+     "text": "An orthogonal slice exposes a partial derivative curve, while the tangent plane rests flat against the surface at a point.",
+     "start": 2.638
+    }
+   ],
+   "revealSec": [
+    2.668,
+    6.455
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "To compute the volume under a dome, pack vertical Riemann columns beneath the surface, or stack discrete voxels in three dimensions.",
+   "visual": {
+    "type": "surface3d",
+    "heading": "Double & triple integral volume",
+    "xDomain": [
+     -2,
+     2
+    ],
+    "yDomain": [
+     -2,
+     2
+    ],
+    "xLabel": "x",
+    "yLabel": "y",
+    "zLabel": "height",
+    "expr": "2.2 - 0.25 * (x^2 + y^2)",
+    "resolution": 18,
+    "overlays": [
+     {
+      "kind": "columns",
+      "label": "Riemann columns",
+      "nx": 3,
+      "ny": 6,
+      "xRange": [
+       -2,
+       0
+      ],
+      "mode": "columns"
+     },
+     {
+      "kind": "columns",
+      "label": "Discrete voxels",
+      "nx": 3,
+      "ny": 6,
+      "nz": 4,
+      "xRange": [
+       0,
+       2
+      ],
+      "mode": "voxels"
+     }
+    ],
+    "caption": "Summing columns approximates double integrals; voxels approximate triple integrals."
+   },
+   "audio": "audio/surface3d/s02.wav",
+   "durationSec": 8.375,
+   "frames": 279,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "To",
+     "start": 0.275,
+     "end": 0.375
+    },
+    {
+     "w": "compute",
+     "start": 0.375,
+     "end": 0.762
+    },
+    {
+     "w": "the",
+     "start": 0.762,
+     "end": 0.85
+    },
+    {
+     "w": "volume",
+     "start": 0.85,
+     "end": 1.35
+    },
+    {
+     "w": "under",
+     "start": 1.35,
+     "end": 1.562
+    },
+    {
+     "w": "a",
+     "start": 1.562,
+     "end": 1.625
+    },
+    {
+     "w": "dome,",
+     "start": 1.625,
+     "end": 2.25
+    },
+    {
+     "w": "pack",
+     "start": 2.388,
+     "end": 2.688
+    },
+    {
+     "w": "vertical",
+     "start": 2.688,
+     "end": 3.125
+    },
+    {
+     "w": "Riemann",
+     "start": 3.125,
+     "end": 3.45
+    },
+    {
+     "w": "columns",
+     "start": 3.45,
+     "end": 3.975
+    },
+    {
+     "w": "beneath",
+     "start": 3.975,
+     "end": 4.287
+    },
+    {
+     "w": "the",
+     "start": 4.287,
+     "end": 4.375
+    },
+    {
+     "w": "surface,",
+     "start": 4.375,
+     "end": 5.2
+    },
+    {
+     "w": "or",
+     "start": 5.312,
+     "end": 5.487
+    },
+    {
+     "w": "stack",
+     "start": 5.487,
+     "end": 5.825
+    },
+    {
+     "w": "discrete",
+     "start": 5.825,
+     "end": 6.275
+    },
+    {
+     "w": "voxels",
+     "start": 6.275,
+     "end": 6.85
+    },
+    {
+     "w": "in",
+     "start": 6.85,
+     "end": 7.013
+    },
+    {
+     "w": "three",
+     "start": 7.013,
+     "end": 7.25
+    },
+    {
+     "w": "dimensions.",
+     "start": 7.25,
+     "end": 8.125
+    }
+   ],
+   "sentences": [
+    {
+     "text": "To compute the volume under a dome, pack vertical Riemann columns beneath the surface, or stack discrete voxels in three dimensions.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    3.005,
+    5.705
+   ]
+  }
+ ]
+}

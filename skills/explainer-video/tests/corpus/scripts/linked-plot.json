@@ -1,0 +1,44 @@
+{
+  "title": "Linked-plot corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Watch position climb as speed pulses forward. First we speed up, then reach peak velocity, and finally cover total distance. Focus on the top odometer.",
+      "visual": {
+        "type": "linked-plot",
+        "heading": "Odometer and speedometer",
+        "xDomain": [0, 6],
+        "xLabel": "time (s)",
+        "top": {"label": "Position", "yDomain": [0, 22], "yLabel": "meters", "unit": "m", "tone": "secondary"},
+        "bottom": {"label": "Speed", "yDomain": [-0.5, 4.5], "yLabel": "m/s", "unit": "m/s", "expr": "2 * sin(0.5 * x) + 2", "tone": "accent"},
+        "stages": [
+          {"label": "Speed up", "x": 1.5, "note": "positive slope = speed"},
+          {"label": "Peak velocity", "x": 3.14, "note": "steepest climb at peak"},
+          {"label": "Total distance", "x": 5.5, "note": "shaded area = total meters"}
+        ],
+        "caption": "Top tangent slope matches bottom height; bottom area matches top height."
+      },
+      "focus": [
+        {"at": "Focus on the top odometer", "on": ["top"]}
+      ]
+    },
+    {
+      "id": "s02",
+      "narration": "Now track account balance alongside net cash flow. Balance peaks when flow crosses zero, then negative flow drains the accumulated balance back down.",
+      "visual": {
+        "type": "linked-plot",
+        "heading": "Balance and cash flow",
+        "xDomain": [0, 6],
+        "xLabel": "month",
+        "top": {"label": "Balance", "yDomain": [-4.8, 4.8], "unit": "k", "expr": "4 * sin(x)", "tone": "secondary"},
+        "bottom": {"label": "Cash flow", "yDomain": [-4.8, 4.8], "unit": "k/mo", "tone": "accent"},
+        "stages": [
+          {"label": "Balance peaks", "x": 1.57, "note": "zero rate = peak balance"},
+          {"label": "Negative flow", "x": 3.14, "note": "negative slope drains balance"},
+          {"label": "Accumulated balance", "x": 5.0, "note": "negative area subtracts"}
+        ],
+        "caption": "Signed area below zero reduces the cumulative total."
+      }
+    }
+  ]
+}

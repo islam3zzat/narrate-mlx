@@ -1,0 +1,588 @@
+{
+  "title": "Edge corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "Every visual type, in one short test video.",
+      "visual": {
+        "type": "title",
+        "kicker": "corpus",
+        "headline": "Edge cases",
+        "sub": "Every visual type"
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "First, parsing. Second, validating the input. Third, writing the output.",
+      "visual": {
+        "type": "bullets",
+        "heading": "Three bullets",
+        "items": [
+          "Parsing",
+          "Validating the input",
+          "Writing the output"
+        ]
+      },
+      "cues": [
+        "First",
+        "",
+        "Third"
+      ]
+    },
+    {
+      "id": "s03",
+      "narration": "Cache is fast but small. Disk is slow but large.",
+      "visual": {
+        "type": "compare",
+        "heading": "Two options",
+        "columns": [
+          {
+            "title": "Cache",
+            "tag": "fast",
+            "items": [
+              "Small",
+              "Volatile"
+            ]
+          },
+          {
+            "title": "Disk",
+            "tag": "slow",
+            "items": [
+              "Large",
+              "Durable"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "narration": "Plan the work, build it, then ship it.",
+      "visual": {
+        "type": "steps",
+        "heading": "Advancing steps",
+        "items": [
+          "Plan the work",
+          "Build it",
+          "Ship it"
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "narration": "The middle step is where the effort goes.",
+      "visual": {
+        "type": "steps",
+        "heading": "Fixed step",
+        "active": 1,
+        "items": [
+          "Plan",
+          "Build",
+          "Ship"
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "narration": "A client calls a gateway, which calls a service.",
+      "visual": {
+        "type": "flow",
+        "heading": "A chain",
+        "nodes": [
+          {
+            "label": "Client",
+            "sub": "asks"
+          },
+          {
+            "label": "Gateway",
+            "sub": "routes"
+          },
+          {
+            "label": "Service",
+            "sub": "answers"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s07",
+      "narration": "The router sends traffic to billing or to search.",
+      "visual": {
+        "type": "fanout",
+        "heading": "One to many",
+        "source": {
+          "label": "Router"
+        },
+        "targets": [
+          {
+            "label": "Billing",
+            "sub": "invoices"
+          },
+          {
+            "label": "Search",
+            "sub": "queries"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s08",
+      "narration": "Two methods differ in speed and in safety.",
+      "visual": {
+        "type": "table",
+        "heading": "A table",
+        "headers": [
+          "Method",
+          "Speed",
+          "Safety"
+        ],
+        "rows": [
+          [
+            "Alpha",
+            "Fast",
+            "Low"
+          ],
+          [
+            "Beta",
+            "Slow",
+            "High"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "narration": "Never reuse a token. It is a real risk.",
+      "visual": {
+        "type": "callout",
+        "heading": "Warning",
+        "big": "Never reuse a token",
+        "text": "A reused token can be replayed.",
+        "tone": "warn"
+      }
+    },
+    {
+      "id": "s10",
+      "narration": "The machine is idle, then running, then done.",
+      "visual": {
+        "type": "mermaid",
+        "heading": "A static state diagram",
+        "code": "stateDiagram-v2\n  [*] --> Idle\n  Idle --> Running\n  Running --> Done\n  Done --> [*]",
+        "caption": "Plain mermaid"
+      }
+    },
+    {
+      "id": "s11",
+      "narration": "The browser asks the server. The server asks the database. Look at the database.",
+      "visual": {
+        "type": "mermaid",
+        "heading": "Built and focused",
+        "build": true,
+        "code": "flowchart TB\n  Browser --> Server\n  Server --> Database",
+        "caption": "Mermaid with build"
+      },
+      "focus": [
+        {
+          "at": "Look at the database",
+          "on": [
+            "Database"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s12",
+      "narration": "A user logs in. The app checks the cache and the store. Look at the cache.",
+      "visual": {
+        "type": "graph",
+        "heading": "Graph",
+        "direction": "LR",
+        "nodes": [
+          {
+            "id": "user",
+            "label": "User",
+            "tone": "primary"
+          },
+          {
+            "id": "app",
+            "label": "App",
+            "tone": "secondary"
+          },
+          {
+            "id": "cache",
+            "label": "Cache",
+            "tone": "accent"
+          },
+          {
+            "id": "store",
+            "label": "Store"
+          }
+        ],
+        "edges": [
+          {
+            "from": "user",
+            "to": "app",
+            "label": "login"
+          },
+          {
+            "from": "app",
+            "to": "cache"
+          },
+          {
+            "from": "app",
+            "to": "store",
+            "dashed": true,
+            "tone": "danger"
+          }
+        ],
+        "caption": "A graph"
+      },
+      "focus": [
+        {
+          "at": "Look at the cache",
+          "on": [
+            "cache",
+            "app->cache"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s13",
+      "narration": "The same app now also talks to a queue. The store goes away.",
+      "visual": {
+        "type": "graph",
+        "heading": "Graph, continued",
+        "direction": "LR",
+        "nodes": [
+          {
+            "id": "user",
+            "label": "User",
+            "tone": "primary"
+          },
+          {
+            "id": "app",
+            "label": "App",
+            "tone": "secondary"
+          },
+          {
+            "id": "cache",
+            "label": "Cache",
+            "tone": "accent"
+          },
+          {
+            "id": "queue",
+            "label": "Queue"
+          }
+        ],
+        "edges": [
+          {
+            "from": "user",
+            "to": "app",
+            "label": "login"
+          },
+          {
+            "from": "app",
+            "to": "cache"
+          },
+          {
+            "from": "app",
+            "to": "queue"
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s14",
+      "narration": "A token inherits from a credential, and a client owns many tokens.",
+      "visual": {
+        "type": "class",
+        "heading": "Classes",
+        "direction": "TB",
+        "classes": [
+          {
+            "id": "cred",
+            "name": "Credential",
+            "stereotype": "abstract",
+            "attributes": [
+              "id: string"
+            ],
+            "methods": [
+              "verify()"
+            ]
+          },
+          {
+            "id": "token",
+            "name": "Token",
+            "attributes": [
+              "expires: int"
+            ],
+            "methods": [
+              "refresh()"
+            ],
+            "tone": "accent"
+          },
+          {
+            "id": "client",
+            "name": "Client",
+            "attributes": [
+              "name: string"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "from": "token",
+            "to": "cred",
+            "type": "inherits"
+          },
+          {
+            "from": "client",
+            "to": "token",
+            "type": "composes",
+            "label": "owns"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s15",
+      "narration": "Now the client also depends on a logger. Look at the client.",
+      "visual": {
+        "type": "class",
+        "heading": "Classes, continued",
+        "direction": "TB",
+        "classes": [
+          {
+            "id": "token",
+            "name": "Token",
+            "attributes": [
+              "expires: int"
+            ],
+            "methods": [
+              "refresh()"
+            ],
+            "tone": "accent"
+          },
+          {
+            "id": "client",
+            "name": "Client",
+            "attributes": [
+              "name: string"
+            ]
+          },
+          {
+            "id": "log",
+            "name": "Logger",
+            "stereotype": "interface",
+            "methods": [
+              "write(msg)"
+            ]
+          }
+        ],
+        "relations": [
+          {
+            "from": "client",
+            "to": "token",
+            "type": "composes",
+            "label": "owns"
+          },
+          {
+            "from": "client",
+            "to": "log",
+            "type": "depends"
+          }
+        ]
+      },
+      "continues": true,
+      "focus": [
+        {
+          "at": "Look at the client",
+          "on": [
+            "client"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s16",
+      "narration": "The client asks the server. The server replies. The client asks again.",
+      "visual": {
+        "type": "sequence",
+        "heading": "Messages",
+        "participants": [
+          {
+            "id": "c",
+            "label": "Client",
+            "tone": "primary"
+          },
+          {
+            "id": "s",
+            "label": "Server",
+            "tone": "secondary"
+          }
+        ],
+        "messages": [
+          {
+            "from": "c",
+            "to": "s",
+            "label": "request"
+          },
+          {
+            "from": "s",
+            "to": "c",
+            "label": "response",
+            "reply": true
+          },
+          {
+            "from": "c",
+            "to": "s",
+            "label": "request again",
+            "tone": "accent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s17",
+      "narration": "The same client now also reaches a database. Look at the database.",
+      "visual": {
+        "type": "sequence",
+        "heading": "Messages, continued",
+        "participants": [
+          {
+            "id": "c",
+            "label": "Client",
+            "tone": "primary"
+          },
+          {
+            "id": "s",
+            "label": "Server",
+            "tone": "secondary"
+          },
+          {
+            "id": "d",
+            "label": "Database",
+            "tone": "accent"
+          }
+        ],
+        "messages": [
+          {
+            "from": "c",
+            "to": "s",
+            "label": "request"
+          },
+          {
+            "from": "s",
+            "to": "d",
+            "label": "query"
+          },
+          {
+            "from": "d",
+            "to": "s",
+            "label": "rows",
+            "reply": true
+          },
+          {
+            "from": "s",
+            "to": "s",
+            "label": "cache it"
+          }
+        ]
+      },
+      "continues": true,
+      "focus": [
+        {
+          "at": "Look at the database",
+          "on": [
+            "d",
+            "s->d"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "s18",
+      "narration": "Most of the time goes to waiting, then some to compute.",
+      "visual": {
+        "type": "mermaid",
+        "heading": "Built pie",
+        "build": true,
+        "code": "pie title Time\n  \"Waiting\" : 60\n  \"Compute\" : 40"
+      }
+    },
+    {
+      "id": "s19",
+      "narration": "The client pings the server. The server pongs.",
+      "visual": {
+        "type": "sequence",
+        "heading": "Ping",
+        "participants": [
+          {
+            "id": "c",
+            "label": "Client",
+            "tone": "primary"
+          },
+          {
+            "id": "s",
+            "label": "Server",
+            "tone": "secondary"
+          }
+        ],
+        "messages": [
+          {
+            "from": "c",
+            "to": "s",
+            "label": "ping"
+          },
+          {
+            "from": "s",
+            "to": "c",
+            "label": "pong",
+            "reply": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "s20",
+      "narration": "Then the client closes the connection.",
+      "visual": {
+        "type": "sequence",
+        "heading": "Ping, continued",
+        "participants": [
+          {
+            "id": "c",
+            "label": "Client",
+            "tone": "primary"
+          },
+          {
+            "id": "s",
+            "label": "Server",
+            "tone": "secondary"
+          }
+        ],
+        "messages": [
+          {
+            "from": "c",
+            "to": "s",
+            "label": "ping"
+          },
+          {
+            "from": "s",
+            "to": "c",
+            "label": "pong",
+            "reply": true
+          },
+          {
+            "from": "c",
+            "to": "s",
+            "label": "close"
+          }
+        ]
+      },
+      "continues": true
+    }
+  ]
+}

@@ -1,0 +1,1653 @@
+{
+ "id": "incident",
+ "title": "Incident review corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 3115,
+ "scenes": [
+  {
+   "id": "s01",
+   "section": "title",
+   "facts": [
+    "n01"
+   ],
+   "narration": "This is a blameless review of the checkout incident. It describes roles and systems, not people. About twelve thousand orders failed in total.",
+   "visual": {
+    "type": "title",
+    "kicker": "Incident review",
+    "headline": "Checkout errors",
+    "sub": "Severity two, one afternoon"
+   },
+   "audio": "audio/incident/s01.wav",
+   "durationSec": 9.8,
+   "frames": 322,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "This",
+     "start": 0.3,
+     "end": 0.5
+    },
+    {
+     "w": "is",
+     "start": 0.5,
+     "end": 0.625
+    },
+    {
+     "w": "a",
+     "start": 0.625,
+     "end": 0.75
+    },
+    {
+     "w": "blameless",
+     "start": 0.75,
+     "end": 1.375
+    },
+    {
+     "w": "review",
+     "start": 1.375,
+     "end": 1.8
+    },
+    {
+     "w": "of",
+     "start": 1.8,
+     "end": 1.887
+    },
+    {
+     "w": "the",
+     "start": 1.887,
+     "end": 1.988
+    },
+    {
+     "w": "checkout",
+     "start": 1.988,
+     "end": 2.375
+    },
+    {
+     "w": "incident.",
+     "start": 2.375,
+     "end": 3.225
+    },
+    {
+     "w": "It",
+     "start": 3.325,
+     "end": 3.475
+    },
+    {
+     "w": "describes",
+     "start": 3.475,
+     "end": 4.1
+    },
+    {
+     "w": "roles",
+     "start": 4.1,
+     "end": 4.625
+    },
+    {
+     "w": "and",
+     "start": 4.625,
+     "end": 4.787
+    },
+    {
+     "w": "systems,",
+     "start": 4.787,
+     "end": 5.525
+    },
+    {
+     "w": "not",
+     "start": 5.625,
+     "end": 5.85
+    },
+    {
+     "w": "people.",
+     "start": 5.85,
+     "end": 6.6
+    },
+    {
+     "w": "About",
+     "start": 6.737,
+     "end": 7.062
+    },
+    {
+     "w": "twelve",
+     "start": 7.062,
+     "end": 7.487
+    },
+    {
+     "w": "thousand",
+     "start": 7.487,
+     "end": 7.925
+    },
+    {
+     "w": "orders",
+     "start": 7.925,
+     "end": 8.387
+    },
+    {
+     "w": "failed",
+     "start": 8.387,
+     "end": 8.738
+    },
+    {
+     "w": "in",
+     "start": 8.738,
+     "end": 8.875
+    },
+    {
+     "w": "total.",
+     "start": 8.875,
+     "end": 9.55
+    }
+   ],
+   "sentences": [
+    {
+     "text": "This is a blameless review of the checkout incident.",
+     "start": 0.3
+    },
+    {
+     "text": "It describes roles and systems, not people.",
+     "start": 3.325
+    },
+    {
+     "text": "About twelve thousand orders failed in total.",
+     "start": 6.737
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "section": "detection",
+   "facts": [
+    "e01"
+   ],
+   "narration": "The pager fired for the checkout API error rate at fourteen oh two UTC. That time is confirmed by the pager log.",
+   "visual": {
+    "type": "callout",
+    "heading": "Detection",
+    "big": "14:02 UTC",
+    "text": "Pager fired: checkout API error rate (confirmed)"
+   },
+   "audio": "audio/incident/s02.wav",
+   "durationSec": 8.675,
+   "frames": 288,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.275,
+     "end": 0.35
+    },
+    {
+     "w": "pager",
+     "start": 0.35,
+     "end": 0.738
+    },
+    {
+     "w": "fired",
+     "start": 0.738,
+     "end": 1.175
+    },
+    {
+     "w": "for",
+     "start": 1.175,
+     "end": 1.288
+    },
+    {
+     "w": "the",
+     "start": 1.288,
+     "end": 1.413
+    },
+    {
+     "w": "checkout",
+     "start": 1.413,
+     "end": 1.887
+    },
+    {
+     "w": "API",
+     "start": 1.887,
+     "end": 2.5
+    },
+    {
+     "w": "error",
+     "start": 2.5,
+     "end": 3.125
+    },
+    {
+     "w": "rate",
+     "start": 3.125,
+     "end": 3.375
+    },
+    {
+     "w": "at",
+     "start": 3.375,
+     "end": 3.538
+    },
+    {
+     "w": "fourteen",
+     "start": 3.538,
+     "end": 4.075
+    },
+    {
+     "w": "oh",
+     "start": 4.075,
+     "end": 4.287
+    },
+    {
+     "w": "two",
+     "start": 4.287,
+     "end": 4.537
+    },
+    {
+     "w": "UTC.",
+     "start": 4.537,
+     "end": 5.7
+    },
+    {
+     "w": "That",
+     "start": 5.888,
+     "end": 6.15
+    },
+    {
+     "w": "time",
+     "start": 6.15,
+     "end": 6.412
+    },
+    {
+     "w": "is",
+     "start": 6.412,
+     "end": 6.55
+    },
+    {
+     "w": "confirmed",
+     "start": 6.55,
+     "end": 7.175
+    },
+    {
+     "w": "by",
+     "start": 7.175,
+     "end": 7.312
+    },
+    {
+     "w": "the",
+     "start": 7.312,
+     "end": 7.4
+    },
+    {
+     "w": "pager",
+     "start": 7.4,
+     "end": 7.775
+    },
+    {
+     "w": "log.",
+     "start": 7.775,
+     "end": 8.4
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The pager fired for the checkout API error rate at fourteen oh two UTC.",
+     "start": 0.275
+    },
+    {
+     "text": "That time is confirmed by the pager log.",
+     "start": 5.888
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "section": "timeline",
+   "facts": [
+    "e02",
+    "e01",
+    "e03",
+    "e04",
+    "e05"
+   ],
+   "narration": "The config change went out first, then the alert fired. The on-call engineer acknowledged it, the config was rolled back, and finally the error rate recovered. The change and the rollback are confirmed. The acknowledgement time is only reported.",
+   "visual": {
+    "type": "timeline",
+    "heading": "What happened, in order",
+    "events": [
+     {
+      "at": "13:55 UTC",
+      "label": "Config change",
+      "detail": "Pool limit lowered to 20",
+      "status": "confirmed"
+     },
+     {
+      "at": "14:02 UTC",
+      "label": "Alert fired",
+      "status": "confirmed",
+      "marker": "detected"
+     },
+     {
+      "at": "14:09 UTC",
+      "label": "Acknowledged",
+      "status": "reported"
+     },
+     {
+      "at": "14:31 UTC",
+      "label": "Rolled back",
+      "status": "confirmed",
+      "marker": "mitigated"
+     },
+     {
+      "at": "14:44 UTC",
+      "label": "Recovered",
+      "detail": "Error rate under one percent",
+      "status": "confirmed",
+      "marker": "resolved"
+     }
+    ]
+   },
+   "audio": "audio/incident/s03.wav",
+   "durationSec": 16.025,
+   "frames": 508,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.275,
+     "end": 0.35
+    },
+    {
+     "w": "config",
+     "start": 0.35,
+     "end": 0.812
+    },
+    {
+     "w": "change",
+     "start": 0.812,
+     "end": 1.188
+    },
+    {
+     "w": "went",
+     "start": 1.188,
+     "end": 1.337
+    },
+    {
+     "w": "out",
+     "start": 1.337,
+     "end": 1.55
+    },
+    {
+     "w": "first,",
+     "start": 1.55,
+     "end": 2.075
+    },
+    {
+     "w": "then",
+     "start": 2.175,
+     "end": 2.375
+    },
+    {
+     "w": "the",
+     "start": 2.375,
+     "end": 2.525
+    },
+    {
+     "w": "alert",
+     "start": 2.525,
+     "end": 2.888
+    },
+    {
+     "w": "fired.",
+     "start": 2.888,
+     "end": 3.8
+    },
+    {
+     "w": "The",
+     "start": 3.962,
+     "end": 4.138
+    },
+    {
+     "w": "on-call",
+     "start": 4.138,
+     "end": 4.725
+    },
+    {
+     "w": "engineer",
+     "start": 4.725,
+     "end": 5.225
+    },
+    {
+     "w": "acknowledged",
+     "start": 5.225,
+     "end": 5.825
+    },
+    {
+     "w": "it,",
+     "start": 5.825,
+     "end": 6.15
+    },
+    {
+     "w": "the",
+     "start": 6.25,
+     "end": 6.35
+    },
+    {
+     "w": "config",
+     "start": 6.35,
+     "end": 6.875
+    },
+    {
+     "w": "was",
+     "start": 6.875,
+     "end": 7.062
+    },
+    {
+     "w": "rolled",
+     "start": 7.062,
+     "end": 7.425
+    },
+    {
+     "w": "back,",
+     "start": 7.425,
+     "end": 7.875
+    },
+    {
+     "w": "and",
+     "start": 7.95,
+     "end": 8.125
+    },
+    {
+     "w": "finally",
+     "start": 8.125,
+     "end": 8.65
+    },
+    {
+     "w": "the",
+     "start": 8.65,
+     "end": 8.812
+    },
+    {
+     "w": "error",
+     "start": 8.812,
+     "end": 9.15
+    },
+    {
+     "w": "rate",
+     "start": 9.15,
+     "end": 9.425
+    },
+    {
+     "w": "recovered.",
+     "start": 9.425,
+     "end": 10.425
+    },
+    {
+     "w": "The",
+     "start": 10.588,
+     "end": 10.75
+    },
+    {
+     "w": "change",
+     "start": 10.75,
+     "end": 11.275
+    },
+    {
+     "w": "and",
+     "start": 11.275,
+     "end": 11.387
+    },
+    {
+     "w": "the",
+     "start": 11.387,
+     "end": 11.475
+    },
+    {
+     "w": "rollback",
+     "start": 11.475,
+     "end": 12.025
+    },
+    {
+     "w": "are",
+     "start": 12.025,
+     "end": 12.125
+    },
+    {
+     "w": "confirmed.",
+     "start": 12.125,
+     "end": 13.05
+    },
+    {
+     "w": "The",
+     "start": 13.15,
+     "end": 13.3
+    },
+    {
+     "w": "acknowledgement",
+     "start": 13.3,
+     "end": 14.0
+    },
+    {
+     "w": "time",
+     "start": 14.0,
+     "end": 14.375
+    },
+    {
+     "w": "is",
+     "start": 14.375,
+     "end": 14.537
+    },
+    {
+     "w": "only",
+     "start": 14.537,
+     "end": 14.9
+    },
+    {
+     "w": "reported.",
+     "start": 14.9,
+     "end": 15.75
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The config change went out first, then the alert fired.",
+     "start": 0.275
+    },
+    {
+     "text": "The on-call engineer acknowledged it, the config was rolled back, and finally the error rate recovered.",
+     "start": 3.962
+    },
+    {
+     "text": "The change and the rollback are confirmed.",
+     "start": 10.588
+    },
+    {
+     "text": "The acknowledgement time is only reported.",
+     "start": 13.15
+    }
+   ],
+   "revealSec": [
+    0.23,
+    2.405,
+    5.105,
+    6.942,
+    9.305
+   ]
+  },
+  {
+   "id": "s04",
+   "section": "impact",
+   "facts": [
+    "n01"
+   ],
+   "narration": "The impact was on customers. About twelve thousand orders failed in total, and every one of them was a checkout the customer had to try again.",
+   "visual": {
+    "type": "bullets",
+    "heading": "Impact",
+    "items": [
+     "About 12000 orders failed",
+     "Customers had to retry checkout"
+    ]
+   },
+   "audio": "audio/incident/s04.wav",
+   "durationSec": 9.225,
+   "frames": 304,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.275,
+     "end": 0.412
+    },
+    {
+     "w": "impact",
+     "start": 0.412,
+     "end": 0.975
+    },
+    {
+     "w": "was",
+     "start": 0.975,
+     "end": 1.15
+    },
+    {
+     "w": "on",
+     "start": 1.15,
+     "end": 1.35
+    },
+    {
+     "w": "customers.",
+     "start": 1.35,
+     "end": 2.4
+    },
+    {
+     "w": "About",
+     "start": 2.538,
+     "end": 2.862
+    },
+    {
+     "w": "twelve",
+     "start": 2.862,
+     "end": 3.312
+    },
+    {
+     "w": "thousand",
+     "start": 3.312,
+     "end": 3.775
+    },
+    {
+     "w": "orders",
+     "start": 3.775,
+     "end": 4.188
+    },
+    {
+     "w": "failed",
+     "start": 4.188,
+     "end": 4.537
+    },
+    {
+     "w": "in",
+     "start": 4.537,
+     "end": 4.675
+    },
+    {
+     "w": "total,",
+     "start": 4.675,
+     "end": 5.325
+    },
+    {
+     "w": "and",
+     "start": 5.425,
+     "end": 5.588
+    },
+    {
+     "w": "every",
+     "start": 5.588,
+     "end": 5.9
+    },
+    {
+     "w": "one",
+     "start": 5.9,
+     "end": 6.075
+    },
+    {
+     "w": "of",
+     "start": 6.075,
+     "end": 6.2
+    },
+    {
+     "w": "them",
+     "start": 6.2,
+     "end": 6.425
+    },
+    {
+     "w": "was",
+     "start": 6.425,
+     "end": 6.562
+    },
+    {
+     "w": "a",
+     "start": 6.562,
+     "end": 6.662
+    },
+    {
+     "w": "checkout",
+     "start": 6.662,
+     "end": 7.175
+    },
+    {
+     "w": "the",
+     "start": 7.175,
+     "end": 7.275
+    },
+    {
+     "w": "customer",
+     "start": 7.275,
+     "end": 7.8
+    },
+    {
+     "w": "had",
+     "start": 7.8,
+     "end": 7.975
+    },
+    {
+     "w": "to",
+     "start": 7.975,
+     "end": 8.075
+    },
+    {
+     "w": "try",
+     "start": 8.075,
+     "end": 8.325
+    },
+    {
+     "w": "again.",
+     "start": 8.325,
+     "end": 8.975
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The impact was on customers.",
+     "start": 0.275
+    },
+    {
+     "text": "About twelve thousand orders failed in total, and every one of them was a checkout the customer had to try again.",
+     "start": 2.538
+    }
+   ],
+   "revealSec": [
+    3.655,
+    6.542
+   ]
+  },
+  {
+   "id": "s05",
+   "section": "factors",
+   "facts": [
+    "f01"
+   ],
+   "narration": "Two factors contributed. The pool limit was set to twenty connections, and the evening peak was higher than that. Together they exhausted the pool, and checkout errors followed.",
+   "visual": {
+    "type": "graph",
+    "heading": "Contributing factors",
+    "direction": "LR",
+    "nodes": [
+     {
+      "id": "pool",
+      "label": "Pool limit"
+     },
+     {
+      "id": "peak",
+      "label": "Evening peak"
+     },
+     {
+      "id": "full",
+      "label": "Pool exhausted",
+      "tone": "danger"
+     },
+     {
+      "id": "err",
+      "label": "Checkout errors",
+      "tone": "danger"
+     }
+    ],
+    "edges": [
+     {
+      "from": "pool",
+      "to": "full"
+     },
+     {
+      "from": "peak",
+      "to": "full"
+     },
+     {
+      "from": "full",
+      "to": "err"
+     }
+    ]
+   },
+   "audio": "audio/incident/s05.wav",
+   "durationSec": 11.325,
+   "frames": 367,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Two",
+     "start": 0.3,
+     "end": 0.537
+    },
+    {
+     "w": "factors",
+     "start": 0.537,
+     "end": 1.05
+    },
+    {
+     "w": "contributed.",
+     "start": 1.05,
+     "end": 2.075
+    },
+    {
+     "w": "The",
+     "start": 2.2,
+     "end": 2.312
+    },
+    {
+     "w": "pool",
+     "start": 2.312,
+     "end": 2.6
+    },
+    {
+     "w": "limit",
+     "start": 2.6,
+     "end": 2.925
+    },
+    {
+     "w": "was",
+     "start": 2.925,
+     "end": 3.075
+    },
+    {
+     "w": "set",
+     "start": 3.075,
+     "end": 3.3
+    },
+    {
+     "w": "to",
+     "start": 3.3,
+     "end": 3.425
+    },
+    {
+     "w": "twenty",
+     "start": 3.425,
+     "end": 3.75
+    },
+    {
+     "w": "connections,",
+     "start": 3.75,
+     "end": 4.675
+    },
+    {
+     "w": "and",
+     "start": 4.775,
+     "end": 4.888
+    },
+    {
+     "w": "the",
+     "start": 4.888,
+     "end": 5.013
+    },
+    {
+     "w": "evening",
+     "start": 5.013,
+     "end": 5.425
+    },
+    {
+     "w": "peak",
+     "start": 5.425,
+     "end": 5.75
+    },
+    {
+     "w": "was",
+     "start": 5.75,
+     "end": 5.963
+    },
+    {
+     "w": "higher",
+     "start": 5.963,
+     "end": 6.35
+    },
+    {
+     "w": "than",
+     "start": 6.35,
+     "end": 6.5
+    },
+    {
+     "w": "that.",
+     "start": 6.5,
+     "end": 7.25
+    },
+    {
+     "w": "Together",
+     "start": 7.388,
+     "end": 7.9
+    },
+    {
+     "w": "they",
+     "start": 7.9,
+     "end": 8.05
+    },
+    {
+     "w": "exhausted",
+     "start": 8.05,
+     "end": 8.613
+    },
+    {
+     "w": "the",
+     "start": 8.613,
+     "end": 8.7
+    },
+    {
+     "w": "pool,",
+     "start": 8.7,
+     "end": 9.225
+    },
+    {
+     "w": "and",
+     "start": 9.325,
+     "end": 9.475
+    },
+    {
+     "w": "checkout",
+     "start": 9.475,
+     "end": 9.95
+    },
+    {
+     "w": "errors",
+     "start": 9.95,
+     "end": 10.35
+    },
+    {
+     "w": "followed.",
+     "start": 10.35,
+     "end": 11.075
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Two factors contributed.",
+     "start": 0.3
+    },
+    {
+     "text": "The pool limit was set to twenty connections, and the evening peak was higher than that.",
+     "start": 2.2
+    },
+    {
+     "text": "Together they exhausted the pool, and checkout errors followed.",
+     "start": 7.388
+    }
+   ],
+   "revealSec": [
+    2.192,
+    4.893,
+    7.93,
+    9.355
+   ]
+  },
+  {
+   "id": "s06",
+   "section": "mitigations",
+   "facts": [
+    "e04",
+    "e05"
+   ],
+   "narration": "The first mitigation was to roll back the config. That is done. After that, the error rate fell below one percent. A second mitigation is still pending: a pool limit check in config review.",
+   "visual": {
+    "type": "steps",
+    "heading": "Mitigations",
+    "items": [
+     "Roll back the config (done)",
+     "Error rate below one percent (done)",
+     "Pool limit check in config review (pending)"
+    ]
+   },
+   "audio": "audio/incident/s06.wav",
+   "durationSec": 13.2,
+   "frames": 423,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.275,
+     "end": 0.388
+    },
+    {
+     "w": "first",
+     "start": 0.388,
+     "end": 0.688
+    },
+    {
+     "w": "mitigation",
+     "start": 0.688,
+     "end": 1.325
+    },
+    {
+     "w": "was",
+     "start": 1.325,
+     "end": 1.5
+    },
+    {
+     "w": "to",
+     "start": 1.5,
+     "end": 1.625
+    },
+    {
+     "w": "roll",
+     "start": 1.625,
+     "end": 1.925
+    },
+    {
+     "w": "back",
+     "start": 1.925,
+     "end": 2.2
+    },
+    {
+     "w": "the",
+     "start": 2.2,
+     "end": 2.3
+    },
+    {
+     "w": "config.",
+     "start": 2.3,
+     "end": 3.1
+    },
+    {
+     "w": "That",
+     "start": 3.25,
+     "end": 3.55
+    },
+    {
+     "w": "is",
+     "start": 3.55,
+     "end": 3.7
+    },
+    {
+     "w": "done.",
+     "start": 3.7,
+     "end": 4.375
+    },
+    {
+     "w": "After",
+     "start": 4.537,
+     "end": 4.85
+    },
+    {
+     "w": "that,",
+     "start": 4.85,
+     "end": 5.225
+    },
+    {
+     "w": "the",
+     "start": 5.3,
+     "end": 5.463
+    },
+    {
+     "w": "error",
+     "start": 5.463,
+     "end": 5.8
+    },
+    {
+     "w": "rate",
+     "start": 5.8,
+     "end": 6.112
+    },
+    {
+     "w": "fell",
+     "start": 6.112,
+     "end": 6.375
+    },
+    {
+     "w": "below",
+     "start": 6.375,
+     "end": 6.75
+    },
+    {
+     "w": "one",
+     "start": 6.75,
+     "end": 6.975
+    },
+    {
+     "w": "percent.",
+     "start": 6.975,
+     "end": 7.8
+    },
+    {
+     "w": "A",
+     "start": 7.938,
+     "end": 8.062
+    },
+    {
+     "w": "second",
+     "start": 8.062,
+     "end": 8.387
+    },
+    {
+     "w": "mitigation",
+     "start": 8.387,
+     "end": 9.025
+    },
+    {
+     "w": "is",
+     "start": 9.025,
+     "end": 9.15
+    },
+    {
+     "w": "still",
+     "start": 9.15,
+     "end": 9.425
+    },
+    {
+     "w": "pending:",
+     "start": 9.425,
+     "end": 10.2
+    },
+    {
+     "w": "a",
+     "start": 10.312,
+     "end": 10.45
+    },
+    {
+     "w": "pool",
+     "start": 10.45,
+     "end": 10.887
+    },
+    {
+     "w": "limit",
+     "start": 10.887,
+     "end": 11.238
+    },
+    {
+     "w": "check",
+     "start": 11.238,
+     "end": 11.588
+    },
+    {
+     "w": "in",
+     "start": 11.588,
+     "end": 11.75
+    },
+    {
+     "w": "config",
+     "start": 11.75,
+     "end": 12.225
+    },
+    {
+     "w": "review.",
+     "start": 12.225,
+     "end": 12.925
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The first mitigation was to roll back the config.",
+     "start": 0.275
+    },
+    {
+     "text": "That is done.",
+     "start": 3.25
+    },
+    {
+     "text": "After that, the error rate fell below one percent.",
+     "start": 4.537
+    },
+    {
+     "text": "A second mitigation is still pending: a pool limit check in config review.",
+     "start": 7.938
+    }
+   ],
+   "revealSec": [
+    1.505,
+    3.58,
+    9.305
+   ]
+  },
+  {
+   "id": "s07",
+   "section": "ambiguities",
+   "facts": [
+    "c01"
+   ],
+   "narration": "The sources disagree on one time. The engineer's note says fourteen oh nine for the acknowledgement. The pager log says fourteen oh seven. We keep both and do not choose.",
+   "visual": {
+    "type": "compare",
+    "heading": "Acknowledgement time",
+    "columns": [
+     {
+      "title": "Engineer's note",
+      "tag": "Reported",
+      "items": [
+       "Acknowledged at 14:09 UTC"
+      ]
+     },
+     {
+      "title": "Pager log",
+      "tag": "Logged",
+      "items": [
+       "Acknowledged at 14:07 UTC"
+      ]
+     }
+    ]
+   },
+   "audio": "audio/incident/s07.wav",
+   "durationSec": 11.3,
+   "frames": 367,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.275,
+     "end": 0.388
+    },
+    {
+     "w": "sources",
+     "start": 0.388,
+     "end": 0.875
+    },
+    {
+     "w": "disagree",
+     "start": 0.875,
+     "end": 1.4
+    },
+    {
+     "w": "on",
+     "start": 1.4,
+     "end": 1.6
+    },
+    {
+     "w": "one",
+     "start": 1.6,
+     "end": 1.825
+    },
+    {
+     "w": "time.",
+     "start": 1.825,
+     "end": 2.525
+    },
+    {
+     "w": "The",
+     "start": 2.625,
+     "end": 2.775
+    },
+    {
+     "w": "engineer's",
+     "start": 2.775,
+     "end": 3.325
+    },
+    {
+     "w": "note",
+     "start": 3.325,
+     "end": 3.6
+    },
+    {
+     "w": "says",
+     "start": 3.6,
+     "end": 3.862
+    },
+    {
+     "w": "fourteen",
+     "start": 3.862,
+     "end": 4.4
+    },
+    {
+     "w": "oh",
+     "start": 4.4,
+     "end": 4.55
+    },
+    {
+     "w": "nine",
+     "start": 4.55,
+     "end": 4.963
+    },
+    {
+     "w": "for",
+     "start": 4.963,
+     "end": 5.088
+    },
+    {
+     "w": "the",
+     "start": 5.088,
+     "end": 5.225
+    },
+    {
+     "w": "acknowledgement.",
+     "start": 5.225,
+     "end": 6.4
+    },
+    {
+     "w": "The",
+     "start": 6.562,
+     "end": 6.675
+    },
+    {
+     "w": "pager",
+     "start": 6.675,
+     "end": 7.05
+    },
+    {
+     "w": "log",
+     "start": 7.05,
+     "end": 7.4
+    },
+    {
+     "w": "says",
+     "start": 7.4,
+     "end": 7.638
+    },
+    {
+     "w": "fourteen",
+     "start": 7.638,
+     "end": 8.062
+    },
+    {
+     "w": "oh",
+     "start": 8.062,
+     "end": 8.213
+    },
+    {
+     "w": "seven.",
+     "start": 8.213,
+     "end": 8.85
+    },
+    {
+     "w": "We",
+     "start": 8.95,
+     "end": 9.075
+    },
+    {
+     "w": "keep",
+     "start": 9.075,
+     "end": 9.3
+    },
+    {
+     "w": "both",
+     "start": 9.3,
+     "end": 9.762
+    },
+    {
+     "w": "and",
+     "start": 9.762,
+     "end": 9.95
+    },
+    {
+     "w": "do",
+     "start": 9.95,
+     "end": 10.062
+    },
+    {
+     "w": "not",
+     "start": 10.062,
+     "end": 10.312
+    },
+    {
+     "w": "choose.",
+     "start": 10.312,
+     "end": 11.05
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The sources disagree on one time.",
+     "start": 0.275
+    },
+    {
+     "text": "The engineer's note says fourteen oh nine for the acknowledgement.",
+     "start": 2.625
+    },
+    {
+     "text": "The pager log says fourteen oh seven.",
+     "start": 6.562
+    },
+    {
+     "text": "We keep both and do not choose.",
+     "start": 8.95
+    }
+   ],
+   "revealSec": [
+    2.655,
+    5.105
+   ]
+  },
+  {
+   "id": "s08",
+   "section": "actions",
+   "facts": [
+    "a01"
+   ],
+   "narration": "One action is open. The platform team adds a pool limit check to config review by April first. It is a prevent action.",
+   "visual": {
+    "type": "table",
+    "heading": "Actions",
+    "headers": [
+     "Action",
+     "Owner",
+     "Due",
+     "Type"
+    ],
+    "rows": [
+     [
+      "Pool limit check in config review",
+      "Platform team",
+      "2026-04-01",
+      "prevent"
+     ]
+    ]
+   },
+   "audio": "audio/incident/s08.wav",
+   "durationSec": 8.725,
+   "frames": 289,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "One",
+     "start": 0.325,
+     "end": 0.562
+    },
+    {
+     "w": "action",
+     "start": 0.562,
+     "end": 1.0
+    },
+    {
+     "w": "is",
+     "start": 1.0,
+     "end": 1.125
+    },
+    {
+     "w": "open.",
+     "start": 1.125,
+     "end": 1.9
+    },
+    {
+     "w": "The",
+     "start": 2.05,
+     "end": 2.15
+    },
+    {
+     "w": "platform",
+     "start": 2.15,
+     "end": 2.7
+    },
+    {
+     "w": "team",
+     "start": 2.7,
+     "end": 3.087
+    },
+    {
+     "w": "adds",
+     "start": 3.087,
+     "end": 3.337
+    },
+    {
+     "w": "a",
+     "start": 3.337,
+     "end": 3.45
+    },
+    {
+     "w": "pool",
+     "start": 3.45,
+     "end": 3.875
+    },
+    {
+     "w": "limit",
+     "start": 3.875,
+     "end": 4.188
+    },
+    {
+     "w": "check",
+     "start": 4.188,
+     "end": 4.588
+    },
+    {
+     "w": "to",
+     "start": 4.588,
+     "end": 4.7
+    },
+    {
+     "w": "config",
+     "start": 4.7,
+     "end": 5.15
+    },
+    {
+     "w": "review",
+     "start": 5.15,
+     "end": 5.575
+    },
+    {
+     "w": "by",
+     "start": 5.575,
+     "end": 5.787
+    },
+    {
+     "w": "April",
+     "start": 5.787,
+     "end": 6.15
+    },
+    {
+     "w": "first.",
+     "start": 6.15,
+     "end": 6.825
+    },
+    {
+     "w": "It",
+     "start": 6.95,
+     "end": 7.1
+    },
+    {
+     "w": "is",
+     "start": 7.1,
+     "end": 7.213
+    },
+    {
+     "w": "a",
+     "start": 7.213,
+     "end": 7.275
+    },
+    {
+     "w": "prevent",
+     "start": 7.275,
+     "end": 7.688
+    },
+    {
+     "w": "action.",
+     "start": 7.688,
+     "end": 8.475
+    }
+   ],
+   "sentences": [
+    {
+     "text": "One action is open.",
+     "start": 0.325
+    },
+    {
+     "text": "The platform team adds a pool limit check to config review by April first.",
+     "start": 2.05
+    },
+    {
+     "text": "It is a prevent action.",
+     "start": 6.95
+    }
+   ],
+   "revealSec": [
+    2.03
+   ]
+  },
+  {
+   "id": "s09",
+   "section": "close",
+   "narration": "That is the review: one action, one disagreement between sources, and one fact left to the full report.",
+   "visual": {
+    "type": "callout",
+    "heading": "Counts",
+    "big": "1 action, 1 conflict",
+    "text": "One low fact is deferred to the report (report.md)"
+   },
+   "audio": "audio/incident/s09.wav",
+   "durationSec": 7.325,
+   "frames": 247,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "That",
+     "start": 0.3,
+     "end": 0.525
+    },
+    {
+     "w": "is",
+     "start": 0.525,
+     "end": 0.7
+    },
+    {
+     "w": "the",
+     "start": 0.7,
+     "end": 0.8
+    },
+    {
+     "w": "review:",
+     "start": 0.8,
+     "end": 1.525
+    },
+    {
+     "w": "one",
+     "start": 1.75,
+     "end": 2.025
+    },
+    {
+     "w": "action,",
+     "start": 2.025,
+     "end": 2.625
+    },
+    {
+     "w": "one",
+     "start": 2.737,
+     "end": 3.0
+    },
+    {
+     "w": "disagreement",
+     "start": 3.0,
+     "end": 3.562
+    },
+    {
+     "w": "between",
+     "start": 3.562,
+     "end": 3.9
+    },
+    {
+     "w": "sources,",
+     "start": 3.9,
+     "end": 4.725
+    },
+    {
+     "w": "and",
+     "start": 4.825,
+     "end": 4.963
+    },
+    {
+     "w": "one",
+     "start": 4.963,
+     "end": 5.237
+    },
+    {
+     "w": "fact",
+     "start": 5.237,
+     "end": 5.6
+    },
+    {
+     "w": "left",
+     "start": 5.6,
+     "end": 5.85
+    },
+    {
+     "w": "to",
+     "start": 5.85,
+     "end": 5.938
+    },
+    {
+     "w": "the",
+     "start": 5.938,
+     "end": 6.037
+    },
+    {
+     "w": "full",
+     "start": 6.037,
+     "end": 6.275
+    },
+    {
+     "w": "report.",
+     "start": 6.275,
+     "end": 7.05
+    }
+   ],
+   "sentences": [
+    {
+     "text": "That is the review: one action, one disagreement between sources, and one fact left to the full report.",
+     "start": 0.3
+    }
+   ]
+  }
+ ]
+}

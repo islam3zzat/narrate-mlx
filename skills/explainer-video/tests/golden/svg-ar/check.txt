@@ -1,0 +1,6 @@
+exit 0
+--stdout--
+ok svg-ar [ar, right to left]: 2 scenes, 13 words, about 8s
+--stderr--
+warning: svg-ar/s01: svg drawings are not mirrored for Arabic: draw the geometry right to left yourself (first part on the right); vowel marks in <text> are removed on screen, and text-anchor="start" extends to the left
+warning: svg-ar/s02: svg drawings are not mirrored for Arabic: draw the geometry right to left yourself (first part on the right); vowel marks in <text> are removed on screen, and text-anchor="start" extends to the left

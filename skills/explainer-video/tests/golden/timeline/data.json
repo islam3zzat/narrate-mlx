@@ -1,0 +1,477 @@
+{
+ "id": "timeline",
+ "title": "Timeline corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 744,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "The alert fired first. Then the on-call engineer acknowledged it. The database was restarted, and finally traffic recovered.",
+   "visual": {
+    "type": "timeline",
+    "heading": "Incident timeline",
+    "events": [
+     {
+      "id": "alert",
+      "at": "14:02 UTC",
+      "label": "Alert fired",
+      "detail": "Error rate above the threshold",
+      "status": "confirmed",
+      "marker": "detected"
+     },
+     {
+      "id": "ack",
+      "at": "14:09 UTC",
+      "label": "Engineer acknowledged",
+      "status": "confirmed"
+     },
+     {
+      "id": "restart",
+      "at": "14:31 UTC",
+      "label": "Database restarted",
+      "detail": "Cause not yet known",
+      "status": "reported",
+      "marker": "mitigated"
+     },
+     {
+      "id": "recover",
+      "at": "14:44 UTC",
+      "label": "Traffic recovered",
+      "status": "unknown",
+      "marker": "resolved"
+     }
+    ],
+    "caption": "Four events, revealed as spoken."
+   },
+   "focus": [
+    {
+     "at": "database was restarted",
+     "on": [
+      "restart"
+     ]
+    },
+    {
+     "at": "finally",
+     "on": []
+    }
+   ],
+   "audio": "audio/timeline/s01.wav",
+   "durationSec": 8.375,
+   "frames": 279,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "The",
+     "start": 0.25,
+     "end": 0.375
+    },
+    {
+     "w": "alert",
+     "start": 0.375,
+     "end": 0.762
+    },
+    {
+     "w": "fired",
+     "start": 0.762,
+     "end": 1.2
+    },
+    {
+     "w": "first.",
+     "start": 1.2,
+     "end": 1.875
+    },
+    {
+     "w": "Then",
+     "start": 2.013,
+     "end": 2.237
+    },
+    {
+     "w": "the",
+     "start": 2.237,
+     "end": 2.375
+    },
+    {
+     "w": "on-call",
+     "start": 2.375,
+     "end": 2.875
+    },
+    {
+     "w": "engineer",
+     "start": 2.875,
+     "end": 3.35
+    },
+    {
+     "w": "acknowledged",
+     "start": 3.35,
+     "end": 3.962
+    },
+    {
+     "w": "it.",
+     "start": 3.962,
+     "end": 4.45
+    },
+    {
+     "w": "The",
+     "start": 4.575,
+     "end": 4.7
+    },
+    {
+     "w": "database",
+     "start": 4.7,
+     "end": 5.275
+    },
+    {
+     "w": "was",
+     "start": 5.275,
+     "end": 5.45
+    },
+    {
+     "w": "restarted,",
+     "start": 5.45,
+     "end": 6.225
+    },
+    {
+     "w": "and",
+     "start": 6.3,
+     "end": 6.438
+    },
+    {
+     "w": "finally",
+     "start": 6.438,
+     "end": 6.875
+    },
+    {
+     "w": "traffic",
+     "start": 6.875,
+     "end": 7.3
+    },
+    {
+     "w": "recovered.",
+     "start": 7.3,
+     "end": 8.125
+    }
+   ],
+   "sentences": [
+    {
+     "text": "The alert fired first.",
+     "start": 0.25
+    },
+    {
+     "text": "Then the on-call engineer acknowledged it.",
+     "start": 2.013
+    },
+    {
+     "text": "The database was restarted, and finally traffic recovered.",
+     "start": 4.575
+    }
+   ],
+   "revealSec": [
+    0.255,
+    2.755,
+    4.58,
+    6.755
+   ],
+   "focusSec": [
+    {
+     "t": 4.62,
+     "on": [
+      "restart"
+     ]
+    },
+    {
+     "t": 6.358,
+     "on": []
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "Eight things happened that day. Deploy came first, then errors, paging, triage, rollback, verify, recovery and finally review.",
+   "visual": {
+    "type": "timeline",
+    "heading": "A longer day",
+    "events": [
+     {
+      "at": "09:00",
+      "label": "Deploy",
+      "detail": "Release candidate rolled out",
+      "marker": "none"
+     },
+     {
+      "at": "09:12",
+      "label": "Errors",
+      "detail": "Five percent of requests fail",
+      "status": "confirmed",
+      "marker": "impact"
+     },
+     {
+      "at": "09:15",
+      "label": "Paging",
+      "status": "reported"
+     },
+     {
+      "at": "09:30",
+      "label": "Triage",
+      "detail": "Suspect the cache layer"
+     },
+     {
+      "at": "09:50",
+      "label": "Rollback",
+      "status": "confirmed",
+      "marker": "mitigated"
+     },
+     {
+      "at": "10:05",
+      "label": "Verify",
+      "detail": "Dashboards green"
+     },
+     {
+      "at": "10:20",
+      "label": "Recovery",
+      "status": "confirmed",
+      "marker": "resolved"
+     },
+     {
+      "at": "Day 2",
+      "label": "Review",
+      "status": "unknown"
+     }
+    ]
+   },
+   "audio": "audio/timeline/s02.wav",
+   "durationSec": 8.7,
+   "frames": 288,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Eight",
+     "start": 0.3,
+     "end": 0.5
+    },
+    {
+     "w": "things",
+     "start": 0.5,
+     "end": 0.775
+    },
+    {
+     "w": "happened",
+     "start": 0.775,
+     "end": 1.113
+    },
+    {
+     "w": "that",
+     "start": 1.113,
+     "end": 1.325
+    },
+    {
+     "w": "day.",
+     "start": 1.325,
+     "end": 1.925
+    },
+    {
+     "w": "Deploy",
+     "start": 2.05,
+     "end": 2.4
+    },
+    {
+     "w": "came",
+     "start": 2.4,
+     "end": 2.638
+    },
+    {
+     "w": "first,",
+     "start": 2.638,
+     "end": 3.125
+    },
+    {
+     "w": "then",
+     "start": 3.2,
+     "end": 3.388
+    },
+    {
+     "w": "errors,",
+     "start": 3.388,
+     "end": 3.95
+    },
+    {
+     "w": "paging,",
+     "start": 4.037,
+     "end": 4.575
+    },
+    {
+     "w": "triage,",
+     "start": 4.662,
+     "end": 5.225
+    },
+    {
+     "w": "rollback,",
+     "start": 5.275,
+     "end": 5.875
+    },
+    {
+     "w": "verify,",
+     "start": 5.963,
+     "end": 6.55
+    },
+    {
+     "w": "recovery",
+     "start": 6.6,
+     "end": 7.175
+    },
+    {
+     "w": "and",
+     "start": 7.175,
+     "end": 7.325
+    },
+    {
+     "w": "finally",
+     "start": 7.325,
+     "end": 7.775
+    },
+    {
+     "w": "review.",
+     "start": 7.775,
+     "end": 8.425
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Eight things happened that day.",
+     "start": 0.3
+    },
+    {
+     "text": "Deploy came first, then errors, paging, triage, rollback, verify, recovery and finally review.",
+     "start": 2.05
+    }
+   ],
+   "revealSec": [
+    1.93,
+    3.268,
+    3.917,
+    4.542,
+    5.155,
+    5.843,
+    6.48,
+    7.655
+   ]
+  },
+  {
+   "id": "s03",
+   "narration": "A short one has two events. The start came first, and the end came second.",
+   "visual": {
+    "type": "timeline",
+    "heading": "Two events",
+    "events": [
+     {
+      "at": "00:00",
+      "label": "Start",
+      "detail": "Begin"
+     },
+     {
+      "at": "00:30",
+      "label": "End",
+      "status": "confirmed"
+     }
+    ]
+   },
+   "audio": "audio/timeline/s03.wav",
+   "durationSec": 5.0,
+   "frames": 177,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.362
+    },
+    {
+     "w": "short",
+     "start": 0.362,
+     "end": 0.613
+    },
+    {
+     "w": "one",
+     "start": 0.613,
+     "end": 0.75
+    },
+    {
+     "w": "has",
+     "start": 0.75,
+     "end": 0.963
+    },
+    {
+     "w": "two",
+     "start": 0.963,
+     "end": 1.175
+    },
+    {
+     "w": "events.",
+     "start": 1.175,
+     "end": 1.925
+    },
+    {
+     "w": "The",
+     "start": 2.05,
+     "end": 2.15
+    },
+    {
+     "w": "start",
+     "start": 2.15,
+     "end": 2.45
+    },
+    {
+     "w": "came",
+     "start": 2.45,
+     "end": 2.712
+    },
+    {
+     "w": "first,",
+     "start": 2.712,
+     "end": 3.2
+    },
+    {
+     "w": "and",
+     "start": 3.275,
+     "end": 3.388
+    },
+    {
+     "w": "the",
+     "start": 3.388,
+     "end": 3.513
+    },
+    {
+     "w": "end",
+     "start": 3.513,
+     "end": 3.8
+    },
+    {
+     "w": "came",
+     "start": 3.8,
+     "end": 4.062
+    },
+    {
+     "w": "second.",
+     "start": 4.062,
+     "end": 4.75
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A short one has two events.",
+     "start": 0.275
+    },
+    {
+     "text": "The start came first, and the end came second.",
+     "start": 2.05
+    }
+   ],
+   "revealSec": [
+    2.03,
+    3.393
+   ]
+  }
+ ]
+}

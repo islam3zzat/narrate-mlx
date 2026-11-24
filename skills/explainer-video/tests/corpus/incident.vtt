@@ -1,0 +1,39 @@
+WEBVTT
+
+NOTE Synthetic Teams-style export of source.txt, used by test_transcript.py
+
+a1b2c3d4-0001-4000-8000-000000000000/1-0
+00:00:12.000 --> 00:00:19.500
+<v Sam Example>The pager fired at 14:02 UTC for the checkout API error rate.</v>
+
+a1b2c3d4-0002-4000-8000-000000000000/2-0
+00:03:40.000 --> 00:03:49.500
+<v Riley Example>I acknowledged the page at 14:09 UTC and started looking at the dashboards.</v>
+
+a1b2c3d4-0003-4000-8000-000000000000/3-0
+00:21:05.000 --> 00:21:09.500
+<v Riley Example>A config change went out at 13:55 UTC that lowered the connection pool limit to 20.</v>
+
+a1b2c3d4-0004-4000-8000-000000000000/4-0
+00:22:10.000 --> 00:22:19.500
+<v Riley Example>The pool of 20 connections was too low for the evening peak.</v>
+
+a1b2c3d4-0005-4000-8000-000000000000/5-0
+00:29:30.000 --> 00:29:39.500
+<v Sam Example>We rolled the config back at 14:31 UTC.</v>
+
+a1b2c3d4-0006-4000-8000-000000000000/6-0
+00:41:10.000 --> 00:41:19.500
+<v Sam Example>The error rate was under 1 percent by 14:44 UTC. About 12000 orders failed in total.</v>
+
+a1b2c3d4-0007-4000-8000-000000000000/7-0
+00:50:02.000 --> 00:50:09.500
+<v Riley Example>I think the alert threshold was too loose, but I am not sure it would have changed anything.</v>
+
+a1b2c3d4-0008-4000-8000-000000000000/8-0
+00:52:30.000 --> 00:52:39.500
+<v Sam Example>Riley says 14:09 for the acknowledgement, but the pager log shows 14:07.</v>
+
+a1b2c3d4-0009-4000-8000-000000000000/9-0
+00:55:00.000 --> 00:55:09.500
+<v Sam Example>Action: the platform team adds a pool limit check to config review by April 1.</v>
