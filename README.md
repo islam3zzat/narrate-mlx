@@ -232,7 +232,6 @@ skills/
   explainer-video/  Video skill: explainer.py, Remotion app in src/, templates/, styles/ (audience profiles + playbooks)
 scripts/            install, uninstall, setup, doctor
 Makefile
-CLAUDE.md           Notes for Claude Code working on this repo
 ```
 
 `skills/speak` runs on its own with just `uv`. `skills/explainer-video` needs the sibling `skills/speak` (or `$EXPLAINER_TTS_DIR`), so copy `skills/` as a whole.
@@ -251,7 +250,7 @@ Run `make doctor` first; it catches most of these.
 
 ## Development
 
-[`CLAUDE.md`](CLAUDE.md) has the architecture, conventions and constraints (pinned versions, why torch is excluded, the MLX cache cap). To add a new visual type under `skills/explainer-video/src/visuals/<type>/`, add `schema.ts`, `semantics.ts`, `capabilities.ts`, `meta.ts`, `catalog.ts`, and `View2D.tsx`/`View3D.tsx`, register it in `capabilities.ts`, `registry.ts`, `views.tsx`, `catalog.ts`, and `src/docs.ts`, then run `make docs`. Manage Python dependencies with `uv` only; don't bump Remotion without re-testing a render, because its packages must share one version.
+To add a new visual type under `skills/explainer-video/src/visuals/<type>/`, add `schema.ts`, `semantics.ts`, `capabilities.ts`, `meta.ts`, `catalog.ts`, and `View2D.tsx`/`View3D.tsx`, register it in `capabilities.ts`, `registry.ts`, `views.tsx`, `catalog.ts`, and `src/docs.ts`, then run `make docs`. Manage Python dependencies with `uv` only; don't bump Remotion without re-testing a render, because its packages must share one version.
 
 ## License
 
