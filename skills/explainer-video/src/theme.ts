@@ -5,6 +5,7 @@ import grotesk from './fonts/SpaceGrotesk.ttf';
 import monoRegular from './fonts/SpaceMono-Regular.ttf';
 import monoBold from './fonts/SpaceMono-Bold.ttf';
 import cairo from './fonts/Cairo.ttf';
+import gochiHand from './fonts/GochiHand-Regular.ttf';
 import {DEFAULT_THEME, THEME_SPECS, THEMES, mixHex, type CelTokens, type Palette, type ThemeName} from './themes';
 
 export {DEFAULT_THEME, THEMES, mixHex, type CelTokens, type Palette, type ThemeName};
@@ -78,7 +79,7 @@ const fontsPromises = new Map<boolean, Promise<void>>();
 /** Font sets whose load has settled (loaded, failed, or hit the 10 s cap). Module-level, so a remount after a
  * discarded React 18 Suspense pass starts ready instead of opening a new delayRender handle. */
 const fontsDone = new Set<boolean>();
-/** Loads Space Grotesk / Space Mono (bundled in src/fonts), plus Cairo for Arabic videos. Resolves even on failure or after 10 s, so a render never stalls on fonts. */
+/** Loads Space Grotesk / Space Mono / Gochi Hand ("Explainer Hand"; bundled in src/fonts), plus Cairo for Arabic videos. Resolves even on failure or after 10 s, so a render never stalls on fonts. */
 export const loadFonts = (arabic = false): Promise<void> => {
   if (fontsPromises.has(arabic)) return fontsPromises.get(arabic)!;
   const promise = Promise.race([
@@ -88,8 +89,12 @@ export const loadFonts = (arabic = false): Promise<void> => {
       // monospace gap between Arabic words (Space Mono has no Arabic, so those glyphs and the space come from Cairo)
       new FontFace('Space Mono', `url(${monoRegular})`, {weight: '400', ...(arabic ? {unicodeRange: NO_SPACE} : {})}).load(),
       new FontFace('Space Mono', `url(${monoBold})`, {weight: '700', ...(arabic ? {unicodeRange: NO_SPACE} : {})}).load(),
+      // handwriting for the whiteboard layout (src/whiteboard); a fixed family so canvas measurement and SVG text agree
+      // Gochi Hand has a single weight; one face covers 400-700 so the browser never synthesizes bold
+      // a failure here must not drop the other faces (every video loads this set), so it is caught on its own
+      new FontFace('Explainer Hand', `url(${gochiHand})`, {weight: '400 700'}).load().catch((e) => { console.warn('hand font failed, whiteboard text will use a fallback', e); return null; }),
       ...(arabic ? [new FontFace('Explainer Arabic', `url(${cairo})`, {weight: '200 1000'}).load()] : []),
-    ]).then((faces) => faces.forEach((f) => document.fonts.add(f))),
+    ]).then((faces) => faces.forEach((f) => { if (f) document.fonts.add(f); })),
     new Promise<void>((resolve) => setTimeout(resolve, 10000)),
   ]).catch((e) => console.warn('font load failed, using fallbacks', e)).finally(() => { fontsDone.add(arabic); });
   fontsPromises.set(arabic, promise);

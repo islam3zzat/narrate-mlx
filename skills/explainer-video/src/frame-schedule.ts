@@ -4,6 +4,7 @@
 import constants from './constants.json';
 import {stepActiveIntervals} from './sdk/algo-math';
 import type {Scene, VideoData} from './types';
+import {resolveLayout} from './whiteboard/eligible';
 
 export type FrameRun = {frame: number; count: number};
 export type FrameSchedule = {totalFrames: number; uniqueFrames: number; runs: FrameRun[]};
@@ -135,7 +136,9 @@ export const computeFrameSchedule = (video: VideoData): FrameSchedule => {
   const total = Math.max(0, Math.floor(video.totalFrames));
   if (total === 0) return {totalFrames: 0, uniqueFrames: 0, runs: []};
 
-  if (video.mode === '3d') {
+  // The whiteboard layout draws strokes on arbitrary frames. Their start and end frames come from path lengths, which
+  // come from browser text measurement (canvas measureText), so this pure schedule cannot prove any frame static: no dedup.
+  if (video.mode === '3d' || resolveLayout(video, video.layout) === 'whiteboard') {
     const runs: FrameRun[] = Array.from({length: total}, (_, frame) => ({frame, count: 1}));
     return {totalFrames: total, uniqueFrames: total, runs};
   }

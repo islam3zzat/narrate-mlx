@@ -8,6 +8,8 @@ import type {Scene, VideoData} from './types';
 import {RtlContext, useRtl} from './rtl';
 import {ChromeBackdrop, SceneChrome} from './SceneChrome';
 import {ChapterCard} from './ChapterCard';
+import {WhiteboardExplainer} from './whiteboard/Whiteboard';
+import {resolveLayout} from './whiteboard/eligible';
 
 const SceneView: React.FC<{scene: Scene; title: string; index: number; count: number; prev?: Scene; nextContinues: boolean; mode3d: boolean}> = ({scene, title, index, count, prev, nextContinues, mode3d}) => {
   const frame = useCurrentFrame();
@@ -43,6 +45,7 @@ export const Explainer: React.FC<{videoId: string; video: VideoData | null; fram
   const fontsReady = useFontGate(rtl, 'fonts');
   const theme = getTheme(video?.theme);
   if (!video || !fontsReady) return <AbsoluteFill style={{background: theme.C.bg}} />;
+  if (resolveLayout(video, video.layout) === 'whiteboard') return <WhiteboardExplainer video={video} frameMap={frameMap} />;
   const timing = linearTiming({durationInFrames: constants.transitionFrames});
   const presentation = slide({direction: rtl ? 'from-left' : 'from-right'});
   const hasChapters = video.scenes.some((s) => s.chapter && !s.continues);

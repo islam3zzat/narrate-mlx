@@ -5,6 +5,10 @@ import constants from './constants.json';
 import {ChromeBackdrop, SceneChrome} from './SceneChrome';
 import {RtlContext} from './rtl';
 import {ThemeContext, getTheme, useFontGate, useTheme, type ThemeName} from './theme';
+import {BoardScene, PaperOverlay, boardTheme} from './whiteboard/Whiteboard';
+import {whiteboardBlockers} from './whiteboard/eligible';
+import {HAND, INK, PAPER} from './sdk/annotate';
+import type {Scene} from './types';
 import type {MermaidRendered, Visual} from './types';
 import {CAPABILITIES, THREE_D_TYPES} from './visuals/capabilities';
 import type {CatalogFocusCue} from './visuals/catalog-types';
@@ -13,7 +17,10 @@ import {REGISTRY, describe as describeVisual, type VisualType} from './visuals/r
 export type CatalogSceneProps = {
   type: VisualType;
   variantLabel: string;
-  theme: ThemeName;
+  /** Absent = automatic: the whiteboard layout when this variant can use it, like a script without `layout`. A set theme other than paper keeps the slide layout (it is the theme being shown). */
+  theme?: ThemeName;
+  /** Studio-editable: 'slides' shows the slide layout, 'whiteboard' forces the board. */
+  layout?: 'whiteboard' | 'slides';
   mode: '2d' | '3d';
   dir: 'ltr' | 'rtl';
   visual: Visual;
@@ -25,7 +32,8 @@ export type CatalogSceneProps = {
   prev?: Visual;
 };
 
-const CatalogInner: React.FC<CatalogSceneProps> = ({
+const CatalogInner: React.FC<CatalogSceneProps & {board: boolean}> = ({
+  board,
   type,
   variantLabel,
   mode,
@@ -85,6 +93,21 @@ const CatalogInner: React.FC<CatalogSceneProps> = ({
     );
   }
 
+  if (board) {
+    const leadFrames0 = leadFrames;
+    const scene: Scene = {
+      id: type, narration, visual: validVisual, audio: '', durationSec: audioSec, frames: durationInFrames, leadFrames: leadFrames0,
+      revealSec, focusSec, mermaidRendered, figureAsset, figureAspect, sentences: [{text: narration, start: 0.08}],
+    };
+    return (
+      <AbsoluteFill style={{background: PAPER, fontFamily: HAND, color: INK}}>
+        <BoardScene scene={scene} index={0} last audio={false} />
+        <div style={{position: 'absolute', top: 28, right: 40, fontFamily: HAND, fontSize: 26, color: INK, opacity: 0.45}}>{`${type} · whiteboard`}</div>
+        <PaperOverlay />
+      </AbsoluteFill>
+    );
+  }
+
   return (
     <SceneChrome
       scene={{
@@ -109,19 +132,30 @@ const CatalogInner: React.FC<CatalogSceneProps> = ({
   );
 };
 
+/** True when this variant is shown on the whiteboard: the same rule a script without `layout` gets (resolveLayout). */
+export const catalogUsesBoard = (p: Pick<CatalogSceneProps, 'theme' | 'layout' | 'mode' | 'dir' | 'type' | 'visual' | 'narration'>): boolean => {
+  if (p.layout === 'slides') return false;
+  if (p.layout === 'whiteboard') return true;
+  const modes = CAPABILITIES[p.type].modes as readonly string[];
+  const mode = modes.includes(p.mode) ? p.mode : modes[0];
+  // an explicit theme (cel-sky included) is what the variant is there to show
+  if (p.theme !== undefined && p.theme !== 'paper') return false;
+  return whiteboardBlockers({language: p.dir === 'rtl' ? 'ar' : 'en', mode, scenes: [{narration: p.narration, visual: p.visual}]}).length === 0;
+};
+
 export const CatalogScene: React.FC<CatalogSceneProps> = (props) => {
   const rtl = props.dir === 'rtl';
-  const theme = getTheme(props.theme);
+  const board = catalogUsesBoard(props);
+  const theme = board ? boardTheme() : getTheme(props.theme);
   // Mount the scene tree only once fonts settle: React Flow measures node handles on mount (useFontGate).
   const fontsReady = useFontGate(rtl, 'catalog-fonts');
   if (!fontsReady) return <AbsoluteFill style={{background: theme.C.bg}} />;
 
+  const inner = <CatalogInner {...props} board={board} />;
   return (
     <ThemeContext.Provider value={theme}>
       <RtlContext.Provider value={rtl}>
-        <ChromeBackdrop>
-          <CatalogInner {...props} />
-        </ChromeBackdrop>
+        {board ? inner : <ChromeBackdrop>{inner}</ChromeBackdrop>}
       </RtlContext.Provider>
     </ThemeContext.Provider>
   );

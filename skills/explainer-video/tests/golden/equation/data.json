@@ -4,6 +4,7 @@
  "language": "en",
  "dir": "ltr",
  "mode": "2d",
+ "layout": "slides",
  "fps": 30,
  "totalFrames": 717,
  "scenes": [

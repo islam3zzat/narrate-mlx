@@ -35,6 +35,30 @@ const makeScene = (id: string, visual: Scene['visual'], overrides: Partial<Scene
   assert.ok(sched.runs.every((r) => r.count === 1));
 }
 
+// 2b. The whiteboard layout is never deduplicated: stroke timing needs browser text measurement, so no frame is provably static.
+{
+  const video: VideoData = {
+    id: 'vwb',
+    title: 'WB',
+    fps: 30,
+    totalFrames: 150,
+    layout: 'whiteboard',
+    scenes: [makeScene('s01', {type: 'title', kicker: 'K', headline: 'H', sub: 'S'})],
+  };
+  const sched = computeFrameSchedule(video);
+  assert.equal(sched.uniqueFrames, 150);
+  assert.ok(sched.runs.every((r) => r.count === 1));
+}
+
+// 2c. No `layout` in the data means automatic: a plain English 2D video is drawn on the board (no dedup), but chapters, continued
+// diagrams or an explicit "slides" keep the slide schedule.
+{
+  const base = {id: 'va', title: 'A', fps: 30, totalFrames: 150, scenes: [makeScene('s01', {type: 'title', kicker: 'K', headline: 'H', sub: 'S'})]};
+  assert.equal(computeFrameSchedule(base as VideoData).uniqueFrames, 150, 'automatic layout = board = every frame rendered');
+  assert.ok(computeFrameSchedule({...base, layout: 'slides'} as VideoData).uniqueFrames < 150, 'explicit slides dedups static holds');
+  assert.ok(computeFrameSchedule({...base, language: 'ar', dir: 'rtl'} as VideoData).uniqueFrames < 150, 'Arabic is slides');
+}
+
 // 3. Continuous 2D types (graph, sequence, animated mermaid) keep all frames active.
 for (const visual of [
   {type: 'graph', heading: 'G', nodes: [{id: 'a', label: 'A'}, {id: 'b', label: 'B'}], edges: [{from: 'a', to: 'b'}]},
@@ -103,7 +127,8 @@ for (const [name, maxFrac] of [
   ['array-algo', 0.50],
   ['graph-algo', 0.55],
 ] as const) {
-  const data = JSON.parse(fs.readFileSync(path.join(goldenDir, name, 'data.json'), 'utf8')) as VideoData;
+  // the dedup ratio is a property of the slide layout; the same data on the whiteboard is never deduplicated (case 2b)
+  const data = {...JSON.parse(fs.readFileSync(path.join(goldenDir, name, 'data.json'), 'utf8')), layout: 'slides'} as VideoData;
   const sched = computeFrameSchedule(data);
   const sum = sched.runs.reduce((a, r) => a + r.count, 0);
   assert.equal(sum, data.totalFrames, `${name}: sum of run counts must match totalFrames`);

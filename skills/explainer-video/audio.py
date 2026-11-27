@@ -397,6 +397,8 @@ def cmd_audio(workdir: Path, ids: list[str], model: str | None, voice: str | Non
         _, total = scene_starts(scenes)
         theme = script.get("theme")
         theme_field = {"theme": theme} if theme and theme != "cel-sky" else {}
+        if script.get("layout"):
+            theme_field["layout"] = script["layout"]
         atomic_write_text(
             workdir / "public/data" / f"{vid}.json",
             json.dumps(

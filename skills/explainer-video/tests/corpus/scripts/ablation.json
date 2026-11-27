@@ -1,4 +1,5 @@
 {
+  "layout": "slides",
   "title": "Isolating Which Components Drive the Gain",
   "scenes": [
     {

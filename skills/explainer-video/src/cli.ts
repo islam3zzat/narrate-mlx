@@ -27,6 +27,7 @@ import {MermaidLayout} from './visuals/mermaid/schema';
 import {checkMermaidAnimation, type MermaidCheckResult, type MermaidCheckScene} from './visuals/mermaid/focus';
 import {LedgerSchema, ledgerIssues, type Ledger} from './ledger';
 import {computeFrameSchedule} from './frame-schedule';
+import {whiteboardBlockers} from './whiteboard/eligible';
 import {checkVisualFiles, writeVisualFiles} from './gen-visuals';
 import {styleIssues, BuiltinStyleSchema, StyleSchema, DEFAULT_STYLE, type StyleDef} from './styles';
 import {loadStyle} from './style-files';
@@ -141,6 +142,13 @@ if (cmd === 'schema') {
       }
       // narration style (English only; the blameless lint is off until the script's style turns it on)
       warnings.push(...lintNarration(r.data.scenes, {lang: r.data.language, blameless: style?.lint.blameless}).map((w) => `${id}/${w.scene}: ${w.message}`));
+      // an automatic layout quietly becomes slides when the text has a glyph the board's hand font lacks: say so
+      if (r.data.layout === undefined) {
+        const blockers = whiteboardBlockers(r.data);
+        // only when the text is the sole reason (Arabic, 3D, chapters and the like are choices, not something to fix)
+        const glyph = blockers.every((b) => b.kind === 'glyph') ? blockers[0] : undefined;
+        if (glyph) warnings.push(`${id}: ${glyph.path.join('.')}: this video is drawn as slides, not on the whiteboard, because ${glyph.message}. Fix the text for the whiteboard, or set "layout": "slides" to silence this`);
+      }
       out[id] = {errors, warnings};
       if (style || !r.data.style) parsed[id] = r.data;
     }

@@ -27,4 +27,6 @@ export type VideoData = {
   mode?: '2d' | '3d';
   /** Visual theme (absent = cel-sky). */
   theme?: ThemeName;
+  /** The script's `layout` as written: 'whiteboard', 'slides', or absent = automatic (src/whiteboard/eligible.ts resolveLayout). */
+  layout?: 'whiteboard' | 'slides';
 };

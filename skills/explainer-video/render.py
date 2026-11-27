@@ -147,6 +147,12 @@ def sync_mode(workdir: Path, vid: str, script: dict) -> dict:
         else:
             data["theme"] = want_theme
         changed = True
+    if data.get("layout") != script.get("layout"):
+        if script.get("layout"):
+            data["layout"] = script["layout"]
+        else:
+            data.pop("layout", None)
+        changed = True
     if changed:
         atomic_write_text(p, json.dumps(data, indent=1, ensure_ascii=False))
     return data

@@ -3,6 +3,7 @@
 // - `explainer.py schema` prints the JSON Schema generated from it, so callers can see exactly what to send.
 // - The shape of each visual type lives in src/visuals/<type>/schema.ts; src/visuals/registry.ts assembles them into VisualSchema.
 // - types.ts derives the Remotion prop types from it. Keep descriptions short: they end up in the JSON Schema.
+import {whiteboardBlockers} from './whiteboard/eligible';
 import {z} from 'zod';
 import {text} from './visuals/common';
 import {BuiltinVisualSchema, VisualSchema, focusTargetsOf} from './visuals/registry';
@@ -80,6 +81,7 @@ const buildScriptSchema = <S extends z.ZodTypeAny>(sceneSchema: S) =>
       language: z.enum(LANGUAGES).default('en').describe('Narration language: "en" (default, Kokoro voice) or "ar" (Modern Standard Arabic, SILMA voice). "ar" also mirrors every layout right to left. Arabic narration must be fully vowelled (tashkeel), with numbers written as words and no Latin letters'),
       mode: z.enum(MODES).default('2d').describe('"2d" (default) or "3d": every scene is drawn in 3D (WebGL), with depth used for meaning (staircases, terraces, stacks); allows the 3D-only layers3d type. continues is not supported in 3D; graph direction is ignored (3D graphs always recede into depth)'),
       theme: z.enum(THEMES).optional().describe('Visual theme: "cel-sky" (2.5D cel-shaded sky, default) or "paper" (flat neo-brutalist dotted paper)'),
+      layout: z.enum(['whiteboard', 'slides']).optional().describe('Layout: absent = automatic (the whiteboard whenever the script allows it, else slides); "whiteboard" = hand-drawn board (strokes, underlines and check marks drawn on in time with the narration; no title bar, counter or slide transitions), an error if the script cannot use it; "slides" = title bar, counter, boxed captions and slide transitions. The board needs English, 2D, the paper theme, and no chapter or continues. title, bullets, flow, steps, fanout, compare and callout are drawn by hand, every other 2D type is shown on the board in a sketched, hand-lettered style'),
       style: StyleNameSchema.optional().describe('Audience/purpose style (explainer.py styles lists them;). Sets default speed, scene and length bounds, narration lints and what a fact ledger must cover. Absent = "explainer"'),
       title: text('Video title, shown top-left'),
       scenes: z.array(sceneSchema).min(1).describe('Scenes in play order; one idea each'),
@@ -87,8 +89,12 @@ const buildScriptSchema = <S extends z.ZodTypeAny>(sceneSchema: S) =>
     .superRefine((rawV, ctx) => {
       const v = rawV as {
         mode: '2d' | '3d';
-        scenes: {id: string; continues?: true; chapter?: string; focus?: unknown; visual: ScriptVisual}[];
+        theme?: string;
+        language: 'en' | 'ar';
+        layout?: 'whiteboard' | 'slides';
+        scenes: {id: string; narration: string; continues?: true; chapter?: string; focus?: unknown; visual: ScriptVisual}[];
       };
+      if (v.layout === 'whiteboard') for (const b of whiteboardBlockers(v)) ctx.addIssue({code: 'custom', path: b.path, message: b.message});
       const seen = new Set<string>();
       v.scenes.forEach((s, i) => {
         if (seen.has(s.id)) ctx.addIssue({code: 'custom', path: ['scenes', i, 'id'], message: `duplicate scene id "${s.id}"`});

@@ -31,6 +31,14 @@
         "paper"
       ]
     },
+    "layout": {
+      "description": "Layout: absent = automatic (the whiteboard whenever the script allows it, else slides); \"whiteboard\" = hand-drawn board (strokes, underlines and check marks drawn on in time with the narration; no title bar, counter or slide transitions), an error if the script cannot use it; \"slides\" = title bar, counter, boxed captions and slide transitions. The board needs English, 2D, the paper theme, and no chapter or continues. title, bullets, flow, steps, fanout, compare and callout are drawn by hand, every other 2D type is shown on the board in a sketched, hand-lettered style",
+      "type": "string",
+      "enum": [
+        "whiteboard",
+        "slides"
+      ]
+    },
     "style": {
       "description": "Audience/purpose style (explainer.py styles lists them;). Sets default speed, scene and length bounds, narration lints and what a fact ledger must cover. Absent = \"explainer\"",
       "type": "string",

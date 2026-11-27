@@ -11,7 +11,7 @@ import type {VisualType} from './visuals/registry';
 const toProps = <T extends VisualType>(type: T, v: CatalogVariant<T>): CatalogSceneProps => ({
   type,
   variantLabel: v.label,
-  theme: v.theme ?? 'cel-sky',
+  theme: v.theme,
   mode: v.mode ?? (CAPABILITIES[type].modes[0] as '2d' | '3d'),
   dir: v.dir ?? 'ltr',
   visual: v.visual as Visual,
