@@ -57,7 +57,11 @@ class GoldenGatePlanTests(unittest.TestCase):
     def test_data_only_catalog_docs_and_wiring_run_data_only(self):
         kind, types, vids, _ = golden_gate.plan([
             EV + "src/cli.ts",
+            EV + "src/gen-visuals.ts",
+            EV + "src/visual-lint.ts",
+            EV + "visual_host.py",
             EV + "src/visuals/registry.ts",
+            EV + "src/visuals/order.json",
             EV + "src/visuals/meta-lint.ts",
             EV + "src/visuals/chart/catalog.ts",
             EV + "SKILL.md",

@@ -73,3 +73,5 @@ export const EquationVisual = z.strictObject({
 });
 
 export type EquationVisualT = z.infer<typeof EquationVisual>;
+
+export {EquationVisual as schema};

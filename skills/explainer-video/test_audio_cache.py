@@ -1,9 +1,14 @@
 """Resilience unit tests for atomic writes, corrupt-cache recovery, partial batch commits, and proxy sync."""
 from __future__ import annotations
 
+import contextlib
+import io
 import json
+import os
 import subprocess
+import sys
 import tempfile
+import time
 import unittest
 import wave
 from pathlib import Path
@@ -11,6 +16,7 @@ from unittest import mock
 
 import audio
 import env
+import explainer
 
 
 def _write_pcm_wav(path: Path, seconds: float = 0.5, rate: int = 24000) -> None:
@@ -37,17 +43,60 @@ class AudioCacheResilienceTests(unittest.TestCase):
 
     def test_sync_uv_env_falls_back_to_system_certs(self) -> None:
         calls: list[list[str]] = []
+        stdouts: list[object] = []
 
-        def fake_run(cmd, env=None, check=False):
+        def fake_run(cmd, env=None, check=False, **kw):
             calls.append(cmd)
+            stdouts.append(kw.get("stdout"))
             return subprocess.CompletedProcess(cmd, 0 if "--system-certs" in cmd else 1)
 
+        err_buf = io.StringIO()
         with tempfile.TemporaryDirectory() as tmp:
-            with mock.patch("env.subprocess.run", side_effect=fake_run):
+            with (
+                mock.patch("env.find_uv", return_value="uv"),
+                mock.patch("env.subprocess.run", side_effect=fake_run),
+                contextlib.redirect_stderr(err_buf),
+            ):
                 env.sync_uv_env(Path(tmp))
         self.assertEqual(len(calls), 2)
         self.assertNotIn("--system-certs", calls[0])
         self.assertIn("--system-certs", calls[1])
+        self.assertEqual(stdouts, [err_buf, err_buf])
+
+    def test_find_uv_resolves_path_fallback_or_dies_cleanly(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            fake_uv = Path(tmp) / "uv"
+            fake_uv.write_text("#!/bin/sh\n", encoding="utf-8")
+            fake_uv.chmod(0o755)
+            with (
+                mock.patch("env.shutil.which", return_value=None),
+                mock.patch("env.Path.home", return_value=Path(tmp) / "nohome"),
+                mock.patch("env.Path.is_file", autospec=True, side_effect=lambda p: str(p) == "/opt/homebrew/bin/uv"),
+                mock.patch("env.os.access", side_effect=lambda p, m: str(p) == "/opt/homebrew/bin/uv"),
+            ):
+                self.assertEqual(env.find_uv(), "/opt/homebrew/bin/uv")
+
+            with (
+                mock.patch("env.shutil.which", return_value=None),
+                mock.patch("env.Path.home", return_value=Path(tmp) / "nohome"),
+                mock.patch("env.Path.is_file", return_value=False),
+            ):
+                with self.assertRaises(SystemExit) as cm:
+                    env.find_uv()
+                self.assertTrue(str(cm.exception).startswith("explainer: uv not found"), cm.exception)
+
+    def test_audio_cli_rejects_out_of_range_speed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            for bad in ("0", "-1", "3", "nan"):
+                with self.subTest(bad=bad):
+                    r = subprocess.run(
+                        [sys.executable, str(env.SKILL / "explainer.py"), "audio", tmp, "--speed", bad],
+                        capture_output=True,
+                        text=True,
+                        cwd=env.SKILL,
+                    )
+                    self.assertEqual(r.returncode, 2, r.stderr)
+                    self.assertIn("0.5 and 2.0", r.stderr)
 
     def test_tts_timed_scenes_discards_corrupt_words_json(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -76,9 +125,14 @@ class AudioCacheResilienceTests(unittest.TestCase):
                     ]
                 },
             })
-            with mock.patch("audio.wav_seconds", return_value=0.5), mock.patch(
-                "audio.subprocess.run",
-                return_value=subprocess.CompletedProcess([], 0, stdout=worker_out, stderr=""),
+            with (
+                mock.patch("audio.find_uv", return_value="uv"),
+                mock.patch("audio.announce_model_download_if_missing", return_value=False),
+                mock.patch("audio.wav_seconds", return_value=0.5),
+                mock.patch(
+                    "audio.run_guarded",
+                    return_value=subprocess.CompletedProcess([], 0, stdout=worker_out, stderr=""),
+                ),
             ):
                 out = audio.align_scenes(adir, adir, [("s01", "hello world", wav, "digest1")], "vid")
             self.assertIn("s01", out)
@@ -160,10 +214,107 @@ class AudioCacheResilienceTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             wav = Path(tmp) / "s01.wav"
             qdir = wav.parent / ".qwen3"
-            with mock.patch("audio.SKILL", Path(tmp)), mock.patch("audio.subprocess.run", return_value=subprocess.CompletedProcess([], 1, stdout="", stderr="boom")):
+            with (
+                mock.patch("audio.find_uv", return_value="uv"),
+                mock.patch("audio.announce_model_download_if_missing", return_value=False),
+                mock.patch("audio.SKILL", Path(tmp)),
+                mock.patch("audio.run_guarded", return_value=subprocess.CompletedProcess([], 1, stdout="", stderr="boom")),
+            ):
                 with self.assertRaises(SystemExit):
                     audio.synth_qwen3(Path(tmp), [("s01", "hello", wav)], "Ryan")
             self.assertFalse(qdir.exists())
+
+    def test_synth_and_align_timeouts_reap_child_processes(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            pid_file = root / "grandchild.pid"
+            stub_uv = root / "uv"
+            stub_uv.write_text(
+                "#!/bin/sh\n"
+                f"python3 -c 'import time; time.sleep(30)' &\n"
+                f"echo $! > '{pid_file}'\n"
+                "wait\n",
+                encoding="utf-8",
+            )
+            stub_uv.chmod(0o755)
+
+            def assert_reaped() -> None:
+                child_pid = int(pid_file.read_text(encoding="utf-8").strip())
+                deadline = time.monotonic() + 2.0
+                while time.monotonic() < deadline:
+                    try:
+                        os.kill(child_pid, 0)
+                        time.sleep(0.02)
+                    except ProcessLookupError:
+                        return
+                self.fail(f"Child process {child_pid} was not reaped")
+
+            wav = root / "s01.wav"
+            with (
+                mock.patch("audio.find_uv", return_value=str(stub_uv)),
+                mock.patch.dict(os.environ, {"EXPLAINER_TTS_TIMEOUT": "0.35"}),
+            ):
+                with self.assertRaises(SystemExit) as cm:
+                    audio.synth(root, "hello", wav, "kokoro", "af_heart", 1.0)
+                self.assertIn("TTS timed out", str(cm.exception))
+            assert_reaped()
+
+            pid_file.unlink(missing_ok=True)
+            _write_pcm_wav(wav, seconds=0.5)
+            err_buf = io.StringIO()
+            with (
+                mock.patch("audio.find_uv", return_value=str(stub_uv)),
+                mock.patch("audio.announce_model_download_if_missing", return_value=False),
+                mock.patch.dict(os.environ, {"EXPLAINER_ALIGN_TIMEOUT": "0.35"}),
+                contextlib.redirect_stderr(err_buf),
+            ):
+                out = audio.align_scenes(root, root, [("s01", "hello", wav, "d1")], "vid")
+            self.assertEqual(out, {})
+            self.assertIn("alignment timed out", err_buf.getvalue())
+            assert_reaped()
+
+    def test_hf_cache_download_notice_and_per_scene_counts(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            hub = root / "hub"
+            hub.mkdir()
+            with mock.patch.dict(os.environ, {"HF_HUB_CACHE": str(hub)}):
+                self.assertFalse(env.hf_model_cached(env.KOKORO_MODEL))
+                snaps = hub / f"models--{env.KOKORO_MODEL.replace('/', '--')}" / "snapshots" / "rev1"
+                snaps.mkdir(parents=True)
+                self.assertTrue(env.hf_model_cached(env.KOKORO_MODEL))
+
+            # Empty HF cache prints setup notice once and prints (1/2), (2/2) progress counts.
+            empty_hub = root / "empty-hub"
+            empty_hub.mkdir()
+            wd = root / "proj"
+            (wd / "scripts").mkdir(parents=True)
+            script = {
+                "title": "Progress test",
+                "scenes": [
+                    {"id": "s01", "narration": "First line.", "visual": {"type": "title", "kicker": "K", "headline": "H"}},
+                    {"id": "s02", "narration": "Second line.", "visual": {"type": "title", "kicker": "K2", "headline": "H2"}},
+                ],
+            }
+            (wd / "scripts/demo.json").write_text(json.dumps(script), encoding="utf-8")
+            out_buf, err_buf = io.StringIO(), io.StringIO()
+            with (
+                mock.patch.dict(os.environ, {"HF_HUB_CACHE": str(empty_hub)}),
+                mock.patch("audio.find_speak", return_value=wd),
+                mock.patch("audio.validate_all", return_value=[]),
+                mock.patch("audio.check_mermaid", return_value=([], {})),
+                mock.patch("audio.stage_figures", return_value=([], {})),
+                mock.patch("audio.synth", side_effect=lambda s, t, w, m, v, sp, l="en": _write_pcm_wav(w, 0.5)),
+                mock.patch("audio.align_scenes", return_value={}),
+                mock.patch("audio.describe_visuals", return_value=[{"slots": [], "carried": []}, {"slots": [], "carried": []}]),
+                contextlib.redirect_stdout(out_buf),
+                contextlib.redirect_stderr(err_buf),
+            ):
+                audio.cmd_audio(wd, ["demo"], None, None, None)
+
+            self.assertIn(f"[setup] downloading {env.KOKORO_MODEL}", err_buf.getvalue())
+            self.assertIn("[tts] demo/s01 (1/2)", out_buf.getvalue())
+            self.assertIn("[tts] demo/s02 (2/2)", out_buf.getvalue())
 
 
 if __name__ == "__main__":

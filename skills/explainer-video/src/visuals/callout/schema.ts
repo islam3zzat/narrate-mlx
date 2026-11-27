@@ -8,3 +8,5 @@ export const CalloutVisual = z.strictObject({
   text: text('One supporting sentence'),
   tone: z.literal('warn').optional().describe('"warn" for a warning or open question'),
 }).describe('One key message');
+
+export {CalloutVisual as schema};

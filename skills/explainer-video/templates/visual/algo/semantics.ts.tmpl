@@ -1,0 +1,3 @@
+import {fresh, type Semantics} from '../../sdk/pure';
+
+export const describe: Semantics<'__SLUG__'> = (v) => fresh(v.steps.map((s) => s.label));

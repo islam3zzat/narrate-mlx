@@ -64,7 +64,11 @@ def pick_scenes(workdir: Path, wanted: list[str]) -> list[dict]:
 
 
 def run(cmd: list[str], payload: dict) -> dict:
-    r = subprocess.run(cmd, input=json.dumps(payload), stdout=subprocess.PIPE, text=True)  # stderr streams live
+    timeout = ex.env_timeout("EXPLAINER_TTS_TIMEOUT", 1800.0)
+    try:
+        r = ex.run_guarded(cmd, stdin=json.dumps(payload), timeout=timeout, capture=True, capture_stderr=False)  # stderr streams live
+    except subprocess.TimeoutExpired:
+        ex.die(f"{Path(cmd[-1]).name} timed out after {timeout:.0f}s (set $EXPLAINER_TTS_TIMEOUT to override)")
     if r.returncode != 0:
         ex.die(f"{Path(cmd[-1]).name} failed (exit {r.returncode})")
     return json.loads(r.stdout)
@@ -95,7 +99,7 @@ def main() -> None:
     out = (a.out or wd / "out/ab").resolve()
     scenes = pick_scenes(wd, a.scenes.split(","))
     speak = ex.find_speak()
-    uv = ["uv", "run", "--no-sync", "--project", str(speak), "python"]
+    uv = [ex.find_uv(), "run", "--no-sync", "--project", str(speak), "python"]
 
     cands = [{"key": k, "repo": CANDIDATES[k][0], "kind": CANDIDATES[k][1], "voice": CANDIDATES[k][2],
               "instruct": CANDIDATES[k][3]} for k in keys]

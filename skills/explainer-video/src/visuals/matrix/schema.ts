@@ -123,3 +123,5 @@ export const MatrixVisual = z.strictObject({
 
 export type MatrixVisualT = z.infer<typeof MatrixVisual>;
 export type MatrixHighlightT = z.infer<typeof MatrixHighlight>;
+
+export {MatrixVisual as schema};

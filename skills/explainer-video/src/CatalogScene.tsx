@@ -1,10 +1,10 @@
 // Interactive Storybook-like Remotion Studio scene wrapper for browsing any visual type without audio or a workdir.
 import React from 'react';
-import {AbsoluteFill, continueRender, delayRender, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
 import constants from './constants.json';
 import {ChromeBackdrop, SceneChrome} from './SceneChrome';
 import {RtlContext} from './rtl';
-import {ThemeContext, getTheme, loadFonts, useTheme, type ThemeName} from './theme';
+import {ThemeContext, getTheme, useFontGate, useTheme, type ThemeName} from './theme';
 import type {MermaidRendered, Visual} from './types';
 import {CAPABILITIES, THREE_D_TYPES} from './visuals/capabilities';
 import type {CatalogFocusCue} from './visuals/catalog-types';
@@ -112,15 +112,9 @@ const CatalogInner: React.FC<CatalogSceneProps> = ({
 export const CatalogScene: React.FC<CatalogSceneProps> = (props) => {
   const rtl = props.dir === 'rtl';
   const theme = getTheme(props.theme);
-  // Resolve the handle directly on creation so a discarded React 18 Suspense pass can never leak it.
-  React.useState(() => {
-    const h = delayRender('catalog-fonts');
-    loadFonts(rtl).finally(() => continueRender(h));
-    return h;
-  });
-  React.useEffect(() => {
-    loadFonts(rtl);
-  }, [rtl]);
+  // Mount the scene tree only once fonts settle: React Flow measures node handles on mount (useFontGate).
+  const fontsReady = useFontGate(rtl, 'catalog-fonts');
+  if (!fontsReady) return <AbsoluteFill style={{background: theme.C.bg}} />;
 
   return (
     <ThemeContext.Provider value={theme}>

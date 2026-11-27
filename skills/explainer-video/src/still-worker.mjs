@@ -83,27 +83,39 @@ try {
     try {
       for (const v of vids) {
         if (!v.frames || v.frames.length === 0) continue;
-        const composition = await selectComposition({
-          serveUrl,
-          id: 'Explainer',
-          inputProps: { videoId: v.vid },
-          puppeteerInstance: browser,
-          browserExecutable,
-          chromiumOptions,
-          logLevel: 'error',
-        });
+        const compId = v.compositionId || 'Explainer';
+        const baseInputProps = v.inputProps ?? { videoId: v.vid };
+        const compCache = new Map();
+        const getComp = async (props) => {
+          const key = JSON.stringify(props);
+          if (compCache.has(key)) return compCache.get(key);
+          const p = selectComposition({
+            serveUrl,
+            id: compId,
+            inputProps: props,
+            puppeteerInstance: browser,
+            browserExecutable,
+            chromiumOptions,
+            logLevel: 'error',
+          });
+          compCache.set(key, p);
+          return p;
+        };
+        await getComp(baseInputProps);
         let idx = 0;
         const conc = Math.max(1, Math.min(v.concurrency || 1, v.frames.length));
         async function worker() {
           while (idx < v.frames.length) {
             const item = v.frames[idx++];
+            const itemProps = item.inputProps ?? baseInputProps;
+            const composition = await getComp(itemProps);
             fs.mkdirSync(path.dirname(item.output), { recursive: true });
             await renderStill({
               composition,
               serveUrl,
               output: item.output,
               frame: item.frame,
-              inputProps: { videoId: v.vid },
+              inputProps: itemProps,
               puppeteerInstance: browser,
               browserExecutable,
               chromiumOptions,

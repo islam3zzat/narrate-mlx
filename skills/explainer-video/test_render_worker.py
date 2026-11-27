@@ -298,6 +298,61 @@ try {
                 check=True,
             )
 
+    def test_render_progress_tracker_throttling_eta_and_finish(self) -> None:
+        tenv = render.tool_env()
+        node = shutil.which("node", path=tenv.get("PATH"))
+        self.assertIsNotNone(node, "node must be available on tool_env PATH")
+
+        script = """
+import assert from 'node:assert/strict';
+import { createProgressTracker, formatDuration } from './src/render-progress.mjs';
+
+assert.equal(formatDuration(45), '45s');
+assert.equal(formatDuration(125), '2m05s');
+assert.equal(formatDuration(3665), '1h01m');
+
+let clock = 0;
+const lines = [];
+const tracker = createProgressTracker({
+  vid: 'demo',
+  totalFrames: 100,
+  stepPct: 5,
+  intervalMs: 10000,
+  now: () => clock,
+  write: (s) => lines.push(s),
+});
+
+// Advance 4% at 1s (<5% and <10s): throttled.
+clock = 1000;
+for (let i = 0; i < 4; i++) tracker.onFrame(1);
+assert.equal(lines.length, 0);
+
+// Frame 5 hits 5% at 2s -> emits progress with ETA (~38s left).
+clock = 2000;
+tracker.onFrame(1);
+assert.equal(lines.length, 1);
+assert.match(lines[0], /^\\[render\\] demo: 5\\/100 frames \\(5%\\), ~38s left\\n$/);
+
+// Frame 6 at 12.5s triggers the 10s interval throttle even at +1%.
+clock = 12500;
+tracker.onFrame(1);
+assert.equal(lines.length, 2);
+assert.match(lines[1], /^\\[render\\] demo: 6\\/100 frames \\(6%\\), ~3m16s left\\n$/);
+
+// Complete remaining frames; finish() prints elapsed summary.
+clock = 20000;
+tracker.onFrame(94); // batch completion: no intermediate emit at 100%
+tracker.finish();
+assert.equal(lines.length, 3);
+assert.equal(lines[2], '[render] demo: 100/100 frames (100%) in 20s\\n');
+"""
+        subprocess.run(
+            [node, "--input-type=module", "-e", script],
+            cwd=render.SKILL,
+            env=tenv,
+            check=True,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

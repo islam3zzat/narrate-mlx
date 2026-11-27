@@ -1,0 +1,6 @@
+exit 0
+--stdout--
+ok array-algo: 2 scenes, 49 words, about 19s
+--stderr--
+warning: array-algo/s01: 5 numbers in one sentence (five, seven, four, nine, five): a listener holds two at most; split the sentence or leave the figures to the picture: "To partition around pivot five, we first swap seven with four, then..."
+warning: array-algo/s02: 4 numbers in one sentence (three, eight, fourteen, nineteen): a listener holds two at most; split the sentence or leave the figures to the picture: "With a fixed sliding window of three cells, we start at sum eight, ..."

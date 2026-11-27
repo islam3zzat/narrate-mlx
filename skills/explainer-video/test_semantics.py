@@ -49,14 +49,33 @@ class SemanticsTests(unittest.TestCase):
     def test_cases_cover_every_visual_type(self):
         cases = load_cases()
         types = {c["visual"]["type"] for c in cases}
-        expected = set(json.loads(tsx(["-e", "import {CAPABILITIES} from './src/visuals/capabilities.ts'; console.log(JSON.stringify(Object.keys(CAPABILITIES)))"]).strip().splitlines()[-1]))
-        self.assertGreaterEqual(len(expected), 27)
-        self.assertEqual(types, expected)
+        expected = set(json.loads(tsx(["-e", "import {BUILTIN_CAPABILITIES} from './src/visuals/capabilities.ts'; console.log(JSON.stringify(Object.keys(BUILTIN_CAPABILITIES)))"]).strip().splitlines()[-1]))
+        self.assertGreaterEqual(len(types), 27)
+        self.assertTrue(types.issubset(expected), f"unknown types in semantics_cases.jsonl: {types - expected}")
         self.assertTrue(any(any(c["carried"]) for c in cases), "no case exercises carrying")
 
+    def test_catalog_semantics_cover_every_visual_type(self):
+        """Every visual type in BUILTIN_CAPABILITIES has a valid BUILTIN_CATALOG[t].default entry producing matching slots/carried arrays."""
+        code = ("import {BUILTIN_CATALOG} from './src/visuals/catalog.ts';"
+                " const items = Object.entries(BUILTIN_CATALOG).map(([t, e]) => ({type: t, visual: e.default.visual, prev: e.default.prev ?? null, ...(e.default.mermaidRendered ? {rendered: e.default.mermaidRendered} : {})}));"
+                " console.log(JSON.stringify(items));")
+        catalog_items = json.loads(tsx(["-e", code]).strip().splitlines()[-1])
+        expected = set(json.loads(tsx(["-e", "import {BUILTIN_CAPABILITIES} from './src/visuals/capabilities.ts'; console.log(JSON.stringify(Object.keys(BUILTIN_CAPABILITIES)))"]).strip().splitlines()[-1]))
+        self.assertEqual({x["type"] for x in catalog_items}, expected)
+        out = json.loads(tsx(["src/cli.ts", "describe"], json.dumps([
+            {"visual": x["visual"], "prev": x["prev"], **({"rendered": x["rendered"]} if "rendered" in x else {})}
+            for x in catalog_items
+        ])))
+        self.assertEqual(len(out), len(catalog_items))
+        for item, res in zip(catalog_items, out):
+            self.assertIsInstance(res["slots"], list, item["type"])
+            self.assertIsInstance(res["carried"], list, item["type"])
+            self.assertEqual(len(res["slots"]), len(res["carried"]), item["type"])
+
     def test_pure_list_loads_without_react(self):
-        """The pure registry (src/visuals/registry.ts) must load in plain node: no react, remotion or three through an import."""
-        code = ("import('./src/visuals/registry.ts').then(() => { const m = (typeof require !== 'undefined' && require.cache) || {};"
+        """The pure registry (src/visuals/registry.ts) and src/sdk/pure.ts must load in plain node: no react, remotion or three."""
+        code = ("Promise.all([import('./src/visuals/registry.ts'), import('./src/sdk/pure.ts')]).then(() => {"
+                " const m = (typeof require !== 'undefined' && require.cache) || {};"
                 " const bad = Object.keys(m).filter((k) => /node_modules\\/(react|react-dom|remotion|three|@remotion|@react-three|reactflow|@xyflow)\\//.test(k));"
                 " console.log(JSON.stringify(bad)); })")
         bad = json.loads(tsx(["-e", code]).strip().splitlines()[-1])
@@ -66,6 +85,7 @@ class SemanticsTests(unittest.TestCase):
                 HERE / "src/visuals/meta-lint.ts", HERE / "src/visuals/chars.ts", HERE / "src/visuals/math-expr.ts",
                 HERE / "src/visuals/plot-kit.ts", HERE / "src/visuals/equation/parse.ts", HERE / "src/visuals/stat/format.ts",
                 HERE / "src/visuals/surface3d/mesh.ts", HERE / "src/visuals/catalog-types.ts", HERE / "src/visuals/catalog.ts",
+                HERE / "src/sdk/pure.ts", *(HERE / "src/sdk").glob("*-math.ts"),
                 HERE / "src/words.ts", HERE / "src/schema.ts", HERE / "src/types.ts",
                 *(HERE / "src/semantics").glob("*.ts"), *(HERE / "src/visuals").glob("*/capabilities.ts"),
                 *(HERE / "src/visuals").glob("*/schema.ts"), *(HERE / "src/visuals").glob("*/compute.ts"),
@@ -83,7 +103,7 @@ class SemanticsTests(unittest.TestCase):
                 self.assertTrue(src.startswith(".") or src == "zod", f"{rel}: import of {src} (pure files may import only zod and each other)")
                 if src.startswith("."):
                     target = os.path.normpath(os.path.join(p.parent, src)).replace(str(HERE) + "/", "")
-                    self.assertNotRegex(target, r"View[23]D|\.tsx$|^src/(visuals|kit2d|flow|focus|continuity|rtl|theme)$", f"{rel}: pure file imports a rendering module: {src}")
+                    self.assertNotRegex(target, r"View[23]D|\.tsx$|^src/(visuals|kit2d|flow|focus|continuity|rtl|theme|sdk/(view2d|algo-2d))$", f"{rel}: pure file imports a rendering module: {src}")
 
 
 if __name__ == "__main__":

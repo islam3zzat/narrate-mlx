@@ -57,8 +57,16 @@ function walkSortedFiles(dir, prefix = '') {
  * Compute a deterministic 16-hex-char hash over `src/`, `package-lock.json`,
  * `remotion.config.ts`, and `tsconfig.json`.
  */
-export function computeBundleHash(skillRoot) {
+export function computeBundleHash(skillRoot, entryPoint) {
   const h = crypto.createHash('sha256');
+  if (entryPoint) {
+    const relEntry = path.relative(skillRoot, path.resolve(entryPoint)).replace(/\\/g, '/');
+    if (relEntry && relEntry !== 'src/index.ts') {
+      h.update('entry\0');
+      h.update(relEntry);
+      h.update('\0');
+    }
+  }
   for (const { rel, full } of walkSortedFiles(path.join(skillRoot, 'src'), 'src')) {
     h.update(rel);
     h.update('\0');
@@ -119,7 +127,7 @@ export async function ensureCachedBundle({
     }
   }
 
-  const hash = computeBundleHash(skillRoot);
+  const hash = computeBundleHash(skillRoot, entryPoint);
   const cacheRoot = path.join(skillRoot, 'node_modules', '.cache', 'explainer-bundle');
   fs.mkdirSync(cacheRoot, { recursive: true });
   const targetDir = path.join(cacheRoot, hash);

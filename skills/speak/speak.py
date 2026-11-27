@@ -1,21 +1,22 @@
-"""Speak text aloud via mlx-audio. Input is treated as Markdown.
+"""Speak text or a Markdown file aloud via local text-to-speech (Kokoro / SILMA).
 
 Markdown syntax is not read out and code blocks are skipped. Long text opens a
-window with the formatted text and the spoken word highlighted. Uses Kokoro-82M,
-which gives real per-word timings for the highlighting.
+read-along window with the formatted text and the spoken word highlighted.
 
-Arabic (--lang ar) uses SILMA TTS v1 through a separate uv project in silma/ (its dependencies
-conflict with mlx-audio's); this file stays importable without torch. Word times are estimated there.
-
-Usage:
-    uv run speak.py "Hello there"
-    echo "Hello" | uv run speak.py --voice bm_george
-    uv run speak.py --speed 1.25 < notes.md
-    echo "مَرْحَبًا بِكُمْ." | uv run speak.py --lang ar
+Examples:
+    uv run python speak.py "Hello there"
+    uv run python speak.py notes.md
+    echo "Hello" | uv run python speak.py --voice bm_george
+    uv run python speak.py --speed 1.25 < notes.md
+    echo "مَرْحَبًا بِكُمْ." | uv run python speak.py --lang ar
 """
+# English uses Kokoro-82M (real per-word timings); Arabic (--lang ar) uses SILMA TTS v1
+# through a separate uv project in silma/ (its torch/onnx pins conflict with mlx-audio's,
+# so this file must stay importable without torch).
 import argparse
 import gc
 import json
+import math
 import os
 import re
 import shutil
@@ -34,6 +35,7 @@ MODELS = {
     # name: (Hugging Face repo, sample rate, default voice)
     "kokoro": ("mlx-community/Kokoro-82M-bf16", 24000, "af_heart"),
 }
+SILMA_REPO = "silma-ai/silma-tts"
 SAMPLE_RATE = MODELS["kokoro"][1]
 LANGS = {
     # lang: (default model, default voice)
@@ -48,6 +50,36 @@ LATIN = re.compile("[A-Za-z0-9]")
 PAUSE_SECONDS = 0.3  # silence between blocks (headings, paragraphs, list items)
 WINDOW_MIN_WORDS = 100  # longer text gets a window with the spoken word highlighted
 WINDOW_MIN_CHARS = 500
+SPEED_MIN = 0.5
+SPEED_MAX = 2.0
+
+
+def _speed_arg(raw: str) -> float:
+    try:
+        val = float(raw)
+    except ValueError as e:
+        raise argparse.ArgumentTypeError(f"invalid float value: {raw!r}") from e
+    if not math.isfinite(val) or not (SPEED_MIN <= val <= SPEED_MAX):
+        raise argparse.ArgumentTypeError(f"must be between {SPEED_MIN} and {SPEED_MAX} (got {raw})")
+    return val
+
+
+def hf_cache_dir() -> Path:
+    hub_cache = os.environ.get("HF_HUB_CACHE", "").strip()
+    if hub_cache:
+        return Path(hub_cache).expanduser()
+    hf_home = os.environ.get("HF_HOME", "").strip()
+    if hf_home:
+        return Path(hf_home).expanduser() / "hub"
+    return Path.home() / ".cache/huggingface/hub"
+
+
+def hf_model_cached(repo_id: str) -> bool:
+    snaps = hf_cache_dir() / f"models--{repo_id.replace('/', '--')}" / "snapshots"
+    try:
+        return snaps.is_dir() and any(p.is_dir() for p in snaps.iterdir())
+    except OSError:
+        return False
 
 
 def synthesize(blocks: list[Block], voice: str, speed: float):
@@ -74,6 +106,8 @@ def synthesize(blocks: list[Block], voice: str, speed: float):
     spoken = [(b, off) for b, off in zip(blocks, offsets) if b.spoken_from is not None]
     speech = "\n".join(b.speech for b, _ in spoken)
 
+    if not hf_model_cached(MODELS["kokoro"][0]):
+        print(f"[setup] downloading {MODELS['kokoro'][0]} (~160 MB, first run only)...", file=sys.stderr, flush=True)
     model = load_model(MODELS["kokoro"][0])
     pipeline = model._get_pipeline(voice[0])  # voice prefix: a = US, b = UK
     pipeline.voices = {}
@@ -157,6 +191,8 @@ def synthesize_ar(blocks: list[Block], voice: str, speed: float, diacritize: boo
               "numbers and acronyms in Arabic script.", file=sys.stderr)
 
     uv = find_uv()
+    if not hf_model_cached(SILMA_REPO):
+        print(f"[setup] downloading {SILMA_REPO} (~900 MB, first run only)...", file=sys.stderr, flush=True)
     project = str(HERE / "silma")
     env = {k: v for k, v in os.environ.items() if k != "VIRTUAL_ENV"}  # the caller's venv is not ours
     with tempfile.TemporaryDirectory() as tmp:
@@ -237,21 +273,44 @@ def write_wav(path: Path, audio: np.ndarray, rate: int) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("text", nargs="?", help="text to speak (default: stdin)")
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="Long text opens a window: click a word to seek, Space pause/replay, Left/Right sentence, Up/Down speed, Cmd+Q/Esc close.",
+    )
+    parser.add_argument("text", nargs="?", help="text or file path to speak (default: stdin)")
+    parser.add_argument("--text", dest="literal_text", action="store_true",
+                        help="treat positional argument as literal text even if a file with that name exists")
     parser.add_argument("--lang", choices=list(LANGS), default="en", help="en (Kokoro) or ar (SILMA, Modern Standard Arabic)")
     parser.add_argument("--model", help="en: kokoro; ar: silma (default by --lang)")
     parser.add_argument("--voice", help="en: af_heart (default). ar: default (bundled reference) or a reference WAV, "
                         "with its transcript in a .txt of the same name")
     parser.add_argument("--diacritize", action="store_true", help="ar: let SILMA add diacritics (default: speak the text as written)")
-    parser.add_argument("--speed", type=float, default=1.0)
+    parser.add_argument("--speed", type=_speed_arg, default=1.0,
+                        help=f"speaking speed ({SPEED_MIN}-{SPEED_MAX}, default 1.0)")
     parser.add_argument("--out", help="save WAV here instead of playing it")
     parser.add_argument("--timings", help="also write per-token times as JSON here: {\"words\": [{w, start, end}]} (ar: estimated, \"approx\": true)")
+    parser.add_argument("--auto-close", action="store_true", help="close the read-along window automatically when playback finishes")
     args = parser.parse_args()
 
     if args.text is None and sys.stdin.isatty():
         parser.error('no text given. Usage: speak.py "text", or pipe text in')
-    text = args.text or sys.stdin.read()
+    if args.text is not None:
+        text = args.text
+        if not args.literal_text and "\n" not in text and "\r" not in text and len(text) <= 1024:
+            try:
+                p = Path(text).expanduser()
+                is_file = p.is_file()
+            except OSError:
+                is_file = False
+            if is_file:
+                print(f"Reading {args.text}", file=sys.stderr)
+                try:
+                    text = p.read_text(encoding="utf-8")
+                except (OSError, UnicodeDecodeError) as e:
+                    parser.error(f"cannot read {args.text}: {e}")
+    else:
+        text = sys.stdin.read()
     default_model, default_voice = LANGS[args.lang]
     model = args.model or default_model
     if model != default_model:
@@ -288,7 +347,15 @@ def main() -> None:
         if len(speech.split()) > WINDOW_MIN_WORDS or len(speech) > WINDOW_MIN_CHARS:
             from highlight import show_and_play
 
-            show_and_play(display, words, styles, str(wav), rtl=args.lang == "ar")
+            show_and_play(
+                display,
+                words,
+                styles,
+                str(wav),
+                rtl=args.lang == "ar",
+                base_speed=args.speed,
+                auto_close=args.auto_close,
+            )
         else:
             subprocess.run(["afplay", str(wav)], check=True)
 

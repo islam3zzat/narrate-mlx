@@ -12,14 +12,18 @@ A *work directory* holds one project's videos:
 Usage:
     explainer.py init   <workdir> [--lang en|ar] [--style NAME]   create a work dir with an example script (English or Arabic, or a style skeleton)
     explainer.py check  <workdir> [ids...] [--strict] validate scripts (no audio, fast); --strict: every ledger fact must be narrated
-    explainer.py styles [--json]                     list the styles (audience/purpose profiles) a script's "style" may name
+    explainer.py styles [--json] [--workdir DIR]     list the styles (audience/purpose profiles) a script's "style" may name
     explainer.py transcript <file.vtt|.srt|.txt> [--out FILE] [--force]   meeting transcript -> `[HH:MM:SS] Speaker: text` lines (flag transcripts, on by default)
     explainer.py report <workdir>                    <workdir>/report.md from ledger.json: timeline, actions, decisions, contradictions, deferred facts
-    explainer.py features [--json]                   list the feature flags and which are on (--features a,b on any command turns flags on)
-    explainer.py schema [--style]                     print the JSON Schema of a script (or of a style definition with --style)
+    explainer.py features [--json] [--enabled NAME]  list the feature flags and which are on (--features a,b on any command turns flags on)
+    explainer.py pronounce [WORD SPOKEN] [...]       persist or preview English pronunciation overrides
+    explainer.py visual {init,check,list,promote,regen}   scaffold, verify, list, promote, or regenerate visual types
+    explainer.py schema [--style] [--builtin]        print the JSON Schema of a script (or of a style definition with --style)
     explainer.py audio  <workdir> [ids...]           narration -> WAV + timings + transcripts
     explainer.py still  <workdir> <id> --scene s03   one PNG, to check the layout
+    explainer.py review <workdir> <id>               contact sheet of frames across every scene
     explainer.py render <workdir> [ids...] [--draft]  MP4 per video (--draft: 720p ultrafast)
+    explainer.py verify <workdir> <id>               compare late video frames against stills (PSNR)
     explainer.py all    <workdir> [ids...] [--draft]  audio, then render
     explainer.py studio <workdir> <id>               Remotion Studio preview
     explainer.py catalog                             open the Visual Catalog in Remotion Studio (no workdir required)
@@ -28,6 +32,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import shutil
 import subprocess
 import sys
@@ -35,6 +40,7 @@ from pathlib import Path
 
 import report as report_md
 import transcript as transcript_mod
+import visual_host
 
 # Re-export public symbols from focused modules so existing callers/tests importing `explainer` continue to work.
 from audio import (
@@ -53,23 +59,35 @@ from env import (
     ALIGN_LANGUAGE,
     ALIGN_MODEL,
     FPS,
+    KOKORO_MODEL,
     LANG_MODEL,
     LANGS,
     LEAD,
     MAX_WORDS,
+    SILMA_MODEL,
     SKILL,
+    SPEED_MAX,
+    SPEED_MIN,
     TAIL,
     TASHKEEL_MIN,
     WPS,
+    announce_browser_download_if_missing,
+    announce_model_download_if_missing,
     atomic_write_text,
     browser_args,
     browser_exe,
+    cli_hint,
     die,
     ensure_deps,
+    env_timeout,
     find_speak,
+    find_uv,
+    hf_cache_dir,
+    hf_model_cached,
     inside as _inside,
     load_scripts,
     run_cli,
+    run_guarded,
     tool_env,
 )
 from features import (
@@ -132,6 +150,7 @@ from validation import (
     check_scripts,
     cmd_styles,
     describe_visuals,
+    find_style,
     ledger_context,
     load_style,
     resolve_speed,
@@ -142,28 +161,56 @@ from validation import (
 )
 
 
+def _speed_arg(raw: str) -> float:
+    try:
+        val = float(raw)
+    except ValueError as e:
+        raise argparse.ArgumentTypeError(f"invalid float value: {raw!r}") from e
+    if not math.isfinite(val) or not (SPEED_MIN <= val <= SPEED_MAX):
+        raise argparse.ArgumentTypeError(f"must be between {SPEED_MIN} and {SPEED_MAX} (got {raw})")
+    return val
+
+
 def cmd_init(workdir: Path, lang: str = "en", style: str | None = None) -> None:
+    style_path: Path | None = None
     if style and style != DEFAULT_STYLE:
-        load_style(style)   # unknown style: error with the list
+        style_path = find_style(style, workdir)   # unknown style: error with the list
         if lang != "en":
             die("style skeletons are English; use --lang en")
     (workdir / "scripts").mkdir(parents=True, exist_ok=True)
     dest = workdir / "scripts/example.json"
-    skeleton = SKILL / f"templates/style-{style}.json" if style and style != DEFAULT_STYLE else None
+    is_builtin_style = style_path is not None and style_path.parent == STYLES_DIR
+    skeleton: Path | None = None
+    if style_path is not None:
+        if is_builtin_style and (SKILL / f"templates/style-{style}.json").is_file():
+            skeleton = SKILL / f"templates/style-{style}.json"
+        elif style_path.with_name(f"{style}.skeleton.json").is_file():
+            skeleton = style_path.with_name(f"{style}.skeleton.json")
+
     if dest.exists():
         print(f"{dest} already exists; left untouched")
-    else:
-        shutil.copy(skeleton or SKILL / ("templates/example.json" if lang == "en" else f"templates/example.{lang}.json"), dest)
+    elif skeleton is not None:
+        shutil.copy(skeleton, dest)
         print(f"created {dest}")
-    if skeleton:
-        # a style with a fact ledger also gets a stub: ledger.json (facts the skeleton covers) and its source text
-        for name, to in (("ledger.json", "ledger.json"), ("source.txt", "source.txt")):
-            src = SKILL / f"templates/style-{style}.{name}"
-            if src.exists() and not (workdir / to).exists():
-                shutil.copy(src, workdir / to)
-                print(f"created {workdir / to}")
-        print(f"playbook: {STYLES_DIR / (style + '.md')}")
-    print(f"next: explainer.py check {workdir} && explainer.py all {workdir}")
+    elif style_path is not None:
+        base = json.loads((SKILL / "templates/example.json").read_text(encoding="utf-8"))
+        seeded = {"style": style, **base}
+        atomic_write_text(dest, json.dumps(seeded, indent=2, ensure_ascii=False) + "\n")
+        print(f"note: no {style}.skeleton.json found; seeded {dest} from templates/example.json with style={style!r}")
+    else:
+        shutil.copy(SKILL / ("templates/example.json" if lang == "en" else f"templates/example.{lang}.json"), dest)
+        print(f"created {dest}")
+
+    if style_path is not None:
+        if is_builtin_style:
+            # a style with a fact ledger also gets a stub: ledger.json (facts the skeleton covers) and its source text
+            for name, to in (("ledger.json", "ledger.json"), ("source.txt", "source.txt")):
+                src = SKILL / f"templates/style-{style}.{name}"
+                if src.exists() and not (workdir / to).exists():
+                    shutil.copy(src, workdir / to)
+                    print(f"created {workdir / to}")
+        print(f"playbook: {style_path.with_suffix('.md')}")
+    print(f"next: {cli_hint('check', workdir)} && {cli_hint('all', workdir)}")
 
 
 def cmd_transcript(src: Path, out: Path | None, force: bool) -> None:
@@ -236,6 +283,7 @@ def main() -> None:
     feat.add_argument("--features", default=None, help="feature flags to turn on for this run, e.g. svg,3d (adds to $NARRATE_FEATURES; see `features`)")
     sp_schema = sub.add_parser("schema", parents=[feat])
     sp_schema.add_argument("--style", action="store_true", help="print the JSON Schema of a style definition instead of a script")
+    sp_schema.add_argument("--builtin", action="store_true", help="exclude user-local visuals (~/.config/explainer-video/visuals/)")
     fp = sub.add_parser("features", parents=[feat], help="list the feature flags and which are on")
     fp.add_argument("--json", action="store_true")
     fp.add_argument("--enabled", metavar="NAME", help="exit 0 if feature NAME is enabled, 1 otherwise")
@@ -258,6 +306,24 @@ def main() -> None:
     rp = sub.add_parser("report", parents=[feat], help="write <workdir>/report.md from ledger.json")
     rp.add_argument("workdir", type=Path)
     sub.add_parser("catalog", parents=[feat], help="launch the interactive Remotion Studio Visual Catalog (no workdir required)")
+    vp = sub.add_parser("visual", parents=[feat], help="scaffold and verify reusable visual types")
+    vsub = vp.add_subparsers(dest="vcmd", required=True)
+    vp_init = vsub.add_parser("init", parents=[feat], help="scaffold a new visual under ~/.config/explainer-video/visuals/<slug>/ (default) or src/visuals/<slug>/ (--builtin)")
+    vp_init.add_argument("slug")
+    vp_init.add_argument("--template", default="basic", choices=visual_host.VISUAL_TEMPLATES)
+    vp_init_scope = vp_init.add_mutually_exclusive_group()
+    vp_init_scope.add_argument("--local", dest="scope", action="store_const", const="local", help="save under ~/.config/explainer-video/visuals/<slug>/ (default)")
+    vp_init_scope.add_argument("--builtin", dest="scope", action="store_const", const="builtin", help="save under src/visuals/<slug>/ and update built-in docs/schema")
+    vp_init.set_defaults(scope="local")
+    vp_chk = vsub.add_parser("check", parents=[feat], help="typecheck, AST-lint, and render a multi-theme contact sheet for a visual")
+    vp_chk.add_argument("slug")
+    vp_chk.add_argument("--out", type=Path, default=None, help="optional output PNG path for contact sheet")
+    vp_chk.add_argument("--no-render", action="store_true", help="skip Chromium contact-sheet render (run tsc + lint-visual only)")
+    vp_list = vsub.add_parser("list", parents=[feat], help="list built-in and user-local visual types")
+    vp_list.add_argument("--json", action="store_true")
+    vp_promo = vsub.add_parser("promote", parents=[feat], help="promote a user-local visual into built-in src/visuals/<slug>/")
+    vp_promo.add_argument("slug")
+    vsub.add_parser("regen", parents=[feat], help="regenerate built-in visual registries, SKILL.md docs, and JSON schemas")
     for name in ("init", "check", "audio", "render", "all", "still", "studio", "review", "verify"):
         p = sub.add_parser(name, parents=[feat])
         p.add_argument("workdir", type=Path)
@@ -273,7 +339,7 @@ def main() -> None:
         if name in ("audio", "all"):
             p.add_argument("--model", default=None, choices=["kokoro", "qwen3", "silma"], help="default per script language: kokoro (en), silma (ar); qwen3 is English only")
             p.add_argument("--voice", default=None, help="en: kokoro af_heart (default), am_michael, ...; qwen3: Ryan or Aiden. ar: default, or a .wav reference to clone. A voice for another language than a script's is ignored with a warning")
-            p.add_argument("--speed", type=float, default=None, help="speaking speed; default: the script style's speed, else 1.0")
+            p.add_argument("--speed", type=_speed_arg, default=None, help=f"speaking speed ({SPEED_MIN}-{SPEED_MAX}); default: the script style's speed, else 1.0")
         if name in ("render", "all"):
             p.add_argument("--draft", action="store_true", help="fast 720p preview render (scale=2/3, x264 ultrafast; keeps 30 fps)")
         if name == "still":
@@ -294,8 +360,13 @@ def main() -> None:
             die("--project needs --workdir DIR")
         cmd_pronounce(a)
         return
+    if a.cmd in ("schema", "check", "audio", "render", "all", "still", "studio", "review", "verify", "catalog"):
+        visual_host.sync_local_visuals()
     if a.cmd == "schema":
-        sys.stdout.write(run_cli(["style-schema" if a.style else "schema"]))
+        args = ["style-schema" if a.style else "schema"]
+        if a.builtin:
+            args.append("--builtin")
+        sys.stdout.write(run_cli(args))
         return
     if a.cmd == "catalog":
         env = tool_env()
@@ -306,6 +377,18 @@ def main() -> None:
             env=env,
             check=True,
         )
+        return
+    if a.cmd == "visual":
+        if a.vcmd == "init":
+            visual_host.cmd_visual_init(a.slug, a.template, a.scope)
+        elif a.vcmd == "check":
+            visual_host.cmd_visual_check(a.slug, a.out, a.no_render)
+        elif a.vcmd == "list":
+            visual_host.cmd_visual_list(a.json)
+        elif a.vcmd == "promote":
+            visual_host.cmd_visual_promote(a.slug)
+        elif a.vcmd == "regen":
+            visual_host.cmd_visual_regen()
         return
     wd = a.workdir.expanduser().resolve()
 
@@ -326,6 +409,11 @@ def main() -> None:
             print(f"ok {vid}{' [ar, right to left]' if lang == 'ar' else ''}{' [style ' + s['style'] + ']' if s.get('style') else ''}: {len(s['scenes'])} scenes, {words} words, about {words / WPS[lang]:.0f}s")
     elif a.cmd == "audio":
         cmd_audio(wd, a.ids, a.model, a.voice, a.speed, a.strict)
+        loaded = load_scripts(wd, a.ids)
+        first_vid, first_script = loaded[0]
+        first_scene = (first_script.get("scenes") or [{}])[0].get("id")
+        still_part = f"{cli_hint('still', wd, first_vid, '--scene', first_scene)} or " if first_scene else ""
+        print(f"next: {still_part}{cli_hint('render', wd, *a.ids)}")
     elif a.cmd == "render":
         cmd_render(wd, a.ids, draft=a.draft)
     elif a.cmd == "all":

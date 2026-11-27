@@ -31,3 +31,5 @@ export const MermaidLayout = z.strictObject({
   })).min(1).max(80),
 });
 export type MermaidLayoutT = z.infer<typeof MermaidLayout>;
+
+export {MermaidVisual as schema};

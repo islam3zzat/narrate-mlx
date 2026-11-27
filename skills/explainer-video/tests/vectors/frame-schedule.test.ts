@@ -53,6 +53,24 @@ for (const visual of [
     makeScene('s03', {type: 'code', heading: 'C', language: 'ts', code: 'const x = 1;', highlights: [{lines: '1', label: 'x'}]}),
     makeScene('s04', {type: 'equation', heading: 'E', equations: [{latex: 'x + y'}], terms: [{id: 'x', label: 'x', gloss: 'var'}]}),
     makeScene('s05', {type: 'mermaid', heading: 'M', code: 'flowchart LR\nA-->B'}),
+    makeScene('s06', {
+      type: 'array-algo',
+      heading: 'A',
+      steps: [
+        {label: 'Init', items: [{id: 'x', value: 1}, {id: 'y', value: 2}]},
+        {label: 'Swap', items: [{id: 'y', value: 2}, {id: 'x', value: 1}]},
+      ],
+    }),
+    makeScene('s07', {
+      type: 'graph-algo',
+      heading: 'G',
+      nodes: [{id: 'a', label: 'A'}, {id: 'b', label: 'B'}],
+      edges: [{from: 'a', to: 'b'}],
+      steps: [
+        {label: 'Start', nodeStates: {a: 'active'}},
+        {label: 'Visit', nodeStates: {a: 'sorted', b: 'active'}, edgeStates: {'a->b': 'active'}},
+      ],
+    }),
   ];
   // First scene chapter adds chapterFrames (45) - transitionFrames (10) = 35 frames.
   const totalFrames = 35 + scenes.reduce((a, s) => a + s.frames, 0);
@@ -82,6 +100,8 @@ for (const [name, maxFrac] of [
   ['stat', 0.55],
   ['equation', 0.65],
   ['svg', 0.70],
+  ['array-algo', 0.50],
+  ['graph-algo', 0.55],
 ] as const) {
   const data = JSON.parse(fs.readFileSync(path.join(goldenDir, name, 'data.json'), 'utf8')) as VideoData;
   const sched = computeFrameSchedule(data);

@@ -7,3 +7,5 @@ export const TitleVisual = z.strictObject({
   headline: text('Main headline; keep under about 35 characters'),
   sub: text('Subtitle under the headline'),
 }).describe('Opening scene');
+
+export {TitleVisual as schema};

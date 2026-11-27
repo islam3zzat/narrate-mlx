@@ -132,3 +132,5 @@ export const LinkedPlotVisual = z.strictObject({
     }
   });
 });
+
+export {LinkedPlotVisual as schema};

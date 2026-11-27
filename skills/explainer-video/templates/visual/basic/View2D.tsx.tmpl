@@ -1,0 +1,21 @@
+import React from 'react';
+import {SceneCanvas, at, inStyle, prog, useBox, useTheme, type View2DProps} from '../../sdk/view2d';
+
+export const View2D: React.FC<View2DProps<'__SLUG__'>> = ({visual: v, frame, lead, audioFrames, reveal}) => {
+  const {C, FONT} = useTheme();
+  const makeBox = useBox();
+  return (
+    <SceneCanvas heading={v.heading} caption={v.caption}>
+      <div style={{display: 'flex', gap: 24, alignItems: 'center', height: '100%'}}>
+        {v.items.map((label, i) => {
+          const p = prog(frame, at(i, v.items.length, lead, audioFrames, reveal), 14);
+          return (
+            <div key={i} style={makeBox({flex: 1, padding: '28px 24px', textAlign: 'center', fontFamily: FONT, fontSize: 32, fontWeight: 800, color: C.ink, ...inStyle(p)})}>
+              {label}
+            </div>
+          );
+        })}
+      </div>
+    </SceneCanvas>
+  );
+};

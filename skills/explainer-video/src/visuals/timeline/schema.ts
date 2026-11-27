@@ -27,3 +27,5 @@ export const TimelineVisual = z.strictObject({
     seen.add(e.id);
   });
 });
+
+export {TimelineVisual as schema};

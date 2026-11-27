@@ -21,12 +21,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 EV = "skills/explainer-video/"
 GOLDEN = ROOT / EV / "tests/golden.py"
-WIRING = {"registry.ts", "views.tsx", "capabilities.ts", "meta-types.ts", "meta-lint.ts", "docs.ts", "common.ts", "props.ts"}
+WIRING = {"registry.ts", "views.tsx", "capabilities.ts", "meta-types.ts", "meta-lint.ts", "docs.ts", "common.ts", "props.ts", "order.json", "lazy-view.tsx"}
 CROSS_TYPE_DEPS = {"stat": ("chart",)}
 # validation, linting, timing and docs only: they change the data JSON or the `check` output (always compared), never a pixel
 DATA_ONLY = {
     "src/docs.ts", "src/schema.ts", "src/cli.ts", "src/styles.ts", "src/ledger.ts",
     "src/style-files.ts", "src/lint-narration.ts", "src/words.ts", "src/types.ts",
+    "src/gen-visuals.ts", "src/visual-lint.ts", "visual_host.py",
     "src/CatalogScene.tsx", "src/CatalogRoot.tsx", "src/catalog-index.ts",
     "src/visuals/catalog.ts", "src/visuals/catalog-types.ts",
 }

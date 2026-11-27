@@ -16,7 +16,7 @@ Arguments: `$ARGUMENTS`
 ## Steps
 
 1. **Get the word and offer variants for the user to decide.** Never pick the spoken form yourself and never save before the user has chosen. If the user describes a problem but gives no spelling ("too much stress on the M", "PKCE sounded wrong"), or asks for options, do this:
-   1. Stop any render or audio job that is running (`pkill -f "explainer.py"`, `pkill -f "remotion render"`), because the audio is about to change.
+   1. If an `audio` or `render` job for **this workdir** is running in this session, stop that job using its background task id because the audio is about to change. Do **not** run unscoped `pkill`; if checking for other processes, run `pgrep -af "explainer\.py.*<workdir>"`, show the matches to the user, and ask before stopping them.
    2. Write **three** candidate spoken forms that differ in a way that could fix the complaint (for example hyphenated `M-C-P`, plain words `em see pee`, hyphenated syllables `em-see-pee`). Keep them genuinely different.
    3. Synthesize each one **without saving anything**, in the voice the videos use (default Kokoro `af_heart`), inside one sentence taken from the real scripts that contains the word, and starting with the spoken label "Variant 1." and so on, via `explainer.py pronounce --synth-out`:
 

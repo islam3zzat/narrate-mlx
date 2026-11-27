@@ -66,3 +66,5 @@ export const CancellationGridVisual = z.strictObject({
     }
   });
 });
+
+export {CancellationGridVisual as schema};

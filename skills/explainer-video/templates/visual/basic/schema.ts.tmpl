@@ -1,0 +1,17 @@
+import {z, text, displayCells, textCharIssues} from '../../sdk/pure';
+
+export const __PASCAL__Visual = z.strictObject({
+  type: z.literal('__SLUG__'),
+  heading: text('Scene heading'),
+  items: z.array(text('Reveal item label')).min(1).max(8),
+  caption: text('Optional caption').optional(),
+}).superRefine((v, ctx) => {
+  for (const msg of textCharIssues('heading', v.heading)) ctx.addIssue({code: 'custom', path: ['heading'], message: msg});
+  v.items.forEach((it, i) => {
+    if (displayCells(it) > 48) ctx.addIssue({code: 'custom', path: ['items', i], message: 'item must be <= 48 display cells'});
+    for (const msg of textCharIssues(`items[${i}]`, it)) ctx.addIssue({code: 'custom', path: ['items', i], message: msg});
+  });
+});
+
+export {__PASCAL__Visual as schema};
+export type __PASCAL__VisualT = z.infer<typeof __PASCAL__Visual>;

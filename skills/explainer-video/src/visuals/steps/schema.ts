@@ -9,3 +9,5 @@ export const StepsVisual = z.strictObject({
 }).describe('A sequence with one highlighted step (fixed, or advancing with the narration)').refine((v) => v.active === undefined || v.active < v.items.length, {
   path: ['active'], message: 'active must be a valid index into items (0..items.length-1)',
 });
+
+export {StepsVisual as schema};

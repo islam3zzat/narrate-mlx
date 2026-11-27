@@ -6,3 +6,5 @@ export const BulletsVisual = z.strictObject({
   heading: text('Scene heading'),
   items: z.array(text('One bullet')).min(1).max(8).describe('Bullets, revealed as they are spoken; 6 or fewer fit well'),
 }).describe('A short list');
+
+export {BulletsVisual as schema};

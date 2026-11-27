@@ -1,0 +1,16 @@
+import type {CatalogEntry} from '../../sdk/pure';
+
+export const catalog: CatalogEntry<'__SLUG__'> = {
+  type: '__SLUG__',
+  title: '__PASCAL__',
+  default: {
+    id: 'default',
+    label: 'Default',
+    narration: 'First we introduce alpha, then we advance to beta.',
+    visual: {
+      type: '__SLUG__',
+      heading: '__PASCAL__',
+      items: ['Alpha', 'Beta'],
+    },
+  },
+};

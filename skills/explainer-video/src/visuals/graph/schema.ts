@@ -53,3 +53,5 @@ export const GraphVisual = z.strictObject({
 });
 
 export type GraphVisualInput = z.infer<typeof GraphVisual>;
+
+export {GraphVisual as schema};

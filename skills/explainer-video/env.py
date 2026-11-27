@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
+import shlex
 import shutil
 import signal
 import subprocess
@@ -20,6 +22,8 @@ TAIL: float = float(_CONSTANTS["tailSec"])
 CHAPTER_FRAMES: int = int(_CONSTANTS["chapterFrames"])
 TRANSITION_FRAMES: int = int(_CONSTANTS["transitionFrames"])
 WPS: dict[str, float] = {k: float(v) for k, v in _CONSTANTS["wps"].items()}
+SPEED_MIN = 0.5
+SPEED_MAX = 2.0
 
 
 def scene_starts(scenes: list[dict]) -> tuple[list[tuple[dict, int]], int]:
@@ -34,6 +38,9 @@ def scene_starts(scenes: list[dict]) -> tuple[list[tuple[dict, int]], int]:
     return out, pos
 
 ALIGN_MODEL = os.environ.get("EXPLAINER_ALIGN_MODEL", "mlx-community/Qwen3-ForcedAligner-0.6B-8bit")
+KOKORO_MODEL = "mlx-community/Kokoro-82M-bf16"
+SILMA_MODEL = "silma-ai/silma-tts"
+_BROWSER_ANNOUNCED = False
 
 # Languages. A script says which in its top-level "language" (default "en"); "ar" is Modern Standard Arabic and also
 # switches the layout to right to left (src/rtl.ts). Each language has one voice model.
@@ -47,6 +54,22 @@ TASHKEEL_MIN = 0.5                                     # share of Arabic words t
 
 def die(msg: str) -> None:
     sys.exit(f"explainer: {msg}")
+
+
+def cli_hint(*parts: object) -> str:
+    """Return a copy-pasteable shell command invoking explainer.py."""
+    return " ".join(["python3", shlex.quote(str(SKILL / "explainer.py")), *(shlex.quote(str(p)) for p in parts)])
+
+
+def find_uv() -> str:
+    """Locate the `uv` binary via PATH or standard macOS/user install locations."""
+    uv = shutil.which("uv")
+    if uv:
+        return uv
+    for p in (Path.home() / ".local/bin/uv", Path("/opt/homebrew/bin/uv"), Path("/usr/local/bin/uv")):
+        if p.is_file() and os.access(p, os.X_OK):
+            return str(p)
+    die("uv not found. Install it: brew install uv (or set PATH)")
 
 
 def atomic_write_bytes(path: Path, data: bytes) -> None:
@@ -70,11 +93,11 @@ def atomic_write_text(path: Path, text: str, encoding: str = "utf-8") -> None:
 
 def sync_uv_env(project: Path, env: dict | None = None, quiet: bool = True) -> None:
     """Sync a uv project, retrying with --system-certs if a TLS proxy rejects the default trust store."""
-    cmd = ["uv", "sync", *(["--quiet"] if quiet else []), "--project", str(project)]
-    if subprocess.run(cmd, env=env).returncode == 0:
+    cmd = [find_uv(), "sync", *(["--quiet"] if quiet else []), "--project", str(project)]
+    if subprocess.run(cmd, env=env, stdout=sys.stderr).returncode == 0:
         return
     print("warning: uv sync failed; retrying with system TLS certificates", file=sys.stderr, flush=True)
-    subprocess.run([*cmd, "--system-certs"], env=env, check=True)
+    subprocess.run([*cmd, "--system-certs"], env=env, stdout=sys.stderr, check=True)
 
 
 def inside(workdir: Path, p: Path) -> bool:
@@ -109,9 +132,9 @@ def _required_node_paths(skill_dir: Path) -> tuple[str, ...]:
 def ensure_deps(env: dict) -> None:
     if all((SKILL / f).exists() for f in _required_node_paths(SKILL)):
         return
-    print("[setup] installing Remotion (first run only)...", flush=True)
+    print("[setup] installing Remotion (first run only)...", file=sys.stderr, flush=True)
     cmd = ["npm", "ci" if (SKILL / "package-lock.json").exists() else "install", "--no-audit", "--no-fund"]
-    subprocess.run(cmd, cwd=SKILL, env=env, check=True)
+    subprocess.run(cmd, cwd=SKILL, env=env, stdout=sys.stderr, check=True)
 
 
 _SYSTEM_BROWSERS = (
@@ -159,6 +182,57 @@ def browser_args() -> list[str]:
     return [f"--browser-executable={exe}"] if exe else []
 
 
+def hf_cache_dir() -> Path:
+    """Return the Hugging Face Hub cache directory."""
+    hub_cache = os.environ.get("HF_HUB_CACHE", "").strip()
+    if hub_cache:
+        return Path(hub_cache).expanduser()
+    hf_home = os.environ.get("HF_HOME", "").strip()
+    if hf_home:
+        return Path(hf_home).expanduser() / "hub"
+    return Path.home() / ".cache/huggingface/hub"
+
+
+def hf_model_cached(repo_id: str) -> bool:
+    """True when `repo_id` has at least one cached snapshot directory in the HF hub cache."""
+    snaps = hf_cache_dir() / f"models--{repo_id.replace('/', '--')}" / "snapshots"
+    try:
+        return snaps.is_dir() and any(p.is_dir() for p in snaps.iterdir())
+    except OSError:
+        return False
+
+
+def announce_model_download_if_missing(
+    repo_id: str,
+    approx_size: str,
+    announced: set[str] | None = None,
+) -> bool:
+    """Log a first-run model download notice to stderr if `repo_id` is not yet cached."""
+    if announced is not None and repo_id in announced:
+        return False
+    if hf_model_cached(repo_id):
+        return False
+    print(f"[setup] downloading {repo_id} ({approx_size}, first run only)...", file=sys.stderr, flush=True)
+    if announced is not None:
+        announced.add(repo_id)
+    return True
+
+
+def announce_browser_download_if_missing(exe: str | None) -> bool:
+    """Log a first-run Remotion browser download notice to stderr when no local browser was found."""
+    global _BROWSER_ANNOUNCED
+    if exe is not None or _BROWSER_ANNOUNCED:
+        return False
+    _BROWSER_ANNOUNCED = True
+    print(
+        "[setup] no local Chrome/Edge or cached headless shell found; Remotion will download "
+        "chrome-headless-shell (~150 MB, first run only)...",
+        file=sys.stderr,
+        flush=True,
+    )
+    return True
+
+
 def find_speak() -> Path:
     # The sibling skills/speak in this repo comes first, so the project is self-contained.
     candidates = [os.environ.get("EXPLAINER_TTS_DIR"), SKILL.parent / "speak"]
@@ -172,7 +246,7 @@ def find_speak() -> Path:
 def load_scripts(workdir: Path, ids: list[str]) -> list[tuple[str, dict]]:
     found = sorted((workdir / "scripts").glob("*.json"))
     if not found:
-        die(f"no scripts in {workdir / 'scripts'}. Run: explainer.py init {workdir}")
+        die(f"no scripts in {workdir / 'scripts'}. Run: {cli_hint('init', workdir)}")
     out = []
     for p in found:
         if ids and p.stem not in ids:
@@ -214,13 +288,15 @@ def run_guarded(
     env: dict | None = None,
     cwd: Path | None = None,
     capture: bool = True,
+    capture_stderr: bool | None = None,
 ) -> subprocess.CompletedProcess:
     """Run a non-interactive subprocess in its own process group so timeouts/interrupts reap child browsers cleanly."""
+    cap_err = capture if capture_stderr is None else capture_stderr
     p = subprocess.Popen(
         cmd,
         stdin=subprocess.PIPE if stdin is not None else None,
         stdout=subprocess.PIPE if capture else None,
-        stderr=subprocess.PIPE if capture else None,
+        stderr=subprocess.PIPE if cap_err else None,
         text=True,
         env=env,
         cwd=cwd,

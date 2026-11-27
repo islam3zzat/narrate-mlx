@@ -201,3 +201,5 @@ export const Plot2DVisual = z.strictObject({
     }
   });
 });
+
+export {Plot2DVisual as schema};

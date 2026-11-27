@@ -1,0 +1,26 @@
+import {lintOrderedSlots, lintRtlAndBidi, type Meta} from '../../sdk/pure';
+import {capabilities} from './capabilities';
+
+export const meta: Meta<'__SLUG__'> = {
+  type: '__SLUG__',
+  capabilities,
+  docs: {
+    fields: '`heading`, `steps[{id?, label, items[], pointers?, note?}]`, `caption?`',
+    use: 'animated step-by-step __SLUG__ algorithm visualization synced to narration',
+  },
+  lint: (v, ctx) => ({
+    errors: [],
+    warnings: [
+      ...lintOrderedSlots(
+        ctx.narration,
+        v.steps.map((s, i) => ({what: `step ${i + 1}`, label: s.label})),
+        {
+          missed: (w, l) => `${w} "${l}" shares no word with narration; say it or add cues`,
+          late: (w, l, p) => `${w} "${l}" is spoken before "${p}"; reorder steps to match narration`,
+        },
+      ),
+      ...lintRtlAndBidi(ctx.lang, {prefix: '__SLUG__', arWarning: '__SLUG__ draws algorithm coordinates left to right', texts: [['heading', v.heading]]}),
+    ],
+  }),
+  focusTargets: (v) => ({ids: v.steps.flatMap((s) => (s.id ? [s.id] : []))}),
+};

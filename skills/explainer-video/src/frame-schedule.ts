@@ -2,6 +2,7 @@
 // Identifies contiguous static holds so the browser renders every unique frame once at FPS = 30
 // and FFmpeg repeats identical JPEG bytes for provably unchanged frames.
 import constants from './constants.json';
+import {stepActiveIntervals} from './sdk/algo-math';
 import type {Scene, VideoData} from './types';
 
 export type FrameRun = {frame: number; count: number};
@@ -119,6 +120,10 @@ export const sceneActiveIntervals = (
     case 'svg':
       intervals.push([2, 13]);
       pushSlots(v.parts.length, 45);
+      return intervals;
+    case 'array-algo':
+    case 'graph-algo':
+      intervals.push(...stepActiveIntervals(v.steps.length, lead, audioFrames, scene.revealSec));
       return intervals;
     default:
       return 'continuous';

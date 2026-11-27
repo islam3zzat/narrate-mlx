@@ -10,7 +10,7 @@
 Per video: data JSON (byte-identical), normalized `check` output (identical), 3 stills per scene (after the first
 reveal, middle, last frame). 2D and Arabic stills must be pixel-exact (md5 of decoded full-size pixels); 3D stills
 are compared by PSNR of the 640 px review image against PSNR_3D_MIN.
-Stills: one warm Node worker (tests/still_worker.mjs) via @remotion/bundler + @remotion/renderer: bundles once across
+Stills: one warm Node worker (src/still-worker.mjs) via @remotion/bundler + @remotion/renderer: bundles once across
 all target videos, opens at most one headless Chrome per GL mode (2D vs 3D), selects each composition once, and
 renders with GOLDEN_JOBS (default 4; 3D videos at most GOLDEN_JOBS_3D, default 2) concurrent tabs. GOLDEN_JOBS=1 is the
 serial run. Under parallel load Chrome sometimes rasterizes a few compositor tiles slightly differently (whole-frame tile

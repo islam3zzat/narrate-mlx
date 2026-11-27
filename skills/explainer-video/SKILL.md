@@ -38,17 +38,19 @@ Arguments: `$ARGUMENTS`
 
 2. **Gather the content.** Read the source the user points to (a file, notes, research). Do not invent facts. Where a claim is uncertain or comes from a single source, say so in the narration ("according to the docs PR", "not confirmed anywhere").
 
-3. **Plan the videos.** First read `references/presentation.md` (principles for every video: hook, example before abstraction, segmenting, signalling). If the video teaches a particular audience, also read that audience's reference file in `references/` when one exists, and the style playbook from step 0b. One idea per video. Let the depth the audience needs set the length, not a fixed budget: a quick overview for people who know the basics may be 60 to 150 seconds and 5 to 10 scenes, while teaching a topic properly usually needs a series of parts (`<id>-part1`, `-part2`) of a few minutes each. State the plan to the user in a few lines if the request was open-ended. Split a topic into several videos instead of cramming it. While planning, note for each scene what its structure is (sequence, hierarchy, relationships, exchange, plain list) so you can pick a diagram type for it; see "Show structure as a diagram" below.
+3. **Plan the videos.** First read `references/presentation.md` (principles for every video: hook, example before abstraction, segmenting, signalling). If the video teaches a particular audience, also read that audience's reference file in `references/` when one exists, and the style playbook from step 0b. One idea per video. Let the depth the audience needs set the length, not a fixed budget: a quick overview for people who know the basics may be 60 to 150 seconds and 5 to 10 scenes, while teaching a topic properly usually needs a series of parts (`<id>-part1`, `-part2`) of a few minutes each. State the plan to the user in a few lines if the request was open-ended. Split a topic into several videos instead of cramming it. While planning, note for each scene what its structure is (sequence, hierarchy, relationships, exchange, plain list) so you can pick a diagram type for it; see "Show structure as a diagram" below. If a topic hinges on a specialized dynamic visual that none of the existing types express cleanly (for example, map coloring theorem, tree rotations, or cellular automata), you can author a reusable visual type with the sibling `add-visual` skill (`../add-visual/SKILL.md`); see "When a custom visual would help" below.
 
 3b. **Build the fact ledger** (only for a style whose playbook says a ledger is required, or when the user wants nothing left out; skip otherwise). Save the source (transcript, notes, log) in the workdir as plain text (a meeting recording's VTT/SRT goes through `explainer.py transcript` first; see "From a meeting recording" below) and list every claim in `<workdir>/ledger.json` before writing scenes; see "Fact ledger" below.
 
 4. **Write the scripts** (the transcript comes first, before any audio). Each `scripts/<id>.json`:
 
    ```json
-   {"title": "Video title", "scenes": [
+   {"title": "Video title", "theme": "cel-sky", "scenes": [
      {"id": "s01", "narration": "What the voice says.", "visual": {"type": "title", "kicker": "...", "headline": "...", "sub": "..."}}
    ]}
    ```
+
+   Optional top-level `"theme"`: `"cel-sky"` (default, 2.5D cel-shaded sky) or `"paper"` (flat neo-brutalist).
 
    Narration rules (English; for Arabic scripts read "Arabic videos" below first):
    - Style (write for the ear, one thought per scene, hook and close) is in `references/presentation.md`.
@@ -89,6 +91,8 @@ Arguments: `$ARGUMENTS`
    | `figure` | `heading`, `src` (relative `.png`|`.jpg`|`.jpeg`|`.svg` inside `<workdir>`), `alt`, `aspect?`, `regions?[{id?, label, x, y, w, h, zoom?, tone?, note?}]` (1 to 6 normalized `0..1` boxes), `caption?` | local paper figures, diagrams, qualitative examples, or micrographs with narration-timed dim-outside spotlights, camera pan/zoom, and plain callout labels |
    | `surface3d` | `heading`, `xDomain`, `yDomain`, `zDomain?`, `xLabel?`, `yLabel?`, `zLabel?`, `expr?`|`grid?`, `resolution?`, `overlays?[{kind, label, ...}]` (0 to 6), `caption?` | 3D height surfaces `z = f(x, y)` with partial-derivative slices, translucent tangent planes, and extruded Riemann volume columns or voxels (3D mode only) |
    | `layers3d` | `heading`, `layers[{id, label, sub?, tone?}]` bottom to top, 2 to 6, `caption?` | a stack of layers (an architecture, a protocol stack); 3D only: `check` rejects it without `"mode": "3d"` |
+   | `array-algo` | `heading`, `mode?` (`cells`|`bars`), `showIndices?`, `steps[{id?, label, items[{id, value, state?, subLabel?}], pointers?, window?, aux?, note?}]` (1 to 12), `caption?` | animated step-by-step array and sorting algorithms (swaps, partitions, two pointers, sliding windows, binary search) synced to narration |
+   | `graph-algo` | `heading`, `directed?`, `nodes[{id, label, x?, y?}]` (2 to 10), `edges[{id?, from, to, weight?, directed?}]` (1 to 18), `steps[{id?, label, nodeStates?, nodeBadges?, edgeStates?, aux?, note?}]` (1 to 12), `caption?` | animated step-by-step graph traversal and shortest-path algorithms (BFS, DFS, Dijkstra, topological sort, MST) synced to narration |
 
    **`graph` rules:**
    - 2 to 12 nodes, labels of three words or fewer, node `id` matches `[A-Za-z0-9_-]+`, every edge `from`/`to` names an existing node.
@@ -184,6 +188,16 @@ Arguments: `$ARGUMENTS`
    - Provide either a safe `expr` in `x, y` or a rectangular 2..32 `grid`. Overlays (`slice`, `tangent`, `columns`) reveal when their `label` is spoken in listed order (or supply `cues`).
    - No `focus`, no `continues`, and axis labels draw left to right.
 
+   **`array-algo` rules:**
+   - Reuse stable element `items[].id` across steps so swapped elements animate along symmetric arcs (`cells` allows numbers or short strings; `bars` requires non-negative numbers scaled across all steps).
+   - Optional `pointers` (`name`, 0-based `index`, `tone?`) glide between indices and auto-stack on collisions; `window` (`start..end`, `label?`) brackets an active subarray; `aux` renders a bottom auxiliary state tray.
+   - Steps advance when each `steps[].label` is spoken in listed order (or via `cues`). `focus` targets step IDs or item IDs (2D only). Array indices always draw left to right.
+
+   **`graph-algo` rules:**
+   - Provide normalized `[0..1]` `nodes[].x` and `nodes[].y`, or omit both on every node for deterministic BFS/ellipse auto-layout.
+   - `steps[].nodeStates` and `nodeBadges` map node IDs to semantic tones or distance/depth pills (`d=4`, `L1`); `edgeStates` maps edge keys (`edge.id` or `"from->to"`).
+   - Optional `aux` renders a bottom Queue / Priority Queue / Stack tray via `AuxStrip`. Steps advance in listed narration order (or via `cues`). `focus` targets node IDs, explicit edge IDs, or step IDs (2D only).
+
    What each type supports (`continues` and `focus` are scene fields, see below):
 
    | type | 2D | 3D | `continues` | `focus` | Arabic |
@@ -215,6 +229,8 @@ Arguments: `$ARGUMENTS`
    | `figure` | yes | - | - | 2D only | not mirrored |
    | `surface3d` | - | yes | - | - | not mirrored |
    | `layers3d` | - | yes | - | - | mirrored |
+   | `array-algo` | yes | - | - | 2D only | not mirrored |
+   | `graph-algo` | yes | - | - | 2D only | not mirrored |
    <!-- visuals:end -->
 
    **Show structure as a diagram, not as text.** Diagrams, especially animated ones, help viewers understand far more than lists do, so reach for them whenever the content has structure. Before writing a `bullets`, `compare` or `table` scene, ask whether the same content is really a flow, a hierarchy, a set of relationships or an exchange of messages, and if so draw it:
@@ -232,8 +248,11 @@ Arguments: `$ARGUMENTS`
    - component `+`/`-` contributions summing from baseline to full system → `ablation`
    - attention weights, confusion matrices, or numeric 2D intensity heatmaps → `matrix`
    - continuous function slopes/Riemann areas, dual rate-accumulation plots, Stokes/FTC cancellation, contour/vector fields, or 3D height surfaces → `plot2d`, `linked-plot`, `cancellation-grid`, `field2d`, `surface3d` (`3d`)
+   - step-by-step array/sorting algorithms (swaps, pointers, sliding windows) or graph traversals (BFS, DFS, Dijkstra) → `array-algo`, `graph-algo`
    - existing paper figures, micrographs, or screenshots walked region by region → `figure` (staged safely from `<workdir>`)
    Aim for roughly a third to a half of the content scenes to be diagrams in a video about a system, a process or relationships. Keep `bullets`, `compare` and `table` for things that really are lists, option comparisons or lookups, and `callout` for one key message. A video of only bullets and tables is a missed opportunity. Animated diagrams reveal nodes and edges in the order listed and send dots along the edges, so list them in the order you speak them.
+
+   **When a custom visual would help (`add-visual` skill).** If the topic hinges on a specialized visual mechanism that none of the built-in types convey well — for example, **map coloring theory / the Four Color Theorem** (planar regions changing colors with live adjacency-conflict checks), tree or heap rotations, dynamic-programming tables, or a domain-specific simulation — you can utilize the sibling **`add-visual`** skill (`../add-visual/SKILL.md`) to create a custom visual type before writing the script (`python3 <skill-dir>/explainer.py visual init <slug> [--template algo]` saves ad-hoc visuals cleanly into `~/.config/explainer-video/visuals/<slug>/` without dirtying git; check available local visuals with `visual list`, and only use `--builtin` / `visual promote` for broadly reusable families meant for the repo). Prefer existing built-in types (`graph-algo`, `array-algo`, `plot2d`, `field2d`, `cancellation-grid`, `matrix`, `svg`, etc.) whenever they already fit cleanly; when working interactively, briefly propose the new visual type to the user first, and never place custom TSX inside `<workdir>`. All custom visuals must import from `src/sdk/*` and pass `explainer.py visual check <slug>`.
 
    Prefer `flow`, `fanout` and `steps`: they animate with the narration. Use `graph` when the structure itself is the point and it has branches or several paths: nodes and edges appear in the order listed, spread over the narration, so list the nodes in the order you speak them. The rules for each type are listed above.
 
@@ -265,10 +284,10 @@ Arguments: `$ARGUMENTS`
 
    Fix text that wraps badly, a headline that spills onto a lonely second line, or overlapping elements by editing the script and re-running `still`. For a whole video, `explainer.py review <workdir> <id>` writes one sheet (`out/review/<id>.png`) with every scene just after its entrance, mid-narration and near its end; look at it before rendering.
 
-8. **Render the videos.** Run in the background; expect about two to five minutes per video of two minutes:
+8. **Render the videos.** Run in the background; expect about two to five minutes per video of two minutes (pass `--draft` for a fast 720p preview render: `scale=2/3`, `x264 ultrafast`, `30 fps`):
 
    ```bash
-   python3 <skill-dir>/explainer.py render <workdir> [ids...]
+   python3 <skill-dir>/explainer.py render <workdir> [ids...] [--draft]
    ```
 
    (`explainer.py all <workdir>` does steps 6 and 8 together.) MP4s land in `<workdir>/out/`.
@@ -312,7 +331,7 @@ Every script is validated against a zod schema (`<skill-dir>/src/schema.ts` and 
 python3 <skill-dir>/explainer.py schema
 ```
 
-When you add a visual type, add its folder `src/visuals/<type>/` (its zod object in `schema.ts` is its validation; its `meta.ts` holds the lines of the table above; its pure showcase fixtures live in `catalog.ts`; see CLAUDE.md for the other files) and register it in `visuals/capabilities.ts`, `visuals/registry.ts`, `visuals/views.tsx`, `visuals/catalog.ts`, and `ORDER` in `src/docs.ts`, then run `make docs` in the repo root: it regenerates the table above and the saved schema.
+When you add a visual type, follow the sibling `add-visual` skill (`../add-visual/SKILL.md`): run `python3 <skill-dir>/explainer.py visual init <type> [--template algo]` (creates ad-hoc visuals in `~/.config/explainer-video/visuals/<type>/`; pass `--builtin` for built-in types under `<skill-dir>/src/visuals/<type>/`), build on `src/sdk/*`, verify with `python3 <skill-dir>/explainer.py visual check <type>`, and (for `--builtin`) run `make docs` in the repo root.
 
 ## 3D videos (`"mode": "3d"`)
 
@@ -347,7 +366,7 @@ Authoring rules for Arabic narration (`check` and `audio` warn when they are bro
 
 ## Customising the look
 
-The look is the blog's neo-brutalist design system (white-ish background, black 4px borders, flat offset shadows, yellow/pink/green accents, Space Grotesk and Space Mono; Cairo for Arabic). Colours are in `<skill-dir>/src/theme.json` (read by `theme.ts`, and by `src/mermaid-render.mjs` for diagram colours; editing it re-renders cached diagrams); fonts are bundled in `src/fonts/` (each with its OFL licence); right-to-left mirroring is driven by `src/rtl.ts` (a context set from the `dir` in the data file) and the visuals' `rtl` branches; each visual type's layout is in `<skill-dir>/src/visuals/<type>/View2D.tsx` (3D in `View3D.tsx`). To add a visual type, create its folder (including pure `catalog.ts` showcase fixtures) and register it in `src/visuals/capabilities.ts`, `src/visuals/registry.ts`, `src/visuals/views.tsx`, `src/visuals/catalog.ts`, and `src/docs.ts` (types are derived from the schema).
+Two themes are chosen by the script's top-level `"theme"`: `cel-sky` (default: 2.5D cel-shaded sky) and `paper` (flat neo-brutalist). Palettes live in `<skill-dir>/src/theme.json` (paper/base) and `<skill-dir>/src/cel-sky.json`, combined in `<skill-dir>/src/themes.ts` (read by `theme.ts`, and by `src/mermaid-render.mjs` for diagram colours; editing theme colours re-renders cached diagrams); fonts are bundled in `src/fonts/` (each with its OFL licence); right-to-left mirroring is driven by `src/rtl.ts` (a context set from the `dir` in the data file) and the visuals' `rtl` branches; each visual type's layout is in `<skill-dir>/src/visuals/<type>/View2D.tsx` (3D in `View3D.tsx`). To add a visual type, use the sibling `add-visual` skill (`../add-visual/SKILL.md`): run `explainer.py visual init <type>` (saves ad-hoc visuals in `~/.config/explainer-video/visuals/<type>/`, or `--builtin` for `src/visuals/<type>/`), author its folder against `src/sdk/*`, verify with `explainer.py visual check <type>`, and (for `--builtin`) run `make docs` to regenerate registries and schemas.
 
 ## Notes
 
@@ -388,6 +407,6 @@ The skill gets better as people report problems. When the user says a word was s
 2. Plurals come for free: `URL` gives `URLs`, which Kokoro reads correctly. Give an explicit plural entry only when the derived one is wrong. Letter-by-letter acronyms need no respelling: a plain ALL-CAPS `API` is spoken ay-pee-eye with one stress, whereas the spaced `A P I` is read "uh pee eye" with every letter stressed. Only respell what is read wrongly as written (`GA` -> `G.A.`).
 3. Re-run `explainer.py audio <workdir>`. Only scenes whose spoken text changed are re-synthesized.
 4. Test the new spelling by listening; spoken forms are tuned for Kokoro and may read differently on another voice.
-5. A mapping that is useful to everyone, not just this machine, should be promoted into `PRONOUNCE` in `explainer.py` and committed.
+5. A mapping that is useful to everyone, not just this machine, should be promoted into `PRONOUNCE` in `pronounce.py` and committed.
 
 `check` and `audio` warn about ALL-CAPS and camelCase words with no entry (gRPC, mTLS, SQL) and print the exact `pronounce` command to fix them. For sync problems, pin the item with `"cues"` in the scene; if automatic matching keeps misplacing a kind of item, report it so the matcher in `timing.py` can be improved.

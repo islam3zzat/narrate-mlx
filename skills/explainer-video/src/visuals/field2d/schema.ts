@@ -201,3 +201,5 @@ export const Field2DVisual = z.strictObject({
     if (ov.kind === 'line-integral' || ov.kind === 'flux') ov.points.forEach((pt, j) => checkPt(pt, [...p, 'points', j]));
   });
 });
+
+export {Field2DVisual as schema};

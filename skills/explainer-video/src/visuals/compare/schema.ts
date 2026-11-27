@@ -10,3 +10,5 @@ export const CompareVisual = z.strictObject({
     items: z.array(text('One line')).min(1).describe('Lines in the column'),
   })).min(2).max(4).describe('2 to 4 side-by-side options'),
 }).describe('Side-by-side comparison');
+
+export {CompareVisual as schema};

@@ -16,15 +16,21 @@ from env import (
     ALIGN_LANGUAGE,
     ALIGN_MODEL,
     FPS,
+    KOKORO_MODEL,
     LANG_MODEL,
     LEAD,
+    SILMA_MODEL,
     SKILL,
     TAIL,
+    announce_model_download_if_missing,
     atomic_write_text,
     clip_err,
     die,
+    env_timeout,
     find_speak,
+    find_uv,
     load_scripts,
+    run_guarded,
     scene_starts,
     sync_uv_env,
 )
@@ -63,9 +69,14 @@ def synth_qwen3(speak: Path, jobs: list[tuple[str, str, Path]], voice: str) -> N
     req = {"out": str(tmp), "candidates": [{"key": "q", "repo": QWEN3_REPO, "kind": "qwen3_custom", "voice": voice,
                                             "instruct": QWEN3_INSTRUCT}],
            "scenes": [{"id": sid, "text": text} for sid, text, _ in jobs]}
-    cmd = ["uv", "run", "--no-sync", "--project", str(speak), "python", str(SKILL / "ab_worker.py")]
+    cmd = [find_uv(), "run", "--no-sync", "--project", str(speak), "python", str(SKILL / "ab_worker.py")]
+    timeout = env_timeout("EXPLAINER_TTS_TIMEOUT", 1800.0)
+    announce_model_download_if_missing(QWEN3_REPO, "~3.5 GB")
     try:
-        r = subprocess.run(cmd, input=json.dumps(req), stdout=subprocess.PIPE, text=True)
+        try:
+            r = run_guarded(cmd, stdin=json.dumps(req), timeout=timeout, capture=True, capture_stderr=False)
+        except subprocess.TimeoutExpired:
+            die(f"Qwen3-TTS timed out after {timeout:.0f}s (set $EXPLAINER_TTS_TIMEOUT to override)")
         try:
             res = json.loads(r.stdout)["results"]["q"] if r.returncode == 0 and r.stdout.strip() else {"error": "worker crashed"}
         except (json.JSONDecodeError, KeyError, TypeError):
@@ -84,16 +95,20 @@ def tts_words_path(wav: Path) -> Path:
 
 
 def synth(speak: Path, text: str, wav: Path, model: str, voice: str, speed: float, lang: str = "en") -> None:
-    cmd = ["uv", "run", "--no-sync", "--project", str(speak), "python", str(speak / "speak.py"),
+    cmd = [find_uv(), "run", "--no-sync", "--project", str(speak), "python", str(speak / "speak.py"),
            *(["--lang", lang] if lang != "en" else []),
            "--model", model, "--voice", voice, "--speed", str(speed), "--out", str(wav),
            "--timings", str(tts_words_path(wav))]
+    timeout = env_timeout("EXPLAINER_TTS_TIMEOUT", 600.0)
     for attempt in (1, 2):
-        r = subprocess.run(cmd, input=text, capture_output=True, text=True)
+        try:
+            r = run_guarded(cmd, stdin=text, timeout=timeout, capture=True)
+        except subprocess.TimeoutExpired:
+            die(f"TTS timed out after {timeout:.0f}s (set $EXPLAINER_TTS_TIMEOUT to override)")
         if r.returncode == 0 and wav.exists():
             return
         if attempt == 1 and re.search(r"No module named|ModuleNotFoundError|No such file|Failed to spawn", r.stderr):
-            print("[setup] syncing tts environment (first run only)...", flush=True)
+            print("[setup] syncing tts environment (first run only)...", file=sys.stderr, flush=True)
             sync_uv_env(speak)
             continue
         die(f"TTS failed:\n{clip_err(r.stderr)}")
@@ -165,10 +180,20 @@ def align_scenes(speak: Path, adir: Path, jobs: list[tuple[str, str, Path, str]]
     if lang != "en":
         print(f"warning: {vid}: forced alignment for {ALIGN_LANGUAGE[lang]} is unverified (Qwen3-ForcedAligner does not list it); "
               f"results are validated and rejected if implausible", file=sys.stderr)
+    announce_model_download_if_missing(ALIGN_MODEL, "~1.3 GB")
     req = json.dumps({"items": [{"id": sid, "wav": str(wav), "text": text} for sid, text, wav, _, _ in todo]})
-    cmd = ["uv", "run", "--no-sync", "--project", str(speak), "python", str(SKILL / "align_worker.py"), "--model", ALIGN_MODEL,
+    cmd = [find_uv(), "run", "--no-sync", "--project", str(speak), "python", str(SKILL / "align_worker.py"), "--model", ALIGN_MODEL,
            "--language", ALIGN_LANGUAGE[lang]]
-    r = subprocess.run(cmd, input=req, capture_output=True, text=True)
+    timeout = env_timeout("EXPLAINER_ALIGN_TIMEOUT", 900.0)
+    try:
+        r = run_guarded(cmd, stdin=req, timeout=timeout, capture=True)
+    except subprocess.TimeoutExpired:
+        print(
+            f"warning: alignment timed out after {timeout:.0f}s (set $EXPLAINER_ALIGN_TIMEOUT to override); "
+            "falling back to approximate/even-spread timing",
+            file=sys.stderr,
+        )
+        return out
     if r.returncode != 0:
         print(f"warning: alignment failed; scenes fall back to the TTS's approximate times if it gave any, else an even spread:\n{clip_err(r.stderr)}", file=sys.stderr)
         return out
@@ -259,11 +284,12 @@ def cmd_audio(workdir: Path, ids: list[str], model: str | None, voice: str | Non
         for i, sc in enumerate(full_by_vid[vid])
     ]
     descs_by_vid: dict[str, list[dict]] | None = None
+    announced_models: set[str] = set()
 
     for vid, script in scripts:
         lang = lang_of(script)
-        speed = resolve_speed(script, cli_speed)   # --speed, else the style's default speed, else 1.0
-        vmodel, vvoice, vfinger = pick_voice(lang, vid, model, resolve_voice(script, voice))
+        speed = resolve_speed(script, cli_speed, workdir)   # --speed, else the style's default speed, else 1.0
+        vmodel, vvoice, vfinger = pick_voice(lang, vid, model, resolve_voice(script, voice, workdir))
         say = en_say if lang == "en" else (lambda t: t)    # Arabic narration is spoken as written (it carries its own vowels)
         adir = workdir / "public/audio" / vid
         adir.mkdir(parents=True, exist_ok=True)
@@ -293,6 +319,7 @@ def cmd_audio(workdir: Path, ids: list[str], model: str | None, voice: str | Non
             stamp.unlink(missing_ok=True)
         if vmodel == "qwen3":
             if pending:
+                announce_model_download_if_missing(QWEN3_REPO, "~3.5 GB", announced_models)
                 print(f"[tts] {vid}: {len(pending)} scene(s) with Qwen3-TTS ({vvoice})", flush=True)
                 synth_qwen3(speak, [(sid, t, w) for sid, t, w, _, _ in pending], vvoice)
                 for sid, _, wav, stamp, digest in pending:
@@ -300,8 +327,14 @@ def cmd_audio(workdir: Path, ids: list[str], model: str | None, voice: str | Non
                         die(f"TTS produced invalid audio for {vid}/{sid}: {wav}")
                     atomic_write_text(stamp, digest)
         else:
-            for sid, text, wav, stamp, digest in pending:
-                print(f"[tts] {vid}/{sid}" + (f" ({vmodel}, {lang})" if lang != "en" else ""), flush=True)
+            if pending:
+                if vmodel == "kokoro":
+                    announce_model_download_if_missing(KOKORO_MODEL, "~160 MB", announced_models)
+                elif vmodel == "silma":
+                    announce_model_download_if_missing(SILMA_MODEL, "~900 MB", announced_models)
+            total_pending = len(pending)
+            for idx, (sid, text, wav, stamp, digest) in enumerate(pending, 1):
+                print(f"[tts] {vid}/{sid} ({idx}/{total_pending})" + (f" ({vmodel}, {lang})" if lang != "en" else ""), flush=True)
                 synth(speak, text, wav, vmodel, vvoice, speed, lang)
                 if _valid_wav(wav) is None:
                     die(f"TTS produced invalid audio for {vid}/{sid}: {wav}")

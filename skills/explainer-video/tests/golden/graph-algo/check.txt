@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok graph-algo: 2 scenes, 51 words, about 20s
+--stderr--

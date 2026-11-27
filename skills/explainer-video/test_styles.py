@@ -2,11 +2,14 @@
 
 The ledger and style rules themselves are TypeScript (tests/vectors/ledger.test.ts); these run through explainer.py / cli.ts.
 """
-import json, os, re, subprocess, sys, tempfile, unittest
+import contextlib, io, json, os, re, subprocess, sys, tempfile, unittest, wave
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from unittest import mock
 
+import audio
 import explainer
+import validation
 from test_semantics import HERE, tsx, tool_env
 
 STYLES = HERE / "styles"
@@ -37,7 +40,7 @@ class RegistryTests(unittest.TestCase):
         self.assertEqual(sorted(p.stem for p in STYLES.glob("*.md")), names, "a playbook without a definition")
 
     def test_style_schema_matches_committed_file(self):
-        code, out, err = run("schema", "--style")
+        code, out, err = run("schema", "--style", "--builtin")
         self.assertEqual(code, 0, err)
         schema = json.loads(out)
         self.assertEqual(schema, json.loads((HERE / "schema/style.schema.json").read_text(encoding="utf-8")))
@@ -111,6 +114,65 @@ class DefaultsTests(unittest.TestCase):
         self.assertEqual(explainer.resolve_voice({"style": "quick-brief"}, "am_michael"), "am_michael")
         self.assertIsNone(explainer.resolve_voice({}, None))
 
+    def test_workdir_style_speed_and_voice_resolve_and_shadow_builtin(self):
+        def write_wav(path: Path) -> None:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with wave.open(str(path), "wb") as w:
+                w.setnchannels(1)
+                w.setsampwidth(2)
+                w.setframerate(24000)
+                w.writeframes(b"\x00\x00" * 12000)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            wd = Path(tmp) / "proj"
+            (wd / "styles").mkdir(parents=True)
+            (wd / "scripts").mkdir(parents=True)
+            local_style = {
+                "name": "lab-pace",
+                "description": "Custom workdir style",
+                "audience": "engineers",
+                "defaults": {"speed": 1.2, "voice": "bm_george"},
+                "bounds": {"scenes": [1, 5], "seconds": [10, 120], "wordsPerScene": [2, 40]},
+                "preferredVisuals": ["bullets"],
+                "ledger": {"required": False, "kinds": [], "mustCover": [], "coverHigh": False, "quoteKinds": [], "allowDeferred": False},
+                "lint": {"blameless": False},
+            }
+            (wd / "styles/lab-pace.json").write_text(json.dumps(local_style), encoding="utf-8")
+            (wd / "styles/lab-pace.md").write_text("# lab-pace\nPlaybook.\n", encoding="utf-8")
+
+            shadow = {**local_style, "name": "quick-brief", "defaults": {"speed": 1.35}}
+            (wd / "styles/quick-brief.json").write_text(json.dumps(shadow), encoding="utf-8")
+            (wd / "styles/quick-brief.md").write_text("# quick-brief\nShadow.\n", encoding="utf-8")
+
+            self.assertEqual(explainer.resolve_speed({"style": "lab-pace"}, None, wd), 1.2)
+            self.assertEqual(explainer.resolve_voice({"style": "lab-pace"}, None, wd), "bm_george")
+            self.assertEqual(explainer.resolve_speed({"style": "quick-brief"}, None, wd), 1.35)
+
+            script = {
+                "title": "Demo",
+                "style": "lab-pace",
+                "scenes": [{"id": "s1", "narration": "Hello world.", "visual": {"type": "bullets", "heading": "H", "items": ["Hello"]}}],
+            }
+            (wd / "scripts/demo.json").write_text(json.dumps(script), encoding="utf-8")
+            seen: list[tuple[str, float]] = []
+
+            def fake_synth(speak, text, wav, model, vvoice, speed, lang="en"):
+                seen.append((vvoice, speed))
+                write_wav(wav)
+
+            with (
+                mock.patch("audio.find_speak", return_value=wd),
+                mock.patch("audio.validate_all", return_value=[]),
+                mock.patch("audio.check_mermaid", return_value=([], {})),
+                mock.patch("audio.stage_figures", return_value=([], {})),
+                mock.patch("audio.synth", side_effect=fake_synth),
+                mock.patch("audio.align_scenes", return_value={}),
+                mock.patch("audio.describe_visuals", return_value=[{"slots": [], "carried": []}]),
+                contextlib.redirect_stdout(io.StringIO()),
+            ):
+                audio.cmd_audio(wd, ["demo"], None, None, None)
+            self.assertEqual(seen, [("bm_george", 1.2)])
+
     def test_unknown_style_name_is_a_schema_error(self):
         out = json.loads(tsx(["src/cli.ts", "validate"], json.dumps({"v": {"title": "t", "style": "nope", "scenes": [
             {"id": "s1", "narration": "x", "visual": {"type": "bullets", "heading": "h", "items": ["a"]}}]}})))
@@ -167,6 +229,48 @@ class InitTests(unittest.TestCase):
             code, out, err = run("check", str(Path(tmp) / "a"), features="")
             self.assertEqual(code, 0, err)
             self.assertNotIn("style", out)
+
+    def test_init_supports_workdir_and_user_local_styles_and_copyable_hints(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            wd_skel = root / "wd-skel"
+            (wd_skel / "styles").mkdir(parents=True)
+            style_obj = {
+                "name": "local-style",
+                "description": "Local style",
+                "audience": "devs",
+                "defaults": {"speed": 1.0},
+                "bounds": {"scenes": [1, 5], "seconds": [10, 120], "wordsPerScene": [2, 50]},
+                "preferredVisuals": ["bullets"],
+                "ledger": {"required": False, "kinds": [], "mustCover": [], "coverHigh": False, "quoteKinds": [], "allowDeferred": False},
+                "lint": {"blameless": False},
+            }
+            (wd_skel / "styles/local-style.json").write_text(json.dumps(style_obj), encoding="utf-8")
+            (wd_skel / "styles/local-style.md").write_text("# local-style\nPlaybook.\n", encoding="utf-8")
+            (wd_skel / "styles/local-style.skeleton.json").write_text(
+                json.dumps({"title": "Skel", "style": "local-style", "scenes": [{"id": "s1", "narration": "Hello.", "visual": {"type": "bullets", "heading": "H", "items": ["Hello"]}}]}),
+                encoding="utf-8",
+            )
+            code, out, err = run("init", str(wd_skel), "--style", "local-style")
+            self.assertEqual(code, 0, err)
+            self.assertEqual(json.loads((wd_skel / "scripts/example.json").read_text())["title"], "Skel")
+            self.assertIn(f"playbook: {wd_skel.resolve() / 'styles/local-style.md'}", out)
+            self.assertIn(f"next: python3 {HERE / 'explainer.py'} check", out)
+
+            user_styles = root / "user-styles"
+            user_styles.mkdir(parents=True)
+            (user_styles / "user-style.json").write_text(json.dumps({**style_obj, "name": "user-style"}), encoding="utf-8")
+            (user_styles / "user-style.md").write_text("# user-style\nPlaybook.\n", encoding="utf-8")
+            wd_user = root / "wd-user"
+            buf = io.StringIO()
+            with mock.patch.object(validation, "USER_STYLES_DIR", user_styles), contextlib.redirect_stdout(buf):
+                explainer.cmd_init(wd_user, style="user-style")
+            self.assertEqual(json.loads((wd_user / "scripts/example.json").read_text())["style"], "user-style")
+            self.assertIn(f"playbook: {user_styles / 'user-style.md'}", buf.getvalue())
+
+            code_missing, _, err_missing = run("check", str(root / "does-not-exist"))
+            self.assertNotEqual(code_missing, 0)
+            self.assertIn(f"Run: python3 {HERE / 'explainer.py'} init", err_missing)
 
 
 class LedgerThroughCheckTests(unittest.TestCase):

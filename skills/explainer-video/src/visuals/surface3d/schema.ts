@@ -136,3 +136,5 @@ export const Surface3DVisual = z.strictObject({
     }
   });
 });
+
+export {Surface3DVisual as schema};

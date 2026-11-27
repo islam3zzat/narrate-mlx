@@ -1,0 +1,38 @@
+import {ID, displayCells, text, textCharIssues, z} from '../../sdk/pure';
+import {ALGO_STATE_TONES} from '../../sdk/algo-math';
+
+export const __PASCAL__Item = z.strictObject({
+  id: ID,
+  value: text('Display value'),
+  tone: z.enum(ALGO_STATE_TONES).optional(),
+});
+
+export const __PASCAL__Step = z.strictObject({
+  id: ID.optional(),
+  label: text('Step label spoken in narration'),
+  items: z.array(__PASCAL__Item).min(1).max(16),
+  pointers: z.array(z.strictObject({
+    name: text('Pointer label'),
+    index: z.number().int().min(0),
+    tone: z.enum(ALGO_STATE_TONES).optional(),
+  })).max(6).optional(),
+  note: text('Optional short note').optional(),
+});
+
+export const __PASCAL__Visual = z.strictObject({
+  type: z.literal('__SLUG__'),
+  heading: text('Scene heading'),
+  steps: z.array(__PASCAL__Step).min(1).max(12),
+  caption: text('Optional caption').optional(),
+}).superRefine((v, ctx) => {
+  for (const msg of textCharIssues('heading', v.heading)) ctx.addIssue({code: 'custom', path: ['heading'], message: msg});
+  v.steps.forEach((st, si) => {
+    if (displayCells(st.label) > 48) ctx.addIssue({code: 'custom', path: ['steps', si, 'label'], message: 'label must be <= 48 display cells'});
+    (st.pointers ?? []).forEach((pt, pi) => {
+      if (pt.index >= st.items.length) ctx.addIssue({code: 'custom', path: ['steps', si, 'pointers', pi, 'index'], message: 'pointer index out of range'});
+    });
+  });
+});
+
+export {__PASCAL__Visual as schema};
+export type __PASCAL__VisualT = z.infer<typeof __PASCAL__Visual>;

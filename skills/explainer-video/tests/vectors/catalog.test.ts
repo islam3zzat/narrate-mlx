@@ -1,9 +1,9 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import {CATALOG} from '../../src/visuals/catalog';
-import {CAPABILITIES} from '../../src/visuals/capabilities';
-import {REGISTRY, describe, lintScene, type VisualType} from '../../src/visuals/registry';
+import {BUILTIN_CATALOG as CATALOG} from '../../src/visuals/catalog';
+import {BUILTIN_CAPABILITIES as CAPABILITIES} from '../../src/visuals/capabilities';
+import {BUILTIN_REGISTRY as REGISTRY, describe, lintScene, type BuiltinVisualType as VisualType} from '../../src/visuals/registry';
 
 let checks = 0;
 

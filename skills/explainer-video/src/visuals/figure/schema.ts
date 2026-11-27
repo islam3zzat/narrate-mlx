@@ -88,3 +88,5 @@ export const FigureVisual = z.strictObject({
 
 export type FigureVisualT = z.infer<typeof FigureVisual>;
 export type FigureRegionT = z.infer<typeof FigureRegion>;
+
+export {FigureVisual as schema};

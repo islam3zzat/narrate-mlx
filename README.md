@@ -14,10 +14,26 @@ All four demos were made with `/explainer-video` in the default **`cel-sky`** th
 
 | Demo | Mode | Length | Video |
 |---|---|---|---|
-| **All visuals (2D)** — all 16 supported 2D visual types | 2D | 1 min 57 s | https://github.com/user-attachments/assets/add1b23d-5ff2-4b5c-927a-43b4738437a5 |
-| **Architectural overview (2D)** — how `narrate-mlx` works | 2D | 1 min 09 s | https://github.com/user-attachments/assets/551a7add-9c16-43a8-bdf0-56a77c62c820 |
+| **All visuals (2D)** — 16 of the 2D visual types | 2D | 1 min 57 s | [all-visuals-2d.mp4](docs/video/all-visuals-2d.mp4) |
+| **All visuals (3D)** — 13 of the 3D visual types | 3D | 1 min 30 s | [all-visuals-3d.mp4](docs/video/all-visuals-3d.mp4) |
+| **Architectural overview (2D)** — how `narrate-mlx` works | 2D | 1 min 09 s | [arch-overview-2d.mp4](docs/video/arch-overview-2d.mp4) |
+| **Architectural overview (3D)** — exact same script in 3D | 3D | 1 min 09 s | [arch-overview-3d.mp4](docs/video/arch-overview-3d.mp4) |
 
 
+
+
+
+
+
+
+
+| All visuals (2D) | All visuals (3D) |
+|---|---|
+| https://github.com/user-attachments/assets/c5f12f52-8d4f-49ac-959d-280b1cd84318 | https://github.com/user-attachments/assets/ca9ae45e-889a-48eb-b480-80c552d95e0a |
+
+| Architectural overview (2D) | Architectural overview (3D) |
+|---|---|
+| https://github.com/user-attachments/assets/fa569e99-928f-4610-bbea-281de6da7488 |  https://github.com/user-attachments/assets/483a5f1b-c8e5-4905-ae12-55cde0830c73 |
 
 Scripts, transcripts and rebuild steps are in [`docs/video/`](docs/video/).
 
@@ -54,7 +70,7 @@ Keep the checkout path short (see [Troubleshooting](#troubleshooting)).
 /speak [text or file path] [--voice af_heart] [--speed 1.0]
 ```
 
-With no argument it reads Claude's previous reply. Markdown is handled: syntax is not read and code blocks are skipped. Over about 100 words it opens a window where you can click any word to jump there, pause with space, and change speed (0.75x to 2x).
+With no argument it reads Claude's previous reply. Markdown is handled: syntax is not read and code blocks are skipped. Over about 100 words it opens a window where you can click any word to jump there, pause/replay with Space, skip sentences with Left/Right, change speed with Up/Down or the bar (`0.75x` to `2x`, effective rate shown), scroll freely (pauses auto-scroll for 3 s), and close with `Cmd+Q`, `Cmd+W`, or `Esc`.
 
 You can also use it from a shell, without Claude:
 
@@ -95,7 +111,7 @@ A script is plain JSON: one narration line and one visual per scene.
 ]}
 ```
 
-Visual types: `title`, `bullets`, `compare`, `steps`, `flow`, `fanout`, `table`, `callout`, `timeline`, `code`, `stat`, `plot2d`, `linked-plot`, `cancellation-grid`, `field2d`, `chart`, `ablation`, `matrix`, `equation`, `figure`, `surface3d` (`3d`), `layers3d` (`3d`), `svg` (behind the `svg` flag), and diagrams: `graph` (boxes and arrows), `class` (UML), `sequence`, and `mermaid` for everything else (state, ER, gantt, timeline, mindmap, pie, flowcharts that loop). See [`skills/explainer-video/SKILL.md`](skills/explainer-video/SKILL.md) for the fields each takes and the narration guidelines, and [`templates/example.json`](skills/explainer-video/templates/example.json) for a full example.
+Visual types: `title`, `bullets`, `compare`, `steps`, `flow`, `fanout`, `table`, `callout`, `timeline`, `code`, `stat`, `plot2d`, `linked-plot`, `cancellation-grid`, `field2d`, `chart`, `ablation`, `matrix`, `equation`, `figure`, `array-algo`, `graph-algo`, `surface3d` (`3d`), `layers3d` (`3d`), `svg` (behind the `svg` flag), and diagrams: `graph` (boxes and arrows), `class` (UML), `sequence`, and `mermaid` for everything else (state, ER, gantt, timeline, mindmap, pie, flowcharts that loop). See [`skills/explainer-video/SKILL.md`](skills/explainer-video/SKILL.md) for the fields each takes and the narration guidelines, and [`templates/example.json`](skills/explainer-video/templates/example.json) for a full example.
 
 ### Diagrams that follow the narration
 
@@ -180,7 +196,7 @@ python3 skills/explainer-video/explainer.py pronounce PKCE --remove
 | `make install` | Symlinks each folder in `skills/` into `~/.claude/skills` and `~/.agents/skills`. Safe to re-run. |
 | `make uninstall` | Removes those symlinks (only links that point into this repo, from every known agent skills folder). |
 | `make doctor` | Checks tools, the Python and Node environments, the checkout path length, and that every skill link works. Exits non-zero on problems. |
-| `make catalog` | Opens the interactive Remotion Studio **Visual Catalog** across all 27 visual types (no `<workdir>` or audio needed). |
+| `make catalog` | Opens the interactive Remotion Studio **Visual Catalog** across every visual type (no `<workdir>` or audio needed). |
 | `make pages` | Builds the static Remotion Studio Visual Catalog into `out/pages` (deployed to [GitHub Pages](https://islam3zzat.github.io/narrate-mlx/)). |
 
 Options:
@@ -189,7 +205,7 @@ Options:
 SKILL_DIRS="$HOME/.codex/skills" make install   # link into other agents' skill folders
 FORCE=1 make install                            # replace links that point somewhere else
 SMOKE=1 make doctor                             # also generate a short test speech
-NARRATE_FEATURES="arabic,3d" make setup         # feature flags, all off by default (see below)
+NARRATE_FEATURES="arabic,3d" make setup         # feature flags (off by default except transcripts; see below)
 ```
 
 ### Feature flags
@@ -214,7 +230,7 @@ skills/
   speak/            TTS skill: speak.py, mdparse.py, highlight.py, pyproject.toml, uv.lock
     silma/          Arabic backend in its own uv project (its torch/onnx pins conflict with MLX)
   explainer-video/  Video skill: explainer.py, Remotion app in src/, templates/, styles/ (audience profiles + playbooks)
-scripts/            install, uninstall, setup, doctor
+scripts/            setup, install, uninstall, doctor, build-pages, golden_gate, run_pytests, lib.sh, hooks/
 Makefile
 CLAUDE.md           Architecture, invariants and conventions
 ```
@@ -235,7 +251,7 @@ Run `make doctor` first; it catches most of these.
 
 ## Development
 
-[`CLAUDE.md`](CLAUDE.md) (also symlinked as `AGENTS.md`) documents the architecture, invariants, and test gates. To add a new visual type under `skills/explainer-video/src/visuals/<type>/`, add `schema.ts`, `semantics.ts`, `capabilities.ts`, `meta.ts`, `catalog.ts`, and `View2D.tsx`/`View3D.tsx`, register it in `capabilities.ts`, `registry.ts`, `views.tsx`, `catalog.ts`, and `src/docs.ts`, then run `make docs`. Manage Python dependencies with `uv` only; don't bump Remotion without re-testing a render, because its packages must share one version.
+[`CLAUDE.md`](CLAUDE.md) (also symlinked as `AGENTS.md`) documents the architecture, invariants, and test gates. To add a visual type, follow [`skills/add-visual/SKILL.md`](skills/add-visual/SKILL.md): scaffold with `python3 skills/explainer-video/explainer.py visual init <slug> --builtin [--template algo]` (omit `--builtin` for a user-local visual under `~/.config/explainer-video/visuals/<slug>/`), implement against `src/sdk/*`, verify with `explainer.py visual check <slug>`, and run `make docs` (regenerates the visual registries, the `SKILL.md` visuals block, and the JSON schemas; optionally place the slug in `src/visuals/order.json`). Manage Python dependencies with `uv` only; don't bump Remotion without re-testing a render, because its packages must share one version.
 
 ## License
 

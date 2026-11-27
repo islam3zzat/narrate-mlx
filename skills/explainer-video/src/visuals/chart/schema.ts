@@ -237,3 +237,5 @@ export const ChartVisual = z.strictObject({
 });
 
 export type ChartVisualT = z.infer<typeof ChartVisual>;
+
+export {ChartVisual as schema};

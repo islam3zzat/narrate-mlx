@@ -1,0 +1,143 @@
+{
+  "title": "Animated Array Algorithms",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "To partition around pivot five, we first swap seven with four, then swap nine with one, and finally place pivot five in its sorted spot.",
+      "visual": {
+        "type": "array-algo",
+        "heading": "Lomuto Partition Around Pivot 5",
+        "mode": "bars",
+        "steps": [
+          {
+            "id": "pick",
+            "label": "Pick pivot 5",
+            "items": [
+              {"id": "v7", "value": 7, "state": "compare"},
+              {"id": "v2", "value": 2},
+              {"id": "v9", "value": 9},
+              {"id": "v4", "value": 4},
+              {"id": "v1", "value": 1},
+              {"id": "v5", "value": 5, "state": "pivot"}
+            ],
+            "pointers": [
+              {"name": "i", "index": 0, "tone": "active"},
+              {"name": "j", "index": 0, "tone": "compare"},
+              {"name": "pivot", "index": 5, "tone": "pivot"}
+            ],
+            "aux": {"label": "Invariant", "items": [{"text": "< 5: []", "tone": "sorted"}, {"text": "pivot = 5", "tone": "pivot"}]}
+          },
+          {
+            "id": "swap1",
+            "label": "Swap 7 and 4",
+            "items": [
+              {"id": "v4", "value": 4, "state": "swap"},
+              {"id": "v2", "value": 2, "state": "sorted"},
+              {"id": "v9", "value": 9},
+              {"id": "v7", "value": 7, "state": "swap"},
+              {"id": "v1", "value": 1},
+              {"id": "v5", "value": 5, "state": "pivot"}
+            ],
+            "pointers": [
+              {"name": "i", "index": 1, "tone": "active"},
+              {"name": "j", "index": 3, "tone": "swap"},
+              {"name": "pivot", "index": 5, "tone": "pivot"}
+            ],
+            "aux": {"label": "Invariant", "items": [{"text": "< 5: [4, 2]", "tone": "sorted"}]}
+          },
+          {
+            "id": "swap2",
+            "label": "Swap 9 and 1",
+            "items": [
+              {"id": "v4", "value": 4, "state": "sorted"},
+              {"id": "v2", "value": 2, "state": "sorted"},
+              {"id": "v1", "value": 1, "state": "swap"},
+              {"id": "v7", "value": 7},
+              {"id": "v9", "value": 9, "state": "swap"},
+              {"id": "v5", "value": 5, "state": "pivot"}
+            ],
+            "pointers": [
+              {"name": "i", "index": 2, "tone": "active"},
+              {"name": "j", "index": 4, "tone": "swap"},
+              {"name": "pivot", "index": 5, "tone": "pivot"}
+            ],
+            "aux": {"label": "Invariant", "items": [{"text": "< 5: [4, 2, 1]", "tone": "sorted"}]}
+          },
+          {
+            "id": "place",
+            "label": "Place pivot 5",
+            "items": [
+              {"id": "v4", "value": 4, "state": "sorted"},
+              {"id": "v2", "value": 2, "state": "sorted"},
+              {"id": "v1", "value": 1, "state": "sorted"},
+              {"id": "v5", "value": 5, "state": "pivot"},
+              {"id": "v9", "value": 9, "state": "dim"},
+              {"id": "v7", "value": 7, "state": "dim"}
+            ],
+            "pointers": [{"name": "pivot", "index": 3, "tone": "pivot"}],
+            "aux": {"label": "Result", "items": [{"text": "pivotIdx = 3", "tone": "pivot"}]}
+          }
+        ],
+        "caption": "Elements swap cleanly along opposing arcs."
+      }
+    },
+    {
+      "id": "s02",
+      "narration": "With a fixed sliding window of three cells, we start at sum eight, slide right to fourteen, and hit the maximum window at nineteen.",
+      "focus": [{"at": "maximum window", "on": ["c3", "c4", "c5"]}],
+      "visual": {
+        "type": "array-algo",
+        "heading": "Sliding Window Maximum Sum",
+        "mode": "cells",
+        "steps": [
+          {
+            "id": "w0",
+            "label": "Start at eight",
+            "items": [
+              {"id": "c0", "value": 2, "state": "active"},
+              {"id": "c1", "value": 5, "state": "active"},
+              {"id": "c2", "value": 1, "state": "active"},
+              {"id": "c3", "value": 8},
+              {"id": "c4", "value": 2},
+              {"id": "c5", "value": 9}
+            ],
+            "window": {"start": 0, "end": 2, "label": "sum = 8", "tone": "active"},
+            "pointers": [{"name": "L", "index": 0, "tone": "active"}, {"name": "R", "index": 2, "tone": "active"}],
+            "aux": {"label": "Best", "items": [{"text": "max = 8", "tone": "sorted"}]}
+          },
+          {
+            "id": "w1",
+            "label": "Slide right",
+            "items": [
+              {"id": "c0", "value": 2, "state": "dim"},
+              {"id": "c1", "value": 5, "state": "active"},
+              {"id": "c2", "value": 1, "state": "active"},
+              {"id": "c3", "value": 8, "state": "active"},
+              {"id": "c4", "value": 2},
+              {"id": "c5", "value": 9}
+            ],
+            "window": {"start": 1, "end": 3, "label": "sum = 14", "tone": "active"},
+            "pointers": [{"name": "L", "index": 1, "tone": "active"}, {"name": "R", "index": 3, "tone": "active"}],
+            "aux": {"label": "Best", "items": [{"text": "max = 14", "tone": "sorted"}]}
+          },
+          {
+            "id": "w2",
+            "label": "Maximum window",
+            "items": [
+              {"id": "c0", "value": 2, "state": "dim"},
+              {"id": "c1", "value": 5, "state": "dim"},
+              {"id": "c2", "value": 1, "state": "dim"},
+              {"id": "c3", "value": 8, "state": "sorted"},
+              {"id": "c4", "value": 2, "state": "sorted"},
+              {"id": "c5", "value": 9, "state": "sorted"}
+            ],
+            "window": {"start": 3, "end": 5, "label": "sum = 19", "tone": "sorted"},
+            "pointers": [{"name": "L", "index": 3, "tone": "sorted"}, {"name": "R", "index": 5, "tone": "sorted"}],
+            "aux": {"label": "Best", "items": [{"text": "max = 19", "tone": "sorted"}]}
+          }
+        ],
+        "caption": "Window bracket and pointers glide in sync with narration."
+      }
+    }
+  ]
+}

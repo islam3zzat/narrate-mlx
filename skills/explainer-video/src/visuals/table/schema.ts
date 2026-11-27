@@ -9,3 +9,5 @@ export const TableVisual = z.strictObject({
 }).describe('A small table').refine((v) => v.rows.every((r) => r.length === v.headers.length), {
   path: ['rows'], message: 'every row must have the same number of cells as headers',
 });
+
+export {TableVisual as schema};

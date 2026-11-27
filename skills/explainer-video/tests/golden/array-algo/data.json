@@ -1,0 +1,754 @@
+{
+ "id": "array-algo",
+ "title": "Animated Array Algorithms",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 571,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "To partition around pivot five, we first swap seven with four, then swap nine with one, and finally place pivot five in its sorted spot.",
+   "visual": {
+    "type": "array-algo",
+    "heading": "Lomuto Partition Around Pivot 5",
+    "mode": "bars",
+    "steps": [
+     {
+      "id": "pick",
+      "label": "Pick pivot 5",
+      "items": [
+       {
+        "id": "v7",
+        "value": 7,
+        "state": "compare"
+       },
+       {
+        "id": "v2",
+        "value": 2
+       },
+       {
+        "id": "v9",
+        "value": 9
+       },
+       {
+        "id": "v4",
+        "value": 4
+       },
+       {
+        "id": "v1",
+        "value": 1
+       },
+       {
+        "id": "v5",
+        "value": 5,
+        "state": "pivot"
+       }
+      ],
+      "pointers": [
+       {
+        "name": "i",
+        "index": 0,
+        "tone": "active"
+       },
+       {
+        "name": "j",
+        "index": 0,
+        "tone": "compare"
+       },
+       {
+        "name": "pivot",
+        "index": 5,
+        "tone": "pivot"
+       }
+      ],
+      "aux": {
+       "label": "Invariant",
+       "items": [
+        {
+         "text": "< 5: []",
+         "tone": "sorted"
+        },
+        {
+         "text": "pivot = 5",
+         "tone": "pivot"
+        }
+       ]
+      }
+     },
+     {
+      "id": "swap1",
+      "label": "Swap 7 and 4",
+      "items": [
+       {
+        "id": "v4",
+        "value": 4,
+        "state": "swap"
+       },
+       {
+        "id": "v2",
+        "value": 2,
+        "state": "sorted"
+       },
+       {
+        "id": "v9",
+        "value": 9
+       },
+       {
+        "id": "v7",
+        "value": 7,
+        "state": "swap"
+       },
+       {
+        "id": "v1",
+        "value": 1
+       },
+       {
+        "id": "v5",
+        "value": 5,
+        "state": "pivot"
+       }
+      ],
+      "pointers": [
+       {
+        "name": "i",
+        "index": 1,
+        "tone": "active"
+       },
+       {
+        "name": "j",
+        "index": 3,
+        "tone": "swap"
+       },
+       {
+        "name": "pivot",
+        "index": 5,
+        "tone": "pivot"
+       }
+      ],
+      "aux": {
+       "label": "Invariant",
+       "items": [
+        {
+         "text": "< 5: [4, 2]",
+         "tone": "sorted"
+        }
+       ]
+      }
+     },
+     {
+      "id": "swap2",
+      "label": "Swap 9 and 1",
+      "items": [
+       {
+        "id": "v4",
+        "value": 4,
+        "state": "sorted"
+       },
+       {
+        "id": "v2",
+        "value": 2,
+        "state": "sorted"
+       },
+       {
+        "id": "v1",
+        "value": 1,
+        "state": "swap"
+       },
+       {
+        "id": "v7",
+        "value": 7
+       },
+       {
+        "id": "v9",
+        "value": 9,
+        "state": "swap"
+       },
+       {
+        "id": "v5",
+        "value": 5,
+        "state": "pivot"
+       }
+      ],
+      "pointers": [
+       {
+        "name": "i",
+        "index": 2,
+        "tone": "active"
+       },
+       {
+        "name": "j",
+        "index": 4,
+        "tone": "swap"
+       },
+       {
+        "name": "pivot",
+        "index": 5,
+        "tone": "pivot"
+       }
+      ],
+      "aux": {
+       "label": "Invariant",
+       "items": [
+        {
+         "text": "< 5: [4, 2, 1]",
+         "tone": "sorted"
+        }
+       ]
+      }
+     },
+     {
+      "id": "place",
+      "label": "Place pivot 5",
+      "items": [
+       {
+        "id": "v4",
+        "value": 4,
+        "state": "sorted"
+       },
+       {
+        "id": "v2",
+        "value": 2,
+        "state": "sorted"
+       },
+       {
+        "id": "v1",
+        "value": 1,
+        "state": "sorted"
+       },
+       {
+        "id": "v5",
+        "value": 5,
+        "state": "pivot"
+       },
+       {
+        "id": "v9",
+        "value": 9,
+        "state": "dim"
+       },
+       {
+        "id": "v7",
+        "value": 7,
+        "state": "dim"
+       }
+      ],
+      "pointers": [
+       {
+        "name": "pivot",
+        "index": 3,
+        "tone": "pivot"
+       }
+      ],
+      "aux": {
+       "label": "Result",
+       "items": [
+        {
+         "text": "pivotIdx = 3",
+         "tone": "pivot"
+        }
+       ]
+      }
+     }
+    ],
+    "caption": "Elements swap cleanly along opposing arcs."
+   },
+   "audio": "audio/array-algo/s01.wav",
+   "durationSec": 9.025,
+   "frames": 298,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "To",
+     "start": 0.275,
+     "end": 0.35
+    },
+    {
+     "w": "partition",
+     "start": 0.35,
+     "end": 0.925
+    },
+    {
+     "w": "around",
+     "start": 0.925,
+     "end": 1.25
+    },
+    {
+     "w": "pivot",
+     "start": 1.25,
+     "end": 1.6
+    },
+    {
+     "w": "five,",
+     "start": 1.6,
+     "end": 2.225
+    },
+    {
+     "w": "we",
+     "start": 2.325,
+     "end": 2.487
+    },
+    {
+     "w": "first",
+     "start": 2.487,
+     "end": 2.75
+    },
+    {
+     "w": "swap",
+     "start": 2.75,
+     "end": 3.062
+    },
+    {
+     "w": "seven",
+     "start": 3.062,
+     "end": 3.388
+    },
+    {
+     "w": "with",
+     "start": 3.388,
+     "end": 3.55
+    },
+    {
+     "w": "four,",
+     "start": 3.55,
+     "end": 4.175
+    },
+    {
+     "w": "then",
+     "start": 4.3,
+     "end": 4.537
+    },
+    {
+     "w": "swap",
+     "start": 4.537,
+     "end": 4.875
+    },
+    {
+     "w": "nine",
+     "start": 4.875,
+     "end": 5.112
+    },
+    {
+     "w": "with",
+     "start": 5.112,
+     "end": 5.275
+    },
+    {
+     "w": "one,",
+     "start": 5.275,
+     "end": 5.8
+    },
+    {
+     "w": "and",
+     "start": 5.9,
+     "end": 6.05
+    },
+    {
+     "w": "finally",
+     "start": 6.05,
+     "end": 6.5
+    },
+    {
+     "w": "place",
+     "start": 6.5,
+     "end": 6.8
+    },
+    {
+     "w": "pivot",
+     "start": 6.8,
+     "end": 7.15
+    },
+    {
+     "w": "five",
+     "start": 7.15,
+     "end": 7.55
+    },
+    {
+     "w": "in",
+     "start": 7.55,
+     "end": 7.638
+    },
+    {
+     "w": "its",
+     "start": 7.638,
+     "end": 7.75
+    },
+    {
+     "w": "sorted",
+     "start": 7.75,
+     "end": 8.125
+    },
+    {
+     "w": "spot.",
+     "start": 8.125,
+     "end": 8.775
+    }
+   ],
+   "sentences": [
+    {
+     "text": "To partition around pivot five, we first swap seven with four, then swap nine with one, and finally place pivot five in its sorted spot.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    1.13,
+    2.63,
+    4.417,
+    6.38
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "With a fixed sliding window of three cells, we start at sum eight, slide right to fourteen, and hit the maximum window at nineteen.",
+   "focus": [
+    {
+     "at": "maximum window",
+     "on": [
+      "c3",
+      "c4",
+      "c5"
+     ]
+    }
+   ],
+   "visual": {
+    "type": "array-algo",
+    "heading": "Sliding Window Maximum Sum",
+    "mode": "cells",
+    "steps": [
+     {
+      "id": "w0",
+      "label": "Start at eight",
+      "items": [
+       {
+        "id": "c0",
+        "value": 2,
+        "state": "active"
+       },
+       {
+        "id": "c1",
+        "value": 5,
+        "state": "active"
+       },
+       {
+        "id": "c2",
+        "value": 1,
+        "state": "active"
+       },
+       {
+        "id": "c3",
+        "value": 8
+       },
+       {
+        "id": "c4",
+        "value": 2
+       },
+       {
+        "id": "c5",
+        "value": 9
+       }
+      ],
+      "window": {
+       "start": 0,
+       "end": 2,
+       "label": "sum = 8",
+       "tone": "active"
+      },
+      "pointers": [
+       {
+        "name": "L",
+        "index": 0,
+        "tone": "active"
+       },
+       {
+        "name": "R",
+        "index": 2,
+        "tone": "active"
+       }
+      ],
+      "aux": {
+       "label": "Best",
+       "items": [
+        {
+         "text": "max = 8",
+         "tone": "sorted"
+        }
+       ]
+      }
+     },
+     {
+      "id": "w1",
+      "label": "Slide right",
+      "items": [
+       {
+        "id": "c0",
+        "value": 2,
+        "state": "dim"
+       },
+       {
+        "id": "c1",
+        "value": 5,
+        "state": "active"
+       },
+       {
+        "id": "c2",
+        "value": 1,
+        "state": "active"
+       },
+       {
+        "id": "c3",
+        "value": 8,
+        "state": "active"
+       },
+       {
+        "id": "c4",
+        "value": 2
+       },
+       {
+        "id": "c5",
+        "value": 9
+       }
+      ],
+      "window": {
+       "start": 1,
+       "end": 3,
+       "label": "sum = 14",
+       "tone": "active"
+      },
+      "pointers": [
+       {
+        "name": "L",
+        "index": 1,
+        "tone": "active"
+       },
+       {
+        "name": "R",
+        "index": 3,
+        "tone": "active"
+       }
+      ],
+      "aux": {
+       "label": "Best",
+       "items": [
+        {
+         "text": "max = 14",
+         "tone": "sorted"
+        }
+       ]
+      }
+     },
+     {
+      "id": "w2",
+      "label": "Maximum window",
+      "items": [
+       {
+        "id": "c0",
+        "value": 2,
+        "state": "dim"
+       },
+       {
+        "id": "c1",
+        "value": 5,
+        "state": "dim"
+       },
+       {
+        "id": "c2",
+        "value": 1,
+        "state": "dim"
+       },
+       {
+        "id": "c3",
+        "value": 8,
+        "state": "sorted"
+       },
+       {
+        "id": "c4",
+        "value": 2,
+        "state": "sorted"
+       },
+       {
+        "id": "c5",
+        "value": 9,
+        "state": "sorted"
+       }
+      ],
+      "window": {
+       "start": 3,
+       "end": 5,
+       "label": "sum = 19",
+       "tone": "sorted"
+      },
+      "pointers": [
+       {
+        "name": "L",
+        "index": 3,
+        "tone": "sorted"
+       },
+       {
+        "name": "R",
+        "index": 5,
+        "tone": "sorted"
+       }
+      ],
+      "aux": {
+       "label": "Best",
+       "items": [
+        {
+         "text": "max = 19",
+         "tone": "sorted"
+        }
+       ]
+      }
+     }
+    ],
+    "caption": "Window bracket and pointers glide in sync with narration."
+   },
+   "audio": "audio/array-algo/s02.wav",
+   "durationSec": 8.175,
+   "frames": 273,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "With",
+     "start": 0.25,
+     "end": 0.362
+    },
+    {
+     "w": "a",
+     "start": 0.362,
+     "end": 0.475
+    },
+    {
+     "w": "fixed",
+     "start": 0.475,
+     "end": 0.812
+    },
+    {
+     "w": "sliding",
+     "start": 0.812,
+     "end": 1.25
+    },
+    {
+     "w": "window",
+     "start": 1.25,
+     "end": 1.625
+    },
+    {
+     "w": "of",
+     "start": 1.625,
+     "end": 1.762
+    },
+    {
+     "w": "three",
+     "start": 1.762,
+     "end": 2.013
+    },
+    {
+     "w": "cells,",
+     "start": 2.013,
+     "end": 2.65
+    },
+    {
+     "w": "we",
+     "start": 2.75,
+     "end": 2.9
+    },
+    {
+     "w": "start",
+     "start": 2.9,
+     "end": 3.138
+    },
+    {
+     "w": "at",
+     "start": 3.138,
+     "end": 3.225
+    },
+    {
+     "w": "sum",
+     "start": 3.225,
+     "end": 3.425
+    },
+    {
+     "w": "eight,",
+     "start": 3.425,
+     "end": 3.95
+    },
+    {
+     "w": "slide",
+     "start": 4.1,
+     "end": 4.55
+    },
+    {
+     "w": "right",
+     "start": 4.55,
+     "end": 4.75
+    },
+    {
+     "w": "to",
+     "start": 4.75,
+     "end": 4.875
+    },
+    {
+     "w": "fourteen,",
+     "start": 4.875,
+     "end": 5.625
+    },
+    {
+     "w": "and",
+     "start": 5.725,
+     "end": 5.85
+    },
+    {
+     "w": "hit",
+     "start": 5.85,
+     "end": 6.013
+    },
+    {
+     "w": "the",
+     "start": 6.013,
+     "end": 6.1
+    },
+    {
+     "w": "maximum",
+     "start": 6.1,
+     "end": 6.6
+    },
+    {
+     "w": "window",
+     "start": 6.6,
+     "end": 6.975
+    },
+    {
+     "w": "at",
+     "start": 6.975,
+     "end": 7.075
+    },
+    {
+     "w": "nineteen.",
+     "start": 7.075,
+     "end": 7.925
+    }
+   ],
+   "sentences": [
+    {
+     "text": "With a fixed sliding window of three cells, we start at sum eight, slide right to fourteen, and hit the maximum window at nineteen.",
+     "start": 0.25
+    }
+   ],
+   "revealSec": [
+    2.78,
+    3.98,
+    5.98
+   ],
+   "focusSec": [
+    {
+     "t": 6.02,
+     "on": [
+      "c3",
+      "c4",
+      "c5"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -136,7 +136,9 @@
           "ablation",
           "matrix",
           "equation",
-          "figure"
+          "figure",
+          "array-algo",
+          "graph-algo"
         ]
       }
     },

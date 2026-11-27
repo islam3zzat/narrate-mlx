@@ -1,9 +1,9 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Freeze, Sequence, continueRender, delayRender, staticFile, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Audio, Freeze, Sequence, staticFile, useCurrentFrame} from 'remotion';
 import {TransitionSeries, linearTiming} from '@remotion/transitions';
 import {slide} from '@remotion/transitions/slide';
 import constants from './constants.json';
-import {ThemeContext, getTheme, loadFonts} from './theme';
+import {ThemeContext, getTheme, useFontGate} from './theme';
 import type {Scene, VideoData} from './types';
 import {RtlContext, useRtl} from './rtl';
 import {ChromeBackdrop, SceneChrome} from './SceneChrome';
@@ -39,17 +39,10 @@ const FrameMapper: React.FC<{frameMap: number[]; children: React.ReactNode}> = (
 
 export const Explainer: React.FC<{videoId: string; video: VideoData | null; frameMap?: number[]}> = ({video, frameMap}) => {
   const rtl = video?.dir === 'rtl';
-  // Resolve the handle directly on creation so a discarded React 18 Suspense pass can never leak it.
-  React.useState(() => {
-    const h = delayRender('fonts');
-    loadFonts(rtl).finally(() => continueRender(h));
-    return h;
-  });
-  React.useEffect(() => {
-    loadFonts(rtl);
-  }, [rtl]);
+  // Mount the scene tree only once fonts settle: React Flow measures node handles on mount (useFontGate).
+  const fontsReady = useFontGate(rtl, 'fonts');
   const theme = getTheme(video?.theme);
-  if (!video) return <AbsoluteFill style={{background: theme.C.bg}} />;
+  if (!video || !fontsReady) return <AbsoluteFill style={{background: theme.C.bg}} />;
   const timing = linearTiming({durationInFrames: constants.transitionFrames});
   const presentation = slide({direction: rtl ? 'from-left' : 'from-right'});
   const hasChapters = video.scenes.some((s) => s.chapter && !s.continues);

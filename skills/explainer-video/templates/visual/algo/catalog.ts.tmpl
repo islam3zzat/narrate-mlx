@@ -1,0 +1,29 @@
+import type {CatalogEntry} from '../../sdk/pure';
+
+export const catalog: CatalogEntry<'__SLUG__'> = {
+  type: '__SLUG__',
+  title: '__PASCAL__',
+  default: {
+    id: 'default',
+    label: 'Swap Transition',
+    narration: 'First compare the elements, then swap them into sorted order.',
+    visual: {
+      type: '__SLUG__',
+      heading: '__PASCAL__',
+      steps: [
+        {
+          id: 'cmp',
+          label: 'Compare elements',
+          items: [{id: 'a', value: '8', tone: 'compare'}, {id: 'b', value: '3', tone: 'compare'}, {id: 'c', value: '9'}],
+          pointers: [{name: 'i', index: 0, tone: 'active'}, {name: 'j', index: 1, tone: 'swap'}],
+        },
+        {
+          id: 'swp',
+          label: 'Swap into order',
+          items: [{id: 'b', value: '3', tone: 'sorted'}, {id: 'a', value: '8', tone: 'swap'}, {id: 'c', value: '9'}],
+          pointers: [{name: 'i', index: 0, tone: 'sorted'}, {name: 'j', index: 1, tone: 'active'}],
+        },
+      ],
+    },
+  },
+};

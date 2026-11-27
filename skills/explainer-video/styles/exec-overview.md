@@ -7,7 +7,7 @@ A 60 to 180 second overview of a meeting for a manager who was not there. Source
 - Build `<workdir>/ledger.json` before writing the script (see SKILL.md "Fact ledger"). Process the transcript in chunks and append facts as you go; then do a second pass whose only job is to find what you missed.
 - Kinds: `decision`, `action` (with `owner` and `due`), `owner`, `open_question`, `number`, `ambiguity`. Every decision and action needs a `quote` copied verbatim from the source (4 words or 20 characters at least, inside one speaker turn; the line carries the timestamp) and `at`; `check` fails without both.
 - For a VTT/SRT, run `explainer.py transcript` first and use its output as the ledger source; `explainer.py report <workdir>` then writes the full record (`report.md`) if the user wants every item.
-- Hedges stay hedges: "we might move to X" is an `open_question` or a `status: "reported"` fact, never a `decision`. If you cannot tell who said it, make it an `ambiguity` fact. Never guess a speaker.
+- Hedges stay hedges in both the ledger and narration ("proposed", "agreed in principle", "pending legal"): "we might move to X" is an `open_question` or a `status: "reported"` fact, never a `decision`. If you cannot tell who said it, make it an `ambiguity` fact. Never guess a speaker.
 
 ## Shape (5 to 9 scenes, 15 to 40 words each, speed 1.05)
 Tag scenes with `section` if you use it. Scene 1 gives the answer; scenes 2 to 4 give one grouped reason each (pyramid).
@@ -20,7 +20,6 @@ Tag scenes with `section` if you use it. Scene 1 gives the answer; scenes 2 to 4
 
 ## Rules
 - First spoken sentence states the outcome, decision or ask. No analogies and no teaching: the viewer is an expert in their own area.
-- Keep the speakers' hedges ("proposed", "agreed in principle", "pending legal").
 - Every `decision`, `action`, `owner` and `open_question` fact must be referenced by a scene (`facts: ["d01"]`). `check` fails otherwise. Chatter is dropped on purpose; only these kinds are mandatory.
 - At most two numbers per sentence, each shown on screen as it is spoken.
-- Visuals: title, bullets, table, callout, steps. One highlight colour per scene.
+- Visuals: title, bullets, table, callout, steps, stat. One highlight colour per scene.

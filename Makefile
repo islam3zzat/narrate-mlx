@@ -4,19 +4,25 @@ SHELL := /bin/bash
 help:
 	@echo "narrate-mlx: speak + explainer-video skills"
 	@echo
-	@echo "  make setup      install dependencies (uv sync for speak, npm ci for explainer-video)"
-	@echo "  make install    symlink the skills into ~/.claude/skills and ~/.agents/skills"
-	@echo "  make uninstall  remove those symlinks (from every known agent skills dir)"
-	@echo "  make doctor     check tools, environments, path length and skill links"
-	@echo "  make catalog    open the interactive Visual Catalog in Remotion Studio"
-	@echo "  make pages      build the static Remotion Studio Visual Catalog into out/pages"
-	@echo "  make test-unit  run fast zero-Chrome checks (tsc, docs/schemas, Python + TS unit tests)"
-	@echo "  make test       run make test-unit followed by diff-scoped golden compare"
+	@echo "  make setup         install dependencies (uv sync for speak, npm ci for explainer-video)"
+	@echo "  make install       symlink the skills into ~/.claude/skills and ~/.agents/skills"
+	@echo "  make uninstall     remove those symlinks (from every known agent skills dir)"
+	@echo "  make doctor        check tools, environments, path length and skill links"
+	@echo "  make catalog       open the interactive Visual Catalog in Remotion Studio"
+	@echo "  make pages         build the static Remotion Studio Visual Catalog into out/pages"
+	@echo "  make docs          regenerate visual registries, SKILL.md visuals block, and schemas"
+	@echo "  make test-unit     run fast zero-Chrome checks (tsc, docs/schemas, Python + TS unit tests)"
+	@echo "  make test          run make test-unit followed by diff-scoped golden compare"
+	@echo "  make golden        record golden audio + stills from tests/corpus"
+	@echo "  make golden-type   compare stills for one visual type (T=<type>)"
+	@echo "  make install-hooks install repo-managed git hooks (pre-commit / pre-push)"
+	@echo "  make verify-seq    sequential 2D + 3D MP4 regression check (svg + surface3d)"
+	@echo "  make flicker       render svg corpus videos and check for frame flicker"
 	@echo
 	@echo "  SKILL_DIRS=\"dir1 dir2\" make install   link into other directories (e.g. ~/.codex/skills)"
 	@echo "  FORCE=1 make install                  replace links that point elsewhere"
 	@echo "  SMOKE=1 make doctor                   also generate a short test speech"
-	@echo "  NARRATE_FEATURES="arabic,3d" make ...  turn on feature flags (all off by default)"
+	@echo "  NARRATE_FEATURES=\"arabic,3d\" make ...  turn on feature flags (off by default except transcripts)"
 
 setup:
 	@scripts/setup.sh
@@ -49,14 +55,13 @@ golden: export NARRATE_FEATURES += 3d svg
 golden: golden-audio
 	python3 $(EV)/tests/golden.py record
 
-# regenerate what is derived from the visual types' meta: the visual-types section of SKILL.md and the JSON Schema
+# regenerate what is derived from the visual types' meta: registries, the visual-types section of SKILL.md and the JSON Schema
 docs:
-	cd $(EV) && node_modules/.bin/tsx src/cli.ts docs --write
-	cd $(EV) && python3 explainer.py schema > schema/script.schema.json
-	cd $(EV) && python3 explainer.py schema --style > schema/style.schema.json
+	cd $(EV) && python3 explainer.py visual regen
 
 test-unit: export NARRATE_FEATURES += 3d svg
 test-unit:
+	cd $(EV) && node scripts/ensure-local-visuals.mjs
 	cd $(EV) && node_modules/.bin/tsc -p tsconfig.tests.json --noEmit
 	cd $(EV) && node_modules/.bin/tsx src/cli.ts check-generated
 	cd skills/speak && uv run --no-sync --project . python -m unittest discover -s . -p 'test_*.py'

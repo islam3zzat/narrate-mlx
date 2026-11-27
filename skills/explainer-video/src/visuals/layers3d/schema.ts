@@ -19,3 +19,5 @@ export const Layers3DVisual = z.strictObject({
     if (l.label.length > 28) ctx.addIssue({code: 'custom', path: ['layers', i, 'label'], message: 'label is longer than 28 characters'});
   });
 });
+
+export {Layers3DVisual as schema};

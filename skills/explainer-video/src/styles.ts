@@ -3,7 +3,7 @@
 // Style definitions are discovered dynamically from <workdir>/styles/, ~/.config/explainer-video/styles/, and styles/.
 import {z} from 'zod';
 import constants from './constants.json';
-import {CAPABILITIES} from './visuals/capabilities';
+import {BUILTIN_CAPABILITIES, CAPABILITIES} from './visuals/capabilities';
 
 /** The default style: what a script without `style` is. Needs no feature flag. */
 export const DEFAULT_STYLE = 'explainer';
@@ -16,37 +16,45 @@ export const FACT_KINDS = [
 export type FactKind = (typeof FACT_KINDS)[number];
 export const FactKindSchema = z.enum(FACT_KINDS);
 
-/** Every visual type name (the keys of CAPABILITIES; a leaf, so this file stays free of React). */
+/** Built-in visual type names vs built-in + user-local visual type names. */
+export const BUILTIN_VISUAL_TYPES = Object.keys(BUILTIN_CAPABILITIES) as [
+  keyof typeof BUILTIN_CAPABILITIES,
+  ...(keyof typeof BUILTIN_CAPABILITIES)[],
+];
 export const VISUAL_TYPES = Object.keys(CAPABILITIES) as [keyof typeof CAPABILITIES, ...(keyof typeof CAPABILITIES)[]];
 
 const range = (what: string) =>
   z.tuple([z.number().int().min(0), z.number().int().min(1)]).refine(([lo, hi]) => lo <= hi, `${what}: min must not exceed max`);
 
-export const StyleSchema = z.strictObject({
-  name: StyleNameSchema,
-  description: z.string().min(1).max(300),
-  audience: z.string().min(1).max(200),
-  defaults: z.strictObject({
-    speed: z.number().min(0.75).max(1.5).describe('Speaking speed used when --speed is not given (cache key includes it)'),
-    voice: z.string().min(1).optional().describe('Voice used when --voice is not given'),
-  }),
-  bounds: z.strictObject({
-    scenes: range('scenes'),
-    seconds: range('seconds'),
-    wordsPerScene: range('wordsPerScene'),
-  }).describe('Per video; outside these, `check` warns (never an error)'),
-  preferredVisuals: z.array(z.enum(VISUAL_TYPES as [string, ...string[]])).min(1),
-  ledger: z.strictObject({
-    required: z.boolean().describe('The workdir must have ledger.json'),
-    kinds: z.array(FactKindSchema).describe('Fact kinds this style uses (others only warn)'),
-    mustCover: z.array(FactKindSchema).describe('Every fact of these kinds must be referenced by a scene (or deferred, when allowed)'),
-    coverHigh: z.boolean().describe('Every importance:high fact must be referenced by a scene (never deferrable)'),
-    quoteKinds: z.array(FactKindSchema).default([]).describe('Every fact of these kinds must carry a `quote` and an `at` (error otherwise)'),
-    allowDeferred: z.boolean().describe('A low fact may carry deferred:"report" instead of a scene'),
-  }),
-  sections: z.array(z.string().min(1).max(40)).optional().describe('Scene `section` tags this style expects, in order; one never used warns'),
-  lint: z.strictObject({blameless: z.boolean().describe('Turn on the blame-phrase lint')}),
-});
+const buildStyleSchema = (visualTypes: readonly [string, ...string[]]) =>
+  z.strictObject({
+    name: StyleNameSchema,
+    description: z.string().min(1).max(300),
+    audience: z.string().min(1).max(200),
+    defaults: z.strictObject({
+      speed: z.number().min(0.75).max(1.5).describe('Speaking speed used when --speed is not given (cache key includes it)'),
+      voice: z.string().min(1).optional().describe('Voice used when --voice is not given'),
+    }),
+    bounds: z.strictObject({
+      scenes: range('scenes'),
+      seconds: range('seconds'),
+      wordsPerScene: range('wordsPerScene'),
+    }).describe('Per video; outside these, `check` warns (never an error)'),
+    preferredVisuals: z.array(z.enum(visualTypes as [string, ...string[]])).min(1),
+    ledger: z.strictObject({
+      required: z.boolean().describe('The workdir must have ledger.json'),
+      kinds: z.array(FactKindSchema).describe('Fact kinds this style uses (others only warn)'),
+      mustCover: z.array(FactKindSchema).describe('Every fact of these kinds must be referenced by a scene (or deferred, when allowed)'),
+      coverHigh: z.boolean().describe('Every importance:high fact must be referenced by a scene (never deferrable)'),
+      quoteKinds: z.array(FactKindSchema).default([]).describe('Every fact of these kinds must carry a `quote` and an `at` (error otherwise)'),
+      allowDeferred: z.boolean().describe('A low fact may carry deferred:"report" instead of a scene'),
+    }),
+    sections: z.array(z.string().min(1).max(40)).optional().describe('Scene `section` tags this style expects, in order; one never used warns'),
+    lint: z.strictObject({blameless: z.boolean().describe('Turn on the blame-phrase lint')}),
+  });
+
+export const BuiltinStyleSchema = buildStyleSchema(BUILTIN_VISUAL_TYPES);
+export const StyleSchema = buildStyleSchema(VISUAL_TYPES);
 export type StyleDef = z.infer<typeof StyleSchema>;
 
 // ---------------------------------------------------------------- what a style checks in a script (pure)

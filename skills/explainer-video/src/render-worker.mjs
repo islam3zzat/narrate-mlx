@@ -10,6 +10,7 @@ import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { ensureCachedBundle, startBundleServer } from './bundle-cache.mjs';
+import { createProgressTracker } from './render-progress.mjs';
 
 const cfg = JSON.parse(fs.readFileSync(0, 'utf8'));
 if (!cfg.videos || cfg.videos.length === 0) {
@@ -62,7 +63,7 @@ for (const sig of ['SIGINT', 'SIGTERM']) {
   });
 }
 
-async function renderChunkToTs({ chunk, v, browser, browserExecutable, chromiumOptions, conc }) {
+async function renderChunkToTs({ chunk, v, browser, browserExecutable, chromiumOptions, conc, onFrame }) {
   const deduped = Array.isArray(chunk.runs);
   const frameMap = deduped ? chunk.runs.map((r) => r.frame) : null;
   const inputProps = frameMap ? { videoId: v.vid, frameMap } : { videoId: v.vid };
@@ -150,6 +151,7 @@ async function renderChunkToTs({ chunk, v, browser, browserExecutable, chromiumO
       muted: true,
       outputDir: null,
       onFrameBuffer: (buf, idx) => {
+        if (onFrame) onFrame();
         pending.set(idx, buf);
         while (pending.has(nextIdx)) {
           const b = pending.get(nextIdx);
@@ -202,6 +204,12 @@ try {
       `${v.gl ? ` (--gl=${v.gl})` : ''}\n`,
     );
 
+    const totalRenderFrames = v.chunks.reduce(
+      (sum, ch) => sum + (Array.isArray(ch.runs) ? ch.runs.length : (ch.end - ch.start + 1)),
+      0,
+    );
+    const progress = createProgressTracker({ vid: v.vid, totalFrames: totalRenderFrames });
+
     await Promise.all(
       v.chunks.map(async (chunk) => {
         fs.mkdirSync(path.dirname(chunk.output), { recursive: true });
@@ -212,7 +220,15 @@ try {
         });
         openBrowsers.add(browser);
         try {
-          await renderChunkToTs({ chunk, v, browser, browserExecutable, chromiumOptions, conc });
+          await renderChunkToTs({
+            chunk,
+            v,
+            browser,
+            browserExecutable,
+            chromiumOptions,
+            conc,
+            onFrame: () => progress.onFrame(1),
+          });
         } finally {
           openBrowsers.delete(browser);
           try {
@@ -221,6 +237,7 @@ try {
         }
       }),
     );
+    progress.finish();
   }
 } finally {
   await cleanup();

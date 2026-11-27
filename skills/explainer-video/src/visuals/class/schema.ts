@@ -37,3 +37,5 @@ export const ClassVisual = z.strictObject({
 });
 
 export type ClassVisualInput = z.infer<typeof ClassVisual>;
+
+export {ClassVisual as schema};

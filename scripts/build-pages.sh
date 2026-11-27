@@ -28,6 +28,7 @@ if ! command -v node >/dev/null 2>&1; then
 fi
 
 info "Building Visual Catalog bundle (PUBLIC_PATH=$PUBLIC_PATH -> $OUT_DIR)..."
+node "$EXPLAINER_DIR/scripts/ensure-local-visuals.mjs"
 (
   cd "$EXPLAINER_DIR" &&
     node_modules/.bin/remotion bundle src/catalog-index.ts \

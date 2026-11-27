@@ -1,0 +1,62 @@
+import React from 'react';
+import {SceneCanvas, look, partIn, useFocus, type View2DProps} from '../../sdk/view2d';
+import {computeArrayLayout, interpolateKeyedPositions, stackPointers, stepTimeline} from '../../sdk/algo-math';
+import {AlgoCell, PointerBadge, StepIndicator} from '../../sdk/algo-2d';
+
+export const View2D: React.FC<View2DProps<'__SLUG__'>> = ({visual: v, frame, lead, audioFrames, reveal, focus}) => {
+  const focusNow = useFocus(focus, lead);
+  const tl = stepTimeline(frame, lead, audioFrames, v.steps.length, reveal);
+  const prevStep = v.steps[tl.prevIndex];
+  const curStep = v.steps[tl.index];
+  const stepLook = curStep.id ? look(focusNow, partIn(curStep.id)) : {opacity: 1, lift: 0};
+
+  return (
+    <SceneCanvas heading={v.heading} caption={v.caption} ltr>
+      {({width, height}) => {
+        const svgH = height - 56;
+        const lay = computeArrayLayout(curStep.items.length, {x: 40, y: 10, width: width - 80, height: svgH});
+        const positions = interpolateKeyedPositions(
+          prevStep.items.map((x) => x.id),
+          curStep.items.map((x) => x.id),
+          lay.slotLeftX,
+          lay.rowY,
+          tl.eased,
+        );
+        const ptrs = stackPointers(curStep.pointers ?? []);
+        return (
+          <div style={{display: 'flex', flexDirection: 'column', gap: 10, height}}>
+            <StepIndicator step={tl.index} total={v.steps.length} label={curStep.label} note={curStep.note} />
+            <svg width={width} height={svgH} viewBox={`0 0 ${width} ${svgH}`} style={{display: 'block', opacity: stepLook.opacity}}>
+              {positions.map((pos, idx) => {
+                const item = curStep.items[idx];
+                return (
+                  <AlgoCell
+                    key={item.id}
+                    x={pos.x}
+                    y={pos.y}
+                    width={lay.cellW}
+                    height={lay.cellH}
+                    value={item.value}
+                    index={idx}
+                    tone={item.tone ?? 'default'}
+                    opacity={pos.opacity}
+                  />
+                );
+              })}
+              {ptrs.map((p, idx) => (
+                <PointerBadge
+                  key={`${p.name}-${idx}`}
+                  x={lay.slotCenterX(p.index)}
+                  y={lay.rowY + lay.cellH + 30}
+                  name={p.name}
+                  tone={p.tone ?? 'active'}
+                  stackRow={p.stackRow}
+                />
+              ))}
+            </svg>
+          </div>
+        );
+      }}
+    </SceneCanvas>
+  );
+};

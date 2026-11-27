@@ -97,3 +97,5 @@ export const AblationVisual = z.strictObject({
 });
 
 export type AblationVisualT = z.infer<typeof AblationVisual>;
+
+export {AblationVisual as schema};

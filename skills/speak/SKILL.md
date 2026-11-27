@@ -64,7 +64,7 @@ Arguments: `$ARGUMENTS`
    - The first run downloads the SILMA model and vocoder (hundreds of MB); generation is about 2x real time on an M1 Max.
    - Timings (`--timings`): see below.
 
-6. **Reply in one or two lines.** Say what is being read and which voice. Do not repeat the text. For over 100 words (or 500 characters), mention the window: click a word to jump to it, space or the button pauses, the bar changes playback speed.
+6. **Reply in one or two lines.** Say what is being read and which voice. Do not repeat the text. For over 100 words (or 500 characters), mention the window: click a word to jump to it, Space pauses/replays, Left/Right skips sentences, Up/Down changes speed (the bar shows effective playback rate, manual scrolling pauses auto-scroll for 3 s), and `Cmd+Q`/`Cmd+W`/`Esc` closes it.
 
 ## Timings file (`--timings file.json`)
 

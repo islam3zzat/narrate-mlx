@@ -73,3 +73,5 @@ export const StatVisual = z.strictObject({
     }
   });
 });
+
+export {StatVisual as schema};

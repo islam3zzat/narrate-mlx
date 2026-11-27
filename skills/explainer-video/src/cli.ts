@@ -14,15 +14,21 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {z} from 'zod';
 import {parseEquationTerms, buildStyledLatex} from './visuals/equation/parse';
-import {ScriptSchema} from './schema';
-import {VisualSchema, describe, lintScene} from './visuals/registry';
+import {BuiltinScriptSchema, ScriptSchema} from './schema';
+import {VisualSchema, REGISTRY, describe, lintScene, type VisualType} from './visuals/registry';
+import {CAPABILITIES} from './visuals/capabilities';
+import {CATALOG} from './visuals/catalog';
+import type {CatalogVariant} from './visuals/catalog-types';
+import constants from './constants.json';
+import {lintVisualDir} from './visual-lint';
 import {splice, visualsSection} from './docs';
 import {lintNarration} from './lint-narration';
 import {MermaidLayout} from './visuals/mermaid/schema';
 import {checkMermaidAnimation, type MermaidCheckResult, type MermaidCheckScene} from './visuals/mermaid/focus';
 import {LedgerSchema, ledgerIssues, type Ledger} from './ledger';
 import {computeFrameSchedule} from './frame-schedule';
-import {styleIssues, StyleSchema, DEFAULT_STYLE, type StyleDef} from './styles';
+import {checkVisualFiles, writeVisualFiles} from './gen-visuals';
+import {styleIssues, BuiltinStyleSchema, StyleSchema, DEFAULT_STYLE, type StyleDef} from './styles';
 import {loadStyle} from './style-files';
 import type {Visual, VideoData} from './types';
 import type {Script as ScriptData} from './schema';
@@ -66,9 +72,11 @@ const ledgerMessages = (ctx: LedgerContext): {errors: string[]; warnings: string
 };
 
 if (cmd === 'schema') {
-  console.log(JSON.stringify(z.toJSONSchema(ScriptSchema, {io: 'input'}), null, 2));
+  const targetSchema = flags.includes('--builtin') ? BuiltinScriptSchema : ScriptSchema;
+  console.log(JSON.stringify(z.toJSONSchema(targetSchema, {io: 'input'}), null, 2));
 } else if (cmd === 'style-schema') {
-  console.log(JSON.stringify(z.toJSONSchema(StyleSchema, {io: 'input'}), null, 2));
+  const targetStyle = flags.includes('--builtin') ? BuiltinStyleSchema : StyleSchema;
+  console.log(JSON.stringify(z.toJSONSchema(targetStyle, {io: 'input'}), null, 2));
 } else if (cmd === 'validate') {
   let raw = '';
   let renderKatex: ((latex: string, opts: object) => string) | null = null;
@@ -155,6 +163,116 @@ if (cmd === 'schema') {
       process.exit(1);
     });
   });
+} else if (cmd === 'lint-visual') {
+  const slug = flags[0];
+  if (!slug) {
+    console.error('usage: cli.ts lint-visual <slug>');
+    process.exit(2);
+  }
+  const builtinDir = path.join(__dirname, 'visuals');
+  const localDir = path.join(__dirname, 'visuals-local');
+  const useLocal = !fs.existsSync(path.join(builtinDir, slug)) && fs.existsSync(path.join(localDir, slug));
+  const lintRes = lintVisualDir(useLocal ? localDir : builtinDir, slug, __dirname);
+  const catalogErrors: string[] = [];
+  let catalogChecks = 0;
+  if (!(slug in REGISTRY)) {
+    catalogErrors.push(`${slug}: not registered in REGISTRY (run \`make docs\` / \`gen-visuals\`)`);
+  } else {
+    const t = slug as VisualType;
+    const entry = CATALOG[t];
+    const variants = [entry.default, ...(entry.variants ?? [])] as CatalogVariant<typeof t>[];
+    for (const v of variants) {
+      catalogChecks++;
+      const parsed = REGISTRY[t].schema.safeParse(v.visual);
+      if (!parsed.success) {
+        catalogErrors.push(`${slug}/${v.id}: schema error: ${parsed.error.issues.map((i) => i.message).join('; ')}`);
+        continue;
+      }
+      const desc = describe(parsed.data as Visual, v.prev as Visual | undefined, v.mermaidRendered);
+      if (!Array.isArray(desc.slots) || desc.slots.length !== desc.carried.length) {
+        catalogErrors.push(`${slug}/${v.id}: invalid describe() output`);
+      }
+      const mode = v.mode ?? CAPABILITIES[t].modes[0];
+      if (!(CAPABILITIES[t].modes as readonly string[]).includes(mode)) {
+        catalogErrors.push(`${slug}/${v.id}: unsupported mode "${mode}"`);
+      }
+      const lint = lintScene(
+        {
+          visual: parsed.data as ScriptData['scenes'][number]['visual'],
+          narration: v.narration,
+        },
+        {lang: v.dir === 'rtl' ? 'ar' : 'en', mode},
+      );
+      for (const e of lint.errors) catalogErrors.push(`${slug}/${v.id}: ${e}`);
+      if (v.focus?.length) {
+        const ft = REGISTRY[t].meta.focusTargets?.(parsed.data as never);
+        if (ft) {
+          const known = new Set(ft.ids);
+          for (const f of v.focus) {
+            for (const target of f.on) {
+              if (!known.has(target) && !target.includes('->')) {
+                catalogErrors.push(`${slug}/${v.id}: unknown focus target "${target}"`);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  const out = {slug, checkedFiles: lintRes.checkedFiles, violations: lintRes.violations, catalogChecks, catalogErrors};
+  console.log(JSON.stringify(out, null, 2));
+  if (lintRes.violations.length > 0 || catalogErrors.length > 0) process.exit(1);
+} else if (cmd === 'catalog-props') {
+  const slug = flags[0];
+  if (!slug || !(slug in CATALOG)) {
+    console.error(`unknown visual "${slug ?? ''}"`);
+    process.exit(1);
+  }
+  const t = slug as VisualType;
+  const entry = CATALOG[t];
+  const caps = CAPABILITIES[t];
+  const toProps = (v: any) => ({
+    type: t,
+    variantLabel: v.label,
+    theme: v.theme ?? 'cel-sky',
+    mode: v.mode ?? caps.modes[0],
+    dir: v.dir ?? 'ltr',
+    visual: v.visual,
+    narration: v.narration,
+    ...(v.focus ? {focus: v.focus} : {}),
+    ...(v.mermaidRendered ? {mermaidRendered: v.mermaidRendered} : {}),
+    ...(v.figureAsset ? {figureAsset: v.figureAsset} : {}),
+    ...(v.prev ? {prev: v.prev} : {}),
+  });
+  const durOf = (v: {durationSec?: number}) => Math.round((v.durationSec ?? 8) * constants.fps);
+  console.log(
+    JSON.stringify({
+      type: t,
+      rtl: caps.rtl,
+      modes: caps.modes,
+      leadFrames: Math.round(constants.leadSec * constants.fps),
+      durationInFrames: durOf(entry.default),
+      defaultProps: toProps(entry.default),
+      variants: (entry.variants ?? []).map((v) => ({
+        id: v.id,
+        label: v.label,
+        durationInFrames: durOf(v),
+        props: toProps(v),
+      })),
+    }),
+  );
+} else if (cmd === 'gen-visuals') {
+  const visualsDir = path.join(__dirname, 'visuals');
+  if (flags.includes('--check')) {
+    const stale = checkVisualFiles(visualsDir);
+    if (stale.length) {
+      console.error(`${stale.join(', ')} is stale: run \`make docs\``);
+      process.exit(1);
+    }
+  } else {
+    const {updated} = writeVisualFiles(visualsDir);
+    console.log(updated.length ? `updated ${updated.join(', ')}` : 'visual registries are up to date');
+  }
 } else if (cmd === 'docs') {
   const skillMd = path.join(__dirname, '..', 'SKILL.md');
   const cur = fs.readFileSync(skillMd, 'utf8'), next = splice(cur);
@@ -170,16 +288,18 @@ if (cmd === 'schema') {
 } else if (cmd === 'check-generated') {
   const skillMd = path.join(__dirname, '..', 'SKILL.md');
   const curMd = fs.readFileSync(skillMd, 'utf8');
+  const staleVisuals = checkVisualFiles(path.join(__dirname, 'visuals'));
   const checks: [string, boolean][] = [
+    ...staleVisuals.map((f): [string, boolean] => [f, false]),
     ['SKILL.md visual-types section', splice(curMd) === curMd],
     [
       'schema/script.schema.json',
-      `${JSON.stringify(z.toJSONSchema(ScriptSchema, {io: 'input'}), null, 2)}\n` ===
+      `${JSON.stringify(z.toJSONSchema(BuiltinScriptSchema, {io: 'input'}), null, 2)}\n` ===
         fs.readFileSync(path.join(__dirname, '..', 'schema/script.schema.json'), 'utf8'),
     ],
     [
       'schema/style.schema.json',
-      `${JSON.stringify(z.toJSONSchema(StyleSchema, {io: 'input'}), null, 2)}\n` ===
+      `${JSON.stringify(z.toJSONSchema(BuiltinStyleSchema, {io: 'input'}), null, 2)}\n` ===
         fs.readFileSync(path.join(__dirname, '..', 'schema/style.schema.json'), 'utf8'),
     ],
   ];
@@ -241,6 +361,6 @@ if (cmd === 'schema') {
     console.log(JSON.stringify(computeFrameSchedule(video)));
   });
 } else {
-  console.error('usage: cli.ts schema | validate | validate-mermaid | describe | schedule | docs');
+  console.error('usage: cli.ts schema | validate | validate-mermaid | describe | schedule | gen-visuals | lint-visual | catalog-props | docs | check-generated');
   process.exit(2);
 }

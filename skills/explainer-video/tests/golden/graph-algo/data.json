@@ -1,0 +1,723 @@
+{
+ "id": "graph-algo",
+ "title": "Animated Graph Algorithms",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "fps": 30,
+ "totalFrames": 584,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "Start Dijkstra at source S. First visit B and relax edge B A, then settle A to reach C, and lock shortest path T at cost seven.",
+   "visual": {
+    "type": "graph-algo",
+    "heading": "Dijkstra Shortest Path from S to T",
+    "directed": true,
+    "nodes": [
+     {
+      "id": "S",
+      "label": "S",
+      "x": 0.06,
+      "y": 0.5
+     },
+     {
+      "id": "A",
+      "label": "A",
+      "x": 0.36,
+      "y": 0.2
+     },
+     {
+      "id": "B",
+      "label": "B",
+      "x": 0.36,
+      "y": 0.8
+     },
+     {
+      "id": "C",
+      "label": "C",
+      "x": 0.68,
+      "y": 0.2
+     },
+     {
+      "id": "T",
+      "label": "T",
+      "x": 0.94,
+      "y": 0.5
+     }
+    ],
+    "edges": [
+     {
+      "id": "SA",
+      "from": "S",
+      "to": "A",
+      "weight": 4
+     },
+     {
+      "id": "SB",
+      "from": "S",
+      "to": "B",
+      "weight": 2
+     },
+     {
+      "id": "BA",
+      "from": "B",
+      "to": "A",
+      "weight": 1
+     },
+     {
+      "id": "AC",
+      "from": "A",
+      "to": "C",
+      "weight": 2
+     },
+     {
+      "id": "BC",
+      "from": "B",
+      "to": "C",
+      "weight": 6
+     },
+     {
+      "id": "CT",
+      "from": "C",
+      "to": "T",
+      "weight": 2
+     },
+     {
+      "id": "BT",
+      "from": "B",
+      "to": "T",
+      "weight": 8
+     }
+    ],
+    "steps": [
+     {
+      "id": "init",
+      "label": "Start at source S",
+      "note": "d(S) = 0",
+      "nodeStates": {
+       "S": "active",
+       "A": "frontier",
+       "B": "frontier"
+      },
+      "nodeBadges": {
+       "S": "d=0",
+       "A": "d=4",
+       "B": "d=2",
+       "C": "d=inf",
+       "T": "d=inf"
+      },
+      "edgeStates": {
+       "SA": "frontier",
+       "SB": "frontier"
+      },
+      "aux": {
+       "label": "Priority Q",
+       "items": [
+        {
+         "text": "(2, B)",
+         "tone": "frontier"
+        },
+        {
+         "text": "(4, A)",
+         "tone": "frontier"
+        }
+       ]
+      }
+     },
+     {
+      "id": "popB",
+      "label": "Visit B and relax A",
+      "note": "2 + 1 < 4",
+      "nodeStates": {
+       "S": "sorted",
+       "B": "active",
+       "A": "swap",
+       "C": "frontier",
+       "T": "frontier"
+      },
+      "nodeBadges": {
+       "S": "d=0",
+       "B": "d=2",
+       "A": "d=3",
+       "C": "d=8",
+       "T": "d=10"
+      },
+      "edgeStates": {
+       "SB": "sorted",
+       "BA": "swap",
+       "BC": "frontier",
+       "BT": "frontier"
+      },
+      "aux": {
+       "label": "Priority Q",
+       "items": [
+        {
+         "text": "(3, A)",
+         "tone": "swap"
+        },
+        {
+         "text": "(8, C)",
+         "tone": "frontier"
+        }
+       ]
+      }
+     },
+     {
+      "id": "popA",
+      "label": "Settle A to reach C",
+      "note": "3 + 2 = 5",
+      "nodeStates": {
+       "S": "sorted",
+       "B": "sorted",
+       "A": "active",
+       "C": "swap",
+       "T": "frontier"
+      },
+      "nodeBadges": {
+       "S": "d=0",
+       "B": "d=2",
+       "A": "d=3",
+       "C": "d=5",
+       "T": "d=10"
+      },
+      "edgeStates": {
+       "SB": "sorted",
+       "BA": "sorted",
+       "AC": "swap",
+       "BT": "dim"
+      },
+      "aux": {
+       "label": "Priority Q",
+       "items": [
+        {
+         "text": "(5, C)",
+         "tone": "swap"
+        },
+        {
+         "text": "(10, T)",
+         "tone": "frontier"
+        }
+       ]
+      }
+     },
+     {
+      "id": "doneT",
+      "label": "Lock shortest path to T",
+      "note": "cost = 7",
+      "nodeStates": {
+       "S": "sorted",
+       "B": "sorted",
+       "A": "sorted",
+       "C": "sorted",
+       "T": "pivot"
+      },
+      "nodeBadges": {
+       "S": "d=0",
+       "B": "d=2",
+       "A": "d=3",
+       "C": "d=5",
+       "T": "d=7"
+      },
+      "edgeStates": {
+       "SB": "sorted",
+       "BA": "sorted",
+       "AC": "sorted",
+       "CT": "sorted",
+       "SA": "dim",
+       "BC": "dim",
+       "BT": "dim"
+      },
+      "aux": {
+       "label": "Shortest Path",
+       "items": [
+        {
+         "text": "S -> B -> A -> C -> T",
+         "tone": "sorted"
+        },
+        {
+         "text": "cost = 7",
+         "tone": "pivot"
+        }
+       ]
+      }
+     }
+    ],
+    "caption": "Relaxing edges updates tentative distances along active transitions."
+   },
+   "audio": "audio/graph-algo/s01.wav",
+   "durationSec": 8.9,
+   "frames": 294,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Start",
+     "start": 0.275,
+     "end": 0.5
+    },
+    {
+     "w": "Dijkstra",
+     "start": 0.5,
+     "end": 0.95
+    },
+    {
+     "w": "at",
+     "start": 0.95,
+     "end": 1.05
+    },
+    {
+     "w": "source",
+     "start": 1.05,
+     "end": 1.35
+    },
+    {
+     "w": "S.",
+     "start": 1.35,
+     "end": 1.55
+    },
+    {
+     "w": "First",
+     "start": 1.55,
+     "end": 1.85
+    },
+    {
+     "w": "visit",
+     "start": 1.85,
+     "end": 2.15
+    },
+    {
+     "w": "B",
+     "start": 2.15,
+     "end": 2.538
+    },
+    {
+     "w": "and",
+     "start": 2.538,
+     "end": 2.675
+    },
+    {
+     "w": "relax",
+     "start": 2.675,
+     "end": 3.138
+    },
+    {
+     "w": "edge",
+     "start": 3.138,
+     "end": 3.4
+    },
+    {
+     "w": "B",
+     "start": 3.4,
+     "end": 3.612
+    },
+    {
+     "w": "A,",
+     "start": 3.612,
+     "end": 4.2
+    },
+    {
+     "w": "then",
+     "start": 4.35,
+     "end": 4.588
+    },
+    {
+     "w": "settle",
+     "start": 4.588,
+     "end": 4.912
+    },
+    {
+     "w": "A",
+     "start": 4.912,
+     "end": 4.975
+    },
+    {
+     "w": "to",
+     "start": 4.975,
+     "end": 5.1
+    },
+    {
+     "w": "reach",
+     "start": 5.1,
+     "end": 5.362
+    },
+    {
+     "w": "C,",
+     "start": 5.362,
+     "end": 5.925
+    },
+    {
+     "w": "and",
+     "start": 6.062,
+     "end": 6.2
+    },
+    {
+     "w": "lock",
+     "start": 6.2,
+     "end": 6.463
+    },
+    {
+     "w": "shortest",
+     "start": 6.463,
+     "end": 6.9
+    },
+    {
+     "w": "path",
+     "start": 6.9,
+     "end": 7.213
+    },
+    {
+     "w": "T",
+     "start": 7.213,
+     "end": 7.513
+    },
+    {
+     "w": "at",
+     "start": 7.513,
+     "end": 7.625
+    },
+    {
+     "w": "cost",
+     "start": 7.625,
+     "end": 7.963
+    },
+    {
+     "w": "seven.",
+     "start": 7.963,
+     "end": 8.65
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Start Dijkstra at source S.",
+     "start": 0.275
+    },
+    {
+     "text": "First visit B and relax edge B A, then settle A to reach C, and lock shortest path T at cost seven.",
+     "start": 1.55
+    }
+   ],
+   "revealSec": [
+    0.155,
+    1.73,
+    4.468,
+    6.08
+   ]
+  },
+  {
+   "id": "s02",
+   "narration": "Breadth-first search starts at root S, explores level one neighbors A and B next, and reaches final level two nodes C, D, and E.",
+   "focus": [
+    {
+     "at": "final level two",
+     "on": [
+      "C",
+      "D",
+      "E"
+     ]
+    }
+   ],
+   "visual": {
+    "type": "graph-algo",
+    "heading": "BFS Level Traversal (Auto-Layout)",
+    "directed": false,
+    "nodes": [
+     {
+      "id": "S",
+      "label": "S"
+     },
+     {
+      "id": "A",
+      "label": "A"
+     },
+     {
+      "id": "B",
+      "label": "B"
+     },
+     {
+      "id": "C",
+      "label": "C"
+     },
+     {
+      "id": "D",
+      "label": "D"
+     },
+     {
+      "id": "E",
+      "label": "E"
+     }
+    ],
+    "edges": [
+     {
+      "from": "S",
+      "to": "A"
+     },
+     {
+      "from": "S",
+      "to": "B"
+     },
+     {
+      "from": "A",
+      "to": "C"
+     },
+     {
+      "from": "A",
+      "to": "D"
+     },
+     {
+      "from": "B",
+      "to": "E"
+     },
+     {
+      "from": "C",
+      "to": "D"
+     }
+    ],
+    "steps": [
+     {
+      "id": "root",
+      "label": "Start at root S",
+      "nodeStates": {
+       "S": "active"
+      },
+      "nodeBadges": {
+       "S": "L0"
+      },
+      "aux": {
+       "label": "Queue",
+       "items": [
+        {
+         "text": "S",
+         "tone": "active"
+        }
+       ]
+      }
+     },
+     {
+      "id": "lvl1",
+      "label": "Explore level one",
+      "nodeStates": {
+       "S": "visited",
+       "A": "frontier",
+       "B": "frontier"
+      },
+      "nodeBadges": {
+       "S": "L0",
+       "A": "L1",
+       "B": "L1"
+      },
+      "edgeStates": {
+       "S->A": "frontier",
+       "S->B": "frontier"
+      },
+      "aux": {
+       "label": "Queue",
+       "items": [
+        {
+         "text": "A",
+         "tone": "frontier"
+        },
+        {
+         "text": "B",
+         "tone": "frontier"
+        }
+       ]
+      }
+     },
+     {
+      "id": "lvl2",
+      "label": "Reach level two",
+      "nodeStates": {
+       "S": "sorted",
+       "A": "visited",
+       "B": "visited",
+       "C": "active",
+       "D": "active",
+       "E": "active"
+      },
+      "nodeBadges": {
+       "S": "L0",
+       "A": "L1",
+       "B": "L1",
+       "C": "L2",
+       "D": "L2",
+       "E": "L2"
+      },
+      "edgeStates": {
+       "S->A": "visited",
+       "S->B": "visited",
+       "A->C": "active",
+       "A->D": "active",
+       "B->E": "active",
+       "C->D": "dim"
+      },
+      "aux": {
+       "label": "Queue",
+       "items": [
+        {
+         "text": "C",
+         "tone": "active"
+        },
+        {
+         "text": "D",
+         "tone": "active"
+        },
+        {
+         "text": "E",
+         "tone": "active"
+        }
+       ]
+      }
+     }
+    ],
+    "caption": "Without x/y coordinates, BFS layers organize cleanly left to right."
+   },
+   "audio": "audio/graph-algo/s02.wav",
+   "durationSec": 8.75,
+   "frames": 290,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Breadth-first",
+     "start": 0.275,
+     "end": 0.825
+    },
+    {
+     "w": "search",
+     "start": 0.825,
+     "end": 1.125
+    },
+    {
+     "w": "starts",
+     "start": 1.125,
+     "end": 1.438
+    },
+    {
+     "w": "at",
+     "start": 1.438,
+     "end": 1.525
+    },
+    {
+     "w": "root",
+     "start": 1.525,
+     "end": 1.725
+    },
+    {
+     "w": "S,",
+     "start": 1.725,
+     "end": 2.275
+    },
+    {
+     "w": "explores",
+     "start": 2.375,
+     "end": 2.875
+    },
+    {
+     "w": "level",
+     "start": 2.875,
+     "end": 3.175
+    },
+    {
+     "w": "one",
+     "start": 3.175,
+     "end": 3.375
+    },
+    {
+     "w": "neighbors",
+     "start": 3.375,
+     "end": 3.8
+    },
+    {
+     "w": "A",
+     "start": 3.8,
+     "end": 3.888
+    },
+    {
+     "w": "and",
+     "start": 3.888,
+     "end": 4.0
+    },
+    {
+     "w": "B",
+     "start": 4.0,
+     "end": 4.175
+    },
+    {
+     "w": "next,",
+     "start": 4.175,
+     "end": 4.825
+    },
+    {
+     "w": "and",
+     "start": 4.925,
+     "end": 5.05
+    },
+    {
+     "w": "reaches",
+     "start": 5.05,
+     "end": 5.438
+    },
+    {
+     "w": "final",
+     "start": 5.438,
+     "end": 5.8
+    },
+    {
+     "w": "level",
+     "start": 5.8,
+     "end": 6.138
+    },
+    {
+     "w": "two",
+     "start": 6.138,
+     "end": 6.35
+    },
+    {
+     "w": "nodes",
+     "start": 6.35,
+     "end": 6.675
+    },
+    {
+     "w": "C,",
+     "start": 6.675,
+     "end": 7.15
+    },
+    {
+     "w": "D,",
+     "start": 7.287,
+     "end": 7.625
+    },
+    {
+     "w": "and",
+     "start": 7.7,
+     "end": 7.862
+    },
+    {
+     "w": "E.",
+     "start": 7.862,
+     "end": 8.5
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Breadth-first search starts at root S, explores level one neighbors A and B next, and reaches final level two nodes C, D, and E.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    1.005,
+    2.255,
+    4.93
+   ],
+   "focusSec": [
+    {
+     "t": 5.358,
+     "on": [
+      "C",
+      "D",
+      "E"
+     ]
+    }
+   ]
+  }
+ ]
+}

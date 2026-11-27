@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "description": "Remotion engine for narrated explainer videos (driven by explainer.py)",
+  "scripts": {
+    "postinstall": "node scripts/ensure-local-visuals.mjs"
+  },
   "dependencies": {
     "@dagrejs/dagre": "3.1.3",
     "@react-three/fiber": "8.17.10",

@@ -1,0 +1,25 @@
+import {lintOrderedSlots, lintRtlAndBidi, type Meta} from '../../sdk/pure';
+import {capabilities} from './capabilities';
+
+export const meta: Meta<'__SLUG__'> = {
+  type: '__SLUG__',
+  capabilities,
+  docs: {
+    fields: '`heading`, `items[]`, `caption?`',
+    use: 'custom reusable __SLUG__ visual',
+  },
+  lint: (v, ctx) => ({
+    errors: [],
+    warnings: [
+      ...lintOrderedSlots(
+        ctx.narration,
+        v.items.map((label, i) => ({what: `item ${i + 1}`, label})),
+        {
+          missed: (w, l) => `${w} "${l}" is never named in the narration; mention it or add cues`,
+          late: (w, l, p) => `${w} "${l}" is spoken before "${p}"; reorder items to match narration`,
+        },
+      ),
+      ...lintRtlAndBidi(ctx.lang, {prefix: '__SLUG__', texts: [['heading', v.heading], ...(v.caption ? [['caption', v.caption] as [string, string]] : [])]}),
+    ],
+  }),
+};

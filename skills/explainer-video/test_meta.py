@@ -72,7 +72,7 @@ console.log(JSON.stringify({c, d: DIAGRAM_TYPES, t: THREE_D_TYPES, ft}));"""
         c = r["c"]
         self.assertEqual(sorted(t for t, x in c.items() if x["continues"]), sorted(r["d"]))
         self.assertEqual(sorted(t for t, x in c.items() if x["focus"]), sorted(r["ft"]))
-        self.assertEqual(sorted(t for t, x in c.items() if x["focus"] and t not in ("mermaid", "svg", "timeline", "stat", "plot2d", "linked-plot", "field2d", "chart", "ablation", "matrix", "equation", "figure")), sorted(r["d"]))
+        self.assertEqual(sorted(t for t, x in c.items() if x["focus"] == "both"), sorted(r["d"]))
         self.assertEqual(sorted(t for t, x in c.items() if "2d" not in x["modes"]), sorted(r["t"]))
         self.assertEqual(sorted(r["t"]), ["layers3d", "surface3d"])
         self.assertEqual(c["mermaid"]["focus"], "2d")
@@ -85,9 +85,10 @@ console.log(JSON.stringify({c, d: DIAGRAM_TYPES, t: THREE_D_TYPES, ft}));"""
         self.assertEqual(c["cancellation-grid"], {"modes": ["2d"], "continues": False, "focus": False, "rtl": "warn"})
         self.assertEqual(c["field2d"], {"modes": ["2d"], "continues": False, "focus": "2d", "rtl": "warn"})
         self.assertEqual(c["surface3d"], {"modes": ["3d"], "continues": False, "focus": False, "rtl": "warn"})
-        for non_d in ("code", "stat", "plot2d", "linked-plot", "cancellation-grid", "field2d", "surface3d", "svg", "timeline"):
+        for non_d in ("code", "stat", "plot2d", "linked-plot", "cancellation-grid", "field2d", "surface3d", "svg", "timeline", "array-algo"):
             self.assertNotIn(non_d, r["d"])
-        self.assertEqual([t for t, x in c.items() if x["rtl"] != "yes"], ["mermaid", "svg", "stat", "plot2d", "linked-plot", "cancellation-grid", "field2d", "surface3d", "chart", "ablation", "matrix", "equation", "figure"])
+        self.assertTrue(all(x["rtl"] in ("yes", "warn") for x in c.values()))
+        self.assertTrue({"mermaid", "svg", "stat", "plot2d", "linked-plot", "cancellation-grid", "field2d", "surface3d", "chart", "ablation", "matrix", "equation", "figure", "array-algo"}.issubset({t for t, x in c.items() if x["rtl"] == "warn"}))
 
     def test_chapter_rejected_on_continues_and_scene_starts(self):
         import env

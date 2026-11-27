@@ -78,3 +78,5 @@ export const CodeVisual = z.strictObject({
     if (issue) add(['highlights', i, 'lines'], issue);
   });
 });
+
+export {CodeVisual as schema};

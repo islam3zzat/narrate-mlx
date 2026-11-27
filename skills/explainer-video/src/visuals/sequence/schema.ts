@@ -34,3 +34,5 @@ export const SequenceVisual = z.strictObject({
 });
 
 export type SequenceVisualInput = z.infer<typeof SequenceVisual>;
+
+export {SequenceVisual as schema};

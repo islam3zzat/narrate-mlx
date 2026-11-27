@@ -1,4 +1,5 @@
 import React from 'react';
+import {continueRender, delayRender} from 'remotion';
 import t from './theme.json';
 import grotesk from './fonts/SpaceGrotesk.ttf';
 import monoRegular from './fonts/SpaceMono-Regular.ttf';
@@ -74,6 +75,9 @@ export const useTheme = (): ThemeDef => React.useContext(ThemeContext);
 
 const NO_SPACE = 'U+0021-007E, U+00A1-10FFFF';
 const fontsPromises = new Map<boolean, Promise<void>>();
+/** Font sets whose load has settled (loaded, failed, or hit the 10 s cap). Module-level, so a remount after a
+ * discarded React 18 Suspense pass starts ready instead of opening a new delayRender handle. */
+const fontsDone = new Set<boolean>();
 /** Loads Space Grotesk / Space Mono (bundled in src/fonts), plus Cairo for Arabic videos. Resolves even on failure or after 10 s, so a render never stalls on fonts. */
 export const loadFonts = (arabic = false): Promise<void> => {
   if (fontsPromises.has(arabic)) return fontsPromises.get(arabic)!;
@@ -87,7 +91,45 @@ export const loadFonts = (arabic = false): Promise<void> => {
       ...(arabic ? [new FontFace('Explainer Arabic', `url(${cairo})`, {weight: '200 1000'}).load()] : []),
     ]).then((faces) => faces.forEach((f) => document.fonts.add(f))),
     new Promise<void>((resolve) => setTimeout(resolve, 10000)),
-  ]).catch((e) => console.warn('font load failed, using fallbacks', e));
+  ]).catch((e) => console.warn('font load failed, using fallbacks', e)).finally(() => { fontsDone.add(arabic); });
   fontsPromises.set(arabic, promise);
   return promise;
+};
+
+/**
+ * Gate for a composition root: false until loadFonts(rtl) settles, so the scene tree (and React Flow's handle
+ * measurement, which never re-runs when a font swaps in under a fixed-size node) mounts with the final fonts.
+ * Holds a Remotion delayRender handle and releases it in an effect after the gated tree has committed, so the scene's
+ * own delayRenders are registered first and no frame is captured showing the placeholder.
+ * Suspense safety (same convention as useFontsReady in three/common.tsx): a discarded render pass never commits, so
+ * its handle is released from the load promise when that pass's `committed` ref is still false; a committed pass
+ * releases on readiness or on unmount. The fontsDone memo makes a remount after fonts settled start ready, with no
+ * handle at all.
+ */
+export const useFontGate = (rtl: boolean, label: string): boolean => {
+  const ready = fontsDone.has(rtl);
+  const [, bump] = React.useReducer((n: number) => n + 1, 0);
+  const committed = React.useRef(false);
+  React.useEffect(() => { committed.current = true; }, []);
+  const [hold] = React.useState(() => {
+    if (fontsDone.has(rtl)) return null;
+    const h = {handle: delayRender(label), released: false};
+    loadFonts(rtl).finally(() => {
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (!committed.current && !h.released) { h.released = true; continueRender(h.handle); }
+      }));
+    });
+    return h;
+  });
+  const release = React.useCallback(() => {
+    if (hold && !hold.released) { hold.released = true; continueRender(hold.handle); }
+  }, [hold]);
+  React.useEffect(() => () => release(), [release]);
+  React.useEffect(() => {
+    let live = true;
+    loadFonts(rtl).finally(() => { if (live) bump(); });
+    return () => { live = false; };
+  }, [rtl]);
+  React.useEffect(() => { if (ready) release(); }, [ready, release]);
+  return ready;
 };

@@ -67,6 +67,23 @@ tmp="$(mktemp -d)"
 chk "explainer.py runs (init + check)" bash -c "python3 '$EXPLAINER_DIR/explainer.py' init '$tmp' && python3 '$EXPLAINER_DIR/explainer.py' check '$tmp'"
 rm -rf "$tmp"
 
+echo; echo "Models"
+hf_hub="${HF_HUB_CACHE:-${HF_HOME:-$HOME/.cache/huggingface}/hub}"
+chk_model() {
+  local repo="$1" label="$2"
+  local snaps="$hf_hub/models--${repo//\//--}/snapshots"
+  if [ -d "$snaps" ] && [ -n "$(find "$snaps" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -n1)" ]; then
+    ok "$label ($repo cached)"
+  else
+    info "      $label ($repo not cached yet; downloads on first use)"
+  fi
+}
+chk_model "mlx-community/Kokoro-82M-bf16" "English TTS (~160 MB)"
+chk_model "mlx-community/Qwen3-ForcedAligner-0.6B-8bit" "Forced aligner (~1.3 GB)"
+if feature_on arabic; then
+  chk_model "silma-ai/silma-tts" "Arabic TTS (~900 MB)"
+fi
+
 echo; echo "Skill links"
 linked=0
 for d in $(all_dirs); do

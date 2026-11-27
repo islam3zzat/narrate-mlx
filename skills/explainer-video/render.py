@@ -11,7 +11,25 @@ import tempfile
 from contextlib import contextmanager
 from pathlib import Path
 
-from env import FPS, SKILL, atomic_write_text, browser_args, browser_exe, clip_err, die, ensure_deps, env_timeout, inside, load_scripts, run_cli, run_guarded, scene_starts as _scene_starts, tool_env
+from env import (
+    FPS,
+    SKILL,
+    announce_browser_download_if_missing,
+    atomic_write_text,
+    browser_args,
+    browser_exe,
+    cli_hint,
+    clip_err,
+    die,
+    ensure_deps,
+    env_timeout,
+    inside,
+    load_scripts,
+    run_cli,
+    run_guarded,
+    scene_starts as _scene_starts,
+    tool_env,
+)
 from features import feature_errors
 from mermaid_host import check_mermaid
 from figures_host import stage_figures
@@ -21,7 +39,7 @@ from validation import validate_all
 def read_data(workdir: Path, vid: str) -> dict:
     p = workdir / "public/data" / f"{vid}.json"
     if not p.exists():
-        die(f"no timing data for '{vid}'. Run: explainer.py audio {workdir} {vid}")
+        die(f"no timing data for '{vid}'. Run: {cli_hint('audio', workdir, vid)}")
     return json.loads(p.read_text(encoding="utf-8"))
 
 
@@ -43,6 +61,7 @@ def remotion(sub: list[str], workdir: Path, vid: str, extra: list[str], entry: s
         subprocess.run(cmd, cwd=SKILL, env=env, check=True, text=True)
         return
     timeout = env_timeout("EXPLAINER_RENDER_TIMEOUT", 600.0 if action == "still" else 3600.0)
+    announce_browser_download_if_missing(browser_exe())
     try:
         r = run_guarded(cmd, timeout=timeout, env=env, cwd=SKILL, capture=quiet)
     except subprocess.TimeoutExpired:
@@ -360,10 +379,12 @@ def render_videos_worker(
     node = shutil.which("node", path=tenv.get("PATH"))
     if not node:
         die("node not found")
+    exe = browser_exe()
+    announce_browser_download_if_missing(exe)
     cfg = {
         "entryPoint": str(SKILL / "src/index.ts"),
         "publicDir": str(workdir / "public"),
-        "browserExecutable": browser_exe(),
+        "browserExecutable": exe,
         "videos": worker_videos,
     }
     wait = env_timeout("EXPLAINER_RENDER_TIMEOUT", 3600.0) if timeout is None else timeout
@@ -610,7 +631,7 @@ def cmd_verify(workdir: Path, vid: str, min_db: float = 30.0) -> None:
     # Never run this alongside TTS or a render (GPU/Chrome).
     video = workdir / "out" / f"{vid}.mp4"
     if not video.exists():
-        die(f"no video yet. Run: explainer.py render {workdir} {vid}")
+        die(f"no video yet. Run: {cli_hint('render', workdir, vid)}")
     data = prepare_still(workdir, vid)
     bad = _verify_scenes(workdir, vid, data, video, min_db)
     if bad:

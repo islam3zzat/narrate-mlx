@@ -16,5 +16,6 @@ skills/explainer-video/tests/corpus/transcripts/
 skills/explainer-video/tests/.scratch/
 skills/explainer-video/tests/.det_*/
 skills/explainer-video/tests/golden/_shim/
+skills/explainer-video/src/visuals-local/
 
 software-factory/

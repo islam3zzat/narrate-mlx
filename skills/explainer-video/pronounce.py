@@ -8,7 +8,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from env import atomic_write_text, die, find_speak, load_scripts, sync_uv_env
+from env import atomic_write_text, cli_hint, die, env_timeout, find_speak, find_uv, load_scripts, run_guarded, sync_uv_env
 from features import lang_of
 
 # Spoken forms, applied to the TTS text only (the transcript and captions stay as written).
@@ -75,12 +75,16 @@ def pronouncer(workdir: Path):
 def _speak_kokoro(text: str, out: Path | None = None) -> None:
     """Synthesize `text` with Kokoro af_heart (plays aloud when `out` is None, else writes WAV to `out`)."""
     speak = find_speak()
-    cmd = ["uv", "run", "--no-sync", "--project", str(speak), "python", str(speak / "speak.py"),
+    cmd = [find_uv(), "run", "--no-sync", "--project", str(speak), "python", str(speak / "speak.py"),
            "--model", "kokoro", "--voice", "af_heart", *(["--out", str(out)] if out else [])]
     if out:
         out.parent.mkdir(parents=True, exist_ok=True)
+    timeout = env_timeout("EXPLAINER_TTS_TIMEOUT", 600.0)
     for attempt in (1, 2):
-        r = subprocess.run(cmd, input=text, text=True, capture_output=True)
+        try:
+            r = run_guarded(cmd, stdin=text, timeout=timeout, capture=True)
+        except subprocess.TimeoutExpired:
+            die(f"TTS timed out after {timeout:.0f}s (set $EXPLAINER_TTS_TIMEOUT to override)")
         if r.returncode == 0 and (out is None or out.exists()):
             return
         if attempt == 1 and re.search(r"No module named|ModuleNotFoundError|No such file|Failed to spawn", r.stderr or ""):
@@ -128,7 +132,7 @@ def cmd_pronounce(a) -> None:
         hits = [f"{vid}/{sc['id']}" for vid, sc_ in load_scripts(a.workdir.expanduser().resolve(), [])
                 for sc in sc_["scenes"] if re.search(r"\b" + re.escape(a.word) + r"\b", sc["narration"])]
         if hits:
-            print(f"affects {len(hits)} scene(s): {', '.join(hits)}\nre-run: explainer.py audio {a.workdir}  (only those scenes are redone)")
+            print(f"affects {len(hits)} scene(s): {', '.join(hits)}\nre-run: {cli_hint('audio', a.workdir)}  (only those scenes are redone)")
 
 
 def warn_unspoken_acronyms(workdir: Path, scripts: list[tuple[str, dict]]) -> None:   # English scripts only

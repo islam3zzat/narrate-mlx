@@ -3743,9 +3743,514 @@
                   "alt"
                 ],
                 "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "array-algo"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "mode": {
+                    "description": "\"cells\" (default) for indexed boxes, \"bars\" for sorting heights",
+                    "type": "string",
+                    "enum": [
+                      "cells",
+                      "bars"
+                    ]
+                  },
+                  "showIndices": {
+                    "description": "Whether to render 0-based index labels below slots (default true)",
+                    "type": "boolean"
+                  },
+                  "steps": {
+                    "minItems": 1,
+                    "maxItems": 12,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional step ID for `focus`",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Step label spoken in narration (aligns reveal timing)"
+                        },
+                        "items": {
+                          "minItems": 1,
+                          "maxItems": 16,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "pattern": "^[A-Za-z0-9_-]+$",
+                                "description": "Stable element ID across steps so swaps and moves animate smoothly"
+                              },
+                              "value": {
+                                "anyOf": [
+                                  {
+                                    "type": "number"
+                                  },
+                                  {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "description": "Short value shown inside the cell"
+                                  }
+                                ]
+                              },
+                              "state": {
+                                "description": "Semantic highlight state for this element",
+                                "type": "string",
+                                "enum": [
+                                  "default",
+                                  "active",
+                                  "compare",
+                                  "swap",
+                                  "pivot",
+                                  "sorted",
+                                  "visited",
+                                  "frontier",
+                                  "dim"
+                                ]
+                              },
+                              "subLabel": {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Optional short sub-label inside cell mode"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "value"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "pointers": {
+                          "maxItems": 6,
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string",
+                                "minLength": 1,
+                                "description": "Pointer label (e.g. L, R, i, j, pivot)"
+                              },
+                              "index": {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 9007199254740991,
+                                "description": "0-based index into this step items[]"
+                              },
+                              "tone": {
+                                "type": "string",
+                                "enum": [
+                                  "default",
+                                  "active",
+                                  "compare",
+                                  "swap",
+                                  "pivot",
+                                  "sorted",
+                                  "visited",
+                                  "frontier",
+                                  "dim"
+                                ]
+                              }
+                            },
+                            "required": [
+                              "name",
+                              "index"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "window": {
+                          "type": "object",
+                          "properties": {
+                            "start": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991,
+                              "description": "Inclusive start index"
+                            },
+                            "end": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 9007199254740991,
+                              "description": "Inclusive end index"
+                            },
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Optional window badge (e.g. sum = 14)"
+                            },
+                            "tone": {
+                              "type": "string",
+                              "enum": [
+                                "default",
+                                "active",
+                                "compare",
+                                "swap",
+                                "pivot",
+                                "sorted",
+                                "visited",
+                                "frontier",
+                                "dim"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "start",
+                            "end"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "aux": {
+                          "type": "object",
+                          "properties": {
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Auxiliary strip title (e.g. Stack, Best, Pivot)"
+                            },
+                            "items": {
+                              "minItems": 1,
+                              "maxItems": 8,
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "text": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "description": "Auxiliary state chip"
+                                  },
+                                  "tone": {
+                                    "type": "string",
+                                    "enum": [
+                                      "default",
+                                      "active",
+                                      "compare",
+                                      "swap",
+                                      "pivot",
+                                      "sorted",
+                                      "visited",
+                                      "frontier",
+                                      "dim"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "text"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "note": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Optional short invariant or complexity note"
+                            }
+                          },
+                          "required": [
+                            "label",
+                            "items"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Optional short step annotation"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "items"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional bottom takeaway caption"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "steps"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "graph-algo"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading"
+                  },
+                  "directed": {
+                    "description": "Whether edges draw arrowheads by default (default false)",
+                    "type": "boolean"
+                  },
+                  "nodes": {
+                    "minItems": 2,
+                    "maxItems": 10,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Unique node ID referenced by edges and step state maps"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Short node label (e.g. A, S, v0, 42)"
+                        },
+                        "x": {
+                          "description": "Optional normalized horizontal position [0..1]",
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        },
+                        "y": {
+                          "description": "Optional normalized vertical position [0..1]",
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "edges": {
+                    "minItems": 1,
+                    "maxItems": 18,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional explicit edge ID for edgeStates and focus",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "from": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Source node ID"
+                        },
+                        "to": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Target node ID"
+                        },
+                        "weight": {
+                          "anyOf": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Short edge weight or capacity label"
+                            }
+                          ]
+                        },
+                        "directed": {
+                          "description": "Per-edge directedness override (defaults to visual.directed)",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "from",
+                        "to"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "steps": {
+                    "minItems": 1,
+                    "maxItems": 12,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "Optional step ID for `focus`",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        },
+                        "label": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Step label spoken in narration (aligns reveal timing)"
+                        },
+                        "nodeStates": {
+                          "description": "Map of node ID -> semantic state tone",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "string",
+                            "enum": [
+                              "default",
+                              "active",
+                              "compare",
+                              "swap",
+                              "pivot",
+                              "sorted",
+                              "visited",
+                              "frontier",
+                              "dim"
+                            ]
+                          }
+                        },
+                        "nodeBadges": {
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "string",
+                            "minLength": 1,
+                            "description": "Short badge pill above node (e.g. d=4, L1)"
+                          }
+                        },
+                        "edgeStates": {
+                          "description": "Map of edge key (`edge.id` or `\"from->to\"`) -> semantic tone",
+                          "type": "object",
+                          "propertyNames": {
+                            "type": "string"
+                          },
+                          "additionalProperties": {
+                            "type": "string",
+                            "enum": [
+                              "default",
+                              "active",
+                              "compare",
+                              "swap",
+                              "pivot",
+                              "sorted",
+                              "visited",
+                              "frontier",
+                              "dim"
+                            ]
+                          }
+                        },
+                        "aux": {
+                          "type": "object",
+                          "properties": {
+                            "label": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Auxiliary strip title (e.g. Queue, Priority Q, Stack)"
+                            },
+                            "items": {
+                              "minItems": 1,
+                              "maxItems": 8,
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "text": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "description": "Auxiliary state chip"
+                                  },
+                                  "tone": {
+                                    "type": "string",
+                                    "enum": [
+                                      "default",
+                                      "active",
+                                      "compare",
+                                      "swap",
+                                      "pivot",
+                                      "sorted",
+                                      "visited",
+                                      "frontier",
+                                      "dim"
+                                    ]
+                                  }
+                                },
+                                "required": [
+                                  "text"
+                                ],
+                                "additionalProperties": false
+                              }
+                            },
+                            "note": {
+                              "type": "string",
+                              "minLength": 1,
+                              "description": "Optional short invariant or complexity note"
+                            }
+                          },
+                          "required": [
+                            "label",
+                            "items"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "note": {
+                          "type": "string",
+                          "minLength": 1,
+                          "description": "Optional short step annotation"
+                        }
+                      },
+                      "required": [
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "caption": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 160,
+                    "description": "Optional bottom takeaway caption"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "nodes",
+                  "edges",
+                  "steps"
+                ],
+                "additionalProperties": false
               }
             ],
-            "description": "What is drawn in the scene; \"type\" selects the shape"
+            "description": "Built-in visual types; \"type\" selects the shape"
           }
         },
         "required": [

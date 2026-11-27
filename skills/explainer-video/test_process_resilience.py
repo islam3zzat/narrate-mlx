@@ -1,6 +1,8 @@
 """Resilience tests for subprocess timeouts, orphan reaping, head+tail stderr clipping, ensure_deps, and golden ffmpeg checks."""
 from __future__ import annotations
 
+import contextlib
+import io
 import json
 import os
 import subprocess
@@ -11,6 +13,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+import audio
 import env
 import render
 
@@ -61,10 +64,20 @@ class ProcessResilienceTests(unittest.TestCase):
                 json.dumps({"dependencies": {"synthetic-dep": "1.0.0"}}),
                 encoding="utf-8",
             )
-            with mock.patch.object(env, "SKILL", root), mock.patch("env.subprocess.run") as run_mock:
+            out_buf = io.StringIO()
+            err_buf = io.StringIO()
+            with (
+                mock.patch.object(env, "SKILL", root),
+                mock.patch("env.subprocess.run") as run_mock,
+                contextlib.redirect_stdout(out_buf),
+                contextlib.redirect_stderr(err_buf),
+            ):
                 env.ensure_deps({})
             run_mock.assert_called_once()
             self.assertEqual(run_mock.call_args.args[0][0], "npm")
+            self.assertIs(run_mock.call_args.kwargs.get("stdout"), err_buf)
+            self.assertEqual(out_buf.getvalue(), "")
+            self.assertIn("[setup] installing Remotion", err_buf.getvalue())
 
             # Once .bin/{remotion,tsx} and every dependency from package.json exist, npm is skipped.
             for rel in ("node_modules/.bin/remotion", "node_modules/.bin/tsx", "node_modules/synthetic-dep/package.json"):
@@ -141,6 +154,68 @@ class ProcessResilienceTests(unittest.TestCase):
             ):
                 os.environ.pop("EXPLAINER_BROWSER", None)
                 self.assertIsNone(env.browser_exe())
+
+    def test_run_guarded_capture_stderr_false_captures_stdout_only(self) -> None:
+        r = env.run_guarded(
+            [sys.executable, "-c", "import sys; sys.stdout.write('ok-out'); sys.stderr.write('')"],
+            capture=True,
+            capture_stderr=False,
+        )
+        self.assertEqual(r.returncode, 0)
+        self.assertEqual(r.stdout, "ok-out")
+        self.assertEqual(r.stderr, "")
+
+    def test_announce_browser_download_if_missing_fires_once_when_none(self) -> None:
+        err_buf = io.StringIO()
+        with (
+            mock.patch.object(env, "_BROWSER_ANNOUNCED", False),
+            contextlib.redirect_stderr(err_buf),
+        ):
+            self.assertFalse(env.announce_browser_download_if_missing("/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"))
+            self.assertEqual(err_buf.getvalue(), "")
+            self.assertTrue(env.announce_browser_download_if_missing(None))
+            self.assertFalse(env.announce_browser_download_if_missing(None))
+        self.assertEqual(err_buf.getvalue().count("chrome-headless-shell"), 1)
+
+    def test_synth_timeout_exits_with_clear_message_and_reaps_worker(self) -> None:
+        """A TTS worker that outlives EXPLAINER_TTS_TIMEOUT makes synth exit cleanly and leaves no orphan."""
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_dir = Path(tmp)
+            pid_file = tmp_dir / "child.pid"
+            runs_file = tmp_dir / "runs"
+            stub = tmp_dir / "uv"
+            # Stub `uv`: record each invocation, fork a lingering grandchild (the "GPU worker"), then wait on it.
+            stub.write_text(
+                "#!/bin/sh\n"
+                f"echo run >> {runs_file}\n"
+                f"sleep 30 & echo $! > {pid_file}\n"
+                "wait\n",
+                encoding="utf-8",
+            )
+            stub.chmod(0o755)
+            wav = tmp_dir / "s01.wav"
+            with (
+                mock.patch.dict(os.environ, {"EXPLAINER_TTS_TIMEOUT": "1"}),
+                mock.patch.object(audio, "find_uv", return_value=str(stub)),
+            ):
+                with self.assertRaises(SystemExit) as cm:
+                    audio.synth(tmp_dir, "hello", wav, "kokoro", "af_heart", 1.0)
+            msg = str(cm.exception)
+            self.assertIn("TTS timed out after 1s", msg)
+            self.assertIn("EXPLAINER_TTS_TIMEOUT", msg)
+            # A timeout is final: no retry, no partial output left behind as if it succeeded.
+            self.assertEqual(runs_file.read_text(encoding="utf-8").split(), ["run"])
+            self.assertFalse(wav.exists())
+            child_pid = int(pid_file.read_text(encoding="utf-8").strip())
+            deadline = time.monotonic() + 2.0
+            while time.monotonic() < deadline:
+                try:
+                    os.kill(child_pid, 0)
+                    time.sleep(0.02)
+                except ProcessLookupError:
+                    break
+            else:
+                self.fail(f"TTS worker process {child_pid} was not reaped after timeout")
 
 
 if __name__ == "__main__":

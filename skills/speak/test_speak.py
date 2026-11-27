@@ -1,7 +1,10 @@
 """Offline unit tests for skills/speak (mdparse, highlight helpers, CLI contracts, dynamic sample rates)."""
 from __future__ import annotations
 
+import contextlib
+import io
 import json
+import os
 import sys
 import tempfile
 import unittest
@@ -66,6 +69,35 @@ class HighlightHelperTests(unittest.TestCase):
         self.assertEqual(highlight.seek_index(begins, 6), 1)
         self.assertEqual(highlight.seek_index(begins, 99), 2)
 
+    def test_sentence_navigation_speed_and_autoscroll_helpers(self) -> None:
+        text = "First sentence. Second one!\nThird line here?"
+        words = [
+            highlight.Word(0.0, 0, 5),    # First
+            highlight.Word(0.4, 6, 15),   # sentence.
+            highlight.Word(1.0, 16, 22),  # Second
+            highlight.Word(1.5, 23, 27),  # one!
+            highlight.Word(2.0, 28, 33),  # Third
+            highlight.Word(2.4, 34, 38),  # line
+            highlight.Word(2.7, 39, 44),  # here?
+        ]
+        starts = highlight.sentence_starts(text, words)
+        self.assertEqual(starts, [0, 2, 4])
+        self.assertEqual(highlight.next_sentence_index(starts, 0, 1), 2)
+        self.assertEqual(highlight.next_sentence_index(starts, 2, 1), 4)
+        self.assertIsNone(highlight.next_sentence_index(starts, 4, 1))
+        # Mid-sentence (>1 word past sentence start) restarts current sentence; at start goes to previous.
+        self.assertEqual(highlight.next_sentence_index(starts, 6, -1), 4)
+        self.assertEqual(highlight.next_sentence_index(starts, 4, -1), 2)
+        self.assertEqual(highlight.next_sentence_index(starts, 0, -1), 0)
+
+        self.assertEqual(highlight.step_speed_index(0, -1), 0)
+        self.assertEqual(highlight.step_speed_index(1, 1), 2)
+        self.assertEqual(highlight.step_speed_index(len(highlight.SPEEDS) - 1, 1), len(highlight.SPEEDS) - 1)
+
+        self.assertFalse(highlight.should_auto_scroll(10.0, 12.0))
+        self.assertTrue(highlight.should_auto_scroll(12.0, 12.0))
+        self.assertEqual(highlight.speed_labels(1.25)[1], "1.25×")
+
 
 class SpeakCliTests(unittest.TestCase):
     def test_rejects_mismatched_lang_model_or_diacritize_en(self) -> None:
@@ -97,6 +129,77 @@ class SpeakCliTests(unittest.TestCase):
             timings = json.loads(out_timings.read_text(encoding="utf-8"))
             self.assertFalse(timings["approx"])
             self.assertEqual(timings["words"][0]["w"], "Hello")
+
+    def test_positional_file_path_reads_contents_and_text_flag_overrides(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            note = Path(tmp) / "notes.md"
+            note.write_text("# Heading\n\nBody text from file.", encoding="utf-8")
+            out_wav = Path(tmp) / "out.wav"
+            fake_audio = np.zeros(1600, dtype=np.float32)
+
+            seen_blocks: list[list[str]] = []
+
+            def fake_synth(blocks, voice, speed):
+                seen_blocks.append([b.speech for b in blocks if b.spoken_from is not None])
+                return (fake_audio, 16000, "ok", [], [], "ok", [])
+
+            err_buf = io.StringIO()
+            with (
+                mock.patch.object(sys, "argv", ["speak.py", str(note), "--out", str(out_wav)]),
+                mock.patch.object(speak, "synthesize", side_effect=fake_synth),
+                contextlib.redirect_stderr(err_buf),
+            ):
+                speak.main()
+            self.assertIn(f"Reading {note}", err_buf.getvalue())
+            self.assertEqual(seen_blocks[-1], ["Heading", "Body text from file."])
+
+            with (
+                mock.patch.object(sys, "argv", ["speak.py", "--text", str(note), "--out", str(out_wav)]),
+                mock.patch.object(speak, "synthesize", side_effect=fake_synth),
+                contextlib.redirect_stderr(io.StringIO()),
+            ):
+                speak.main()
+            self.assertEqual(seen_blocks[-1], [str(note)])
+
+    def test_speed_bounds_and_help_formatting(self) -> None:
+        for bad in ("0", "-1", "2.5", "nan"):
+            with self.subTest(bad=bad):
+                with mock.patch.object(sys, "argv", ["speak.py", "--speed", bad, "hello"]), mock.patch.object(sys.stderr, "write"):
+                    with self.assertRaises(SystemExit) as cm:
+                        speak.main()
+                    self.assertEqual(cm.exception.code, 2)
+
+        help_buf = io.StringIO()
+        with mock.patch.object(sys, "argv", ["speak.py", "-h"]), contextlib.redirect_stdout(help_buf):
+            with self.assertRaises(SystemExit) as cm:
+                speak.main()
+            self.assertEqual(cm.exception.code, 0)
+        help_text = help_buf.getvalue()
+        self.assertIn("\n    uv run python speak.py notes.md\n", help_text)
+        self.assertIn("0.5-2.0", help_text)
+
+    def test_hf_model_cached_and_window_flags_passed_to_show_and_play(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            hub = Path(tmp) / "hub"
+            hub.mkdir()
+            with mock.patch.dict(os.environ, {"HF_HUB_CACHE": str(hub)}):
+                self.assertFalse(speak.hf_model_cached("mlx-community/Kokoro-82M-bf16"))
+                (hub / "models--mlx-community--Kokoro-82M-bf16" / "snapshots" / "abc").mkdir(parents=True)
+                self.assertTrue(speak.hf_model_cached("mlx-community/Kokoro-82M-bf16"))
+
+        long_text = " ".join(["word"] * 120)
+        fake_audio = np.zeros(1600, dtype=np.float32)
+        fake_return = (fake_audio, 16000, long_text, [], [], long_text, [])
+        with (
+            mock.patch.object(sys, "argv", ["speak.py", "--speed", "1.25", "--auto-close", long_text]),
+            mock.patch.object(speak, "synthesize", return_value=fake_return),
+            mock.patch("highlight.show_and_play") as show_mock,
+            contextlib.redirect_stderr(io.StringIO()),
+        ):
+            speak.main()
+        show_mock.assert_called_once()
+        self.assertEqual(show_mock.call_args.kwargs["base_speed"], 1.25)
+        self.assertTrue(show_mock.call_args.kwargs["auto_close"])
 
 
 class ArabicTimingTests(unittest.TestCase):

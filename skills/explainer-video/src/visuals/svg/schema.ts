@@ -55,3 +55,5 @@ export const readDrawing = (markup: string): {ok: true; doc: SvgDoc} | {ok: fals
     return {ok: false, errors: [(e as Error).message]};
   }
 };
+
+export {SvgVisual as schema};
