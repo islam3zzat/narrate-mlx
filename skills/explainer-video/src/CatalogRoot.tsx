@@ -20,6 +20,8 @@ const toProps = <T extends VisualType>(type: T, v: CatalogVariant<T>): CatalogSc
   mermaidRendered: v.mermaidRendered,
   figureAsset: v.figureAsset,
   prev: v.prev as Visual | undefined,
+  speakers: v.speakers,
+  speaker: v.speaker,
 });
 
 const ORDERED_TYPES = Object.keys(CATALOG) as VisualType[];

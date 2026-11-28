@@ -317,5 +317,83 @@ class AudioCacheResilienceTests(unittest.TestCase):
             self.assertIn("[tts] demo/s02 (2/2)", out_buf.getvalue())
 
 
+class DialogueAudioTests(unittest.TestCase):
+    SPEAKERS = {"a": {"name": "Dana *", "role": "Principal [Architect]", "voice": "af_heart"},
+                "b": {"name": "Omar", "role": "Security Lead", "voice": "am_michael"}}
+
+    def _run(self, wd: Path, script: dict, model=None, voice=None, calls=None):
+        (wd / "scripts").mkdir(parents=True, exist_ok=True)
+        (wd / "scripts/demo.json").write_text(json.dumps(script), encoding="utf-8")
+
+        def fake_synth(speak, text, wav, mdl, vc, speed, lang="en"):
+            if calls is not None:
+                calls.append((wav.stem, vc))
+            _write_pcm_wav(wav, 0.5)
+
+        n = len(script["scenes"])
+        with (
+            mock.patch("audio.find_speak", return_value=wd),
+            mock.patch("audio.validate_all", return_value=[]),
+            mock.patch("audio.check_mermaid", return_value=([], {})),
+            mock.patch("audio.stage_figures", return_value=([], {})),
+            mock.patch("audio.synth", side_effect=fake_synth),
+            mock.patch("audio.align_scenes", return_value={}),
+            mock.patch("audio.describe_visuals", return_value=[{"slots": [], "carried": []}] * n),
+            contextlib.redirect_stdout(io.StringIO()),
+            contextlib.redirect_stderr(io.StringIO()),
+        ):
+            audio.cmd_audio(wd, ["demo"], model, voice, None)
+
+    def _script(self, speakers: bool) -> dict:
+        v = {"type": "title", "kicker": "K", "headline": "H"}
+        order = ["a", "b", "a", "b"]
+        scenes = [{"id": f"s0{i + 1}", "narration": f"Line number {i + 1}.", "visual": v, **({"speaker": order[i]} if speakers else {})}
+                  for i in range(4)]
+        return {"title": "T", "scenes": scenes, **({"speakers": self.SPEAKERS} if speakers else {})}
+
+    def test_non_podcast_digest_is_unchanged(self) -> None:
+        import hashlib
+        with tempfile.TemporaryDirectory() as tmp:
+            wd = Path(tmp)
+            self._run(wd, self._script(False))
+            stamp = (wd / "public/audio/demo/s01.sha").read_text(encoding="utf-8")
+            old_formula = hashlib.sha256("Line number 1.|kokoro|af_heart|1.0|".encode()).hexdigest()
+            self.assertEqual(stamp, old_formula)
+            data = json.loads((wd / "public/data/demo.json").read_text(encoding="utf-8"))
+            self.assertNotIn("speakers", data)
+            self.assertIn("## Scene s01 (", (wd / "transcripts/demo.md").read_text(encoding="utf-8"))
+
+    def test_each_scene_uses_its_speakers_voice_grouped_by_voice(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            wd, calls = Path(tmp), []
+            self._run(wd, self._script(True), calls=calls)
+            self.assertEqual(calls, [("s01", "af_heart"), ("s03", "af_heart"), ("s02", "am_michael"), ("s04", "am_michael")])
+            data = json.loads((wd / "public/data/demo.json").read_text(encoding="utf-8"))
+            self.assertEqual(data["speakers"], {"a": {"name": "Dana *", "role": "Principal [Architect]"},
+                                                "b": {"name": "Omar", "role": "Security Lead"}})
+            self.assertEqual([s["speaker"] for s in data["scenes"]], ["a", "b", "a", "b"])
+            md = (wd / "transcripts/demo.md").read_text(encoding="utf-8")
+            self.assertIn("## Scene s01 - Dana \\* (Principal \\[Architect\\]) (", md)
+            self.assertIn("## Scene s02 - Omar (Security Lead) (", md)
+            # second run: everything cached, so a changed voice for one speaker re-synthesizes only that speaker's scenes
+            calls.clear()
+            self._run(wd, self._script(True), calls=calls)
+            self.assertEqual(calls, [])
+            sp = json.loads(json.dumps(self._script(True)))
+            sp["speakers"]["b"]["voice"] = "am_adam"
+            self._run(wd, sp, calls=calls)
+            self.assertEqual(calls, [("s02", "am_adam"), ("s04", "am_adam")])
+
+    def test_voice_or_qwen3_with_speakers_dies(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            wd = Path(tmp)
+            with self.assertRaises(SystemExit) as cm:
+                self._run(wd, self._script(True), voice="am_adam")
+            self.assertIn("--voice", str(cm.exception))
+            with self.assertRaises(SystemExit) as cm:
+                self._run(wd, self._script(True), model="qwen3")
+            self.assertIn("qwen3", str(cm.exception))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -5,6 +5,7 @@ import {buildBoard, type Ctx} from '../../src/whiteboard/layouts';
 import {resolveLayout, whiteboardBlockers} from '../../src/whiteboard/eligible';
 import {GOCHI_RANGES, WHITEBOARD_DRAWN_TYPES, unsupportedGlyph} from '../../src/whiteboard/glyphs';
 import {ScriptSchema} from '../../src/schema';
+import {BOARD_TAG_EDGE, BOARD_TAG_GAP, BOARD_TAG_MAX_W} from '../../src/speaker-tag-geom';
 import type {Visual} from '../../src/types';
 
 /**
@@ -35,6 +36,15 @@ const cases: Visual[] = [
   {type: 'compare', heading: 'Two', columns: [1, 2].map((i) => ({title: `T${i}`, tag: 'tag', items: ['one', 'two']}))},
   {type: 'callout', heading: long + long, big: 'Plan first, mirror traffic, compare results, shift slowly', text: long + ' ' + long + ' ' + long + ' ' + long},
   {type: 'callout', heading: 'H', big: 'One big sentence with no commas at all that wraps onto several lines of the board', text: 'Detail.', tone: 'warn'},
+  {type: 'duo', question: 'Should we put the login service in front of every single request in the whole system?', quote: 'One missed check is a breach, and a breach costs far more than a few ms.'},
+  {type: 'duo', question: 'Short?'},
+  {type: 'duo', question: 'word '.repeat(4000), quote: 'y'.repeat(20000)},
+  {type: 'notes', heading: long, items: [1, 2, 3, 4, 5, 6, 7, 8].map((i) => ({text: `Note ${i}: ${long} ${long}`, by: i % 2 ? 'a' : 'b'}))},
+  {type: 'notes', heading: 'One', items: [{text: 'Just one'}]},
+  {type: 'notes', heading: 'x'.repeat(20000), items: [{text: 'word '.repeat(4000), by: 'a'}, {text: 'y'.repeat(20000)}]},
+  {type: 'stance', question: long + long, entries: [1, 2, 3, 4, 5, 6, 7, 8].map((i) => ({by: i % 2 ? 'a' : 'b', text: `Entry ${i}: ${long} ${long}`, kind: i === 2 ? 'disagree' : i === 8 ? 'resolve' : 'claim', ...(i === 2 ? {ref: 0} : i === 8 ? {ref: 1} : {})}))},
+  {type: 'stance', question: 'Short?', entries: [{by: 'a', text: 'Just one', kind: 'claim'}]},
+  {type: 'stance', question: 'x'.repeat(20000), entries: [{by: 'a', text: 'word '.repeat(4000), kind: 'claim'}, {by: 'b', text: 'y'.repeat(20000), kind: 'disagree', ref: 0}]},
   // no length cap in the schema: huge strings must neither hang nor leave the frame
   {type: 'flow', heading: 'x'.repeat(20000), nodes: [{label: 'word '.repeat(4000), sub: 'word '.repeat(4000)}, {label: 'y'.repeat(20000)}]},
   {type: 'callout', heading: 'x'.repeat(20000), big: 'word '.repeat(4000), text: 'word '.repeat(4000)},
@@ -57,6 +67,39 @@ for (const [n, v] of cases.entries()) {
     assert.ok(Number.isFinite(it.t0) && it.dur > 0, `${v.type} #${n}: finite timing`);
     assert.ok(it.t0 + it.dur <= ctx.frames - 14 + 1e-9, `${v.type} #${n}: item still drawing at ${it.t0 + it.dur}, after the wipe starts (${ctx.frames - 14})`);
   }
+}
+
+// Dialogue videos: the speaker tag sits at the top end edge, at most BOARD_TAG_MAX_W wide, so the tag's left edge is never left of
+// 1810 - BOARD_TAG_MAX_W. Whatever heading a script writes (the schema has no length cap), the heading line and its underline must
+// end BOARD_TAG_GAP short of that, in the worst case (the longest heading, and a short one).
+{
+  const people = [{id: 'a', name: 'Dana', role: 'Principal Security Engineer', index: 0}, {id: 'b', name: 'Omar', role: 'Platform Lead', index: 1}];
+  const sctx: Ctx = {...ctx, speakers: people, speaker: 'a'};
+  const tagLeft = 1920 - BOARD_TAG_EDGE - BOARD_TAG_MAX_W, limit = tagLeft - BOARD_TAG_GAP;
+  const heads = ['x'.repeat(20000), 'W'.repeat(300), 'word '.repeat(4000), 'Where the check happens', 'A'];
+  const withHeading = (h: string): Visual[] => [
+    {type: 'flow', heading: h, nodes: [{label: 'a'}, {label: 'b'}]},
+    {type: 'steps', heading: h, items: ['a', 'b']},
+    {type: 'bullets', heading: h, items: ['a', 'b']},
+    {type: 'fanout', heading: h, source: {label: 's'}, targets: [{label: 'a', sub: 'x'}, {label: 'b', sub: 'y'}]},
+    {type: 'compare', heading: h, columns: [1, 2].map((i) => ({title: `T${i}`, tag: 'g', items: ['one', 'two']}))},
+    {type: 'notes', heading: h, items: [{text: 'one', by: 'a'}, {text: 'two', by: 'b'}]},
+    {type: 'stance', question: h, entries: [{by: 'a', text: 'one', kind: 'claim'}, {by: 'b', text: 'two', kind: 'disagree', ref: 0}]},
+  ] as Visual[];
+  let checked = 0;
+  for (const h of heads) for (const v of withHeading(h)) {
+    const items = buildBoard(v, sctx, 3);
+    assert.ok(items && items.length > 0, `${v.type}: builds with speakers`);
+    for (const it of items!) {
+      // the heading band: everything drawn above the first content row (stance heads its columns from y 222)
+      if (it.kind === 'text') { if (it.y <= 180) { assert.ok(it.x + it.width <= limit + 1e-6, `${v.type} heading "${it.str.slice(0, 20)}" ends at ${(it.x + it.width).toFixed(0)}, past ${limit}`); checked++; } }
+      else if (it.pts.every(([, y]) => y <= 205)) for (const [x] of it.pts) { assert.ok(x <= limit + 12, `${v.type} heading stroke reaches x ${x.toFixed(0)}, past ${limit}`); checked++; }
+    }
+  }
+  assert.ok(checked > 100, 'the heading band was checked');
+  // and without speakers a heading keeps its full width (nothing changes for non-dialogue videos)
+  const wide = buildBoard({type: 'flow', heading: 'x'.repeat(20000), nodes: [{label: 'a'}, {label: 'b'}]} as Visual, ctx, 3)!;
+  assert.ok(Math.max(...wide.filter((it) => it.kind === 'text' && it.y <= 180).map((it) => (it as {x: number; width: number}).x + (it as {width: number}).width)) > limit + 100, 'no speakers: the heading is not capped');
 }
 
 // A very short scene squeezes the late items instead of cutting them off.

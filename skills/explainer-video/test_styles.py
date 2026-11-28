@@ -13,6 +13,7 @@ import validation
 from test_semantics import HERE, tsx, tool_env
 
 STYLES = HERE / "styles"
+SPEAKERS = {"a": {"name": "Dana", "role": "Engineer", "voice": "af_heart"}, "b": {"name": "Omar", "role": "Architect", "voice": "am_michael"}}
 SKELETON_STYLES = [n for n in explainer.style_names() if n != explainer.DEFAULT_STYLE]
 
 
@@ -80,7 +81,9 @@ class RegistryTests(unittest.TestCase):
     def test_every_definition_passes_the_zod_schema(self):
         """cli.ts loads the style file through StyleSchema: a bad file fails the validate call."""
         payload = {
-            n: {"title": "t", "style": n, "scenes": [{"id": "s1", "narration": "one two three", "visual": {"type": "bullets", "heading": "h", "items": ["a"]}}]}
+            n: {"title": "t", "style": n, "speakers": SPEAKERS, "scenes": [
+                {"id": f"s{i}", "speaker": who, "narration": "one two three", "visual": {"type": "bullets", "heading": "h", "items": ["a"]}}
+                for i, who in ((1, "a"), (2, "b"))]}   # two speakers so a dialogue style (podcast) has what it asks for
             for n in explainer.style_names()
         }
         out = json.loads(tsx(["src/cli.ts", "validate"], json.dumps(payload)))
@@ -216,6 +219,30 @@ class InitTests(unittest.TestCase):
                 led = explainer.load_style(n)["ledger"]["required"]
                 self.assertEqual(led_exists, led, "a ledger stub exactly for styles that require one")
                 self.assertEqual(ex_style, n)
+
+    def test_podcast_template_and_showcase_use_the_dialogue_visuals(self):
+        """The podcast template and the corpus showcase draw the argument (duo, a continued stance, notes) and keep the whiteboard."""
+        for path in (HERE / "templates/style-podcast.json", HERE / "tests/corpus/scripts/podcast-showcase.json"):
+            with self.subTest(path.name):
+                script = json.loads(path.read_text(encoding="utf-8"))
+                types = [sc["visual"]["type"] for sc in script["scenes"]]
+                self.assertEqual(types[0], "duo")
+                self.assertLessEqual(types.count("duo"), 3)
+                self.assertTrue(all(not (a == b == "duo") for a, b in zip(types, types[1:])))
+                self.assertEqual(types[-1], "notes")
+                self.assertGreaterEqual(types.count("stance"), 3)
+                self.assertTrue(any(sc.get("continues") for sc in script["scenes"] if sc["visual"]["type"] == "stance"))
+                self.assertTrue({"flow", "compare"} <= set(types))
+                self.assertGreaterEqual(len(types), 12)
+                self.assertNotEqual(script.get("layout"), "slides")
+                with tempfile.TemporaryDirectory() as tmp:
+                    wd = Path(tmp) / "pod"
+                    (wd / "scripts").mkdir(parents=True)
+                    script["layout"] = "whiteboard"   # the board must honour every continues, not fall back to slides
+                    (wd / "scripts/pod.json").write_text(json.dumps(script), encoding="utf-8")
+                    code, out, err = run("check", str(wd))
+                    self.assertEqual(code, 0, err)
+                    self.assertNotIn("warning", err)
 
     def test_init_without_style_is_unchanged(self):
         with tempfile.TemporaryDirectory() as tmp:

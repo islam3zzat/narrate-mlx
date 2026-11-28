@@ -281,6 +281,8 @@ class ReportTests(unittest.TestCase):
         row = [l for l in body.splitlines() if l.startswith("| `e01`")][0]
         self.assertEqual(len(re.findall(r"(?<!\\)\|", row)), 8)
         self.assertNotIn("\n", report.esc("a\nb"))
+        self.assertEqual(report.esc("a\u200bb\u202ec\u2066d\u00ade\ufeff"), "abcde")   # format characters (zero-width, bidi, soft hyphen) are dropped
+        self.assertEqual(report.esc("\u200b# h"), "\\# h")                                # and cannot hide a heading marker
         self.assertEqual(report.esc("# h"), "\\# h")
         self.assertEqual(report.esc("- x"), "\\- x")
         self.assertEqual(report.esc("1. x"), "1\\. x")

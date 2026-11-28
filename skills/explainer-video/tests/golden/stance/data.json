@@ -1,0 +1,694 @@
+{
+ "id": "stance",
+ "title": "Stance board corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "layout": "whiteboard",
+ "speakers": {
+  "a": {
+   "name": "Dana",
+   "role": "Principal Security Engineer"
+  },
+  "b": {
+   "name": "Omar",
+   "role": "Principal Architect"
+  }
+ },
+ "fps": 30,
+ "totalFrames": 1103,
+ "scenes": [
+  {
+   "id": "s01",
+   "speaker": "a",
+   "narration": "Yes. One missed check is a breach, so the login service must sit in front of every request.",
+   "visual": {
+    "type": "stance",
+    "question": "Should the login service sit in front of every request?",
+    "entries": [
+     {
+      "by": "a",
+      "text": "Yes, one missed check is a breach",
+      "kind": "claim"
+     }
+    ]
+   },
+   "audio": "audio/stance/s01.wav",
+   "durationSec": 5.95,
+   "frames": 206,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Yes.",
+     "start": 0.325,
+     "end": 0.775
+    },
+    {
+     "w": "One",
+     "start": 0.863,
+     "end": 1.125
+    },
+    {
+     "w": "missed",
+     "start": 1.125,
+     "end": 1.363
+    },
+    {
+     "w": "check",
+     "start": 1.363,
+     "end": 1.613
+    },
+    {
+     "w": "is",
+     "start": 1.613,
+     "end": 1.712
+    },
+    {
+     "w": "a",
+     "start": 1.712,
+     "end": 1.775
+    },
+    {
+     "w": "breach,",
+     "start": 1.775,
+     "end": 2.4
+    },
+    {
+     "w": "so",
+     "start": 2.525,
+     "end": 2.65
+    },
+    {
+     "w": "the",
+     "start": 2.65,
+     "end": 2.775
+    },
+    {
+     "w": "login",
+     "start": 2.775,
+     "end": 3.237
+    },
+    {
+     "w": "service",
+     "start": 3.237,
+     "end": 3.7
+    },
+    {
+     "w": "must",
+     "start": 3.7,
+     "end": 3.962
+    },
+    {
+     "w": "sit",
+     "start": 3.962,
+     "end": 4.188
+    },
+    {
+     "w": "in",
+     "start": 4.188,
+     "end": 4.3
+    },
+    {
+     "w": "front",
+     "start": 4.3,
+     "end": 4.487
+    },
+    {
+     "w": "of",
+     "start": 4.487,
+     "end": 4.575
+    },
+    {
+     "w": "every",
+     "start": 4.575,
+     "end": 4.875
+    },
+    {
+     "w": "request.",
+     "start": 4.875,
+     "end": 5.7
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Yes.",
+     "start": 0.325
+    },
+    {
+     "text": "One missed check is a breach, so the login service must sit in front of every request.",
+     "start": 0.863
+    }
+   ],
+   "revealSec": [
+    2.655,
+    3.842
+   ]
+  },
+  {
+   "id": "s02",
+   "speaker": "b",
+   "narration": "I disagree. Another hop blows the two hundred millisecond budget.",
+   "visual": {
+    "type": "stance",
+    "question": "Should the login service sit in front of every request?",
+    "entries": [
+     {
+      "by": "a",
+      "text": "Yes, one missed check is a breach",
+      "kind": "claim"
+     },
+     {
+      "by": "b",
+      "text": "Another hop blows the 200 ms budget",
+      "kind": "disagree",
+      "ref": 0
+     }
+    ]
+   },
+   "continues": true,
+   "audio": "audio/stance/s02.wav",
+   "durationSec": 5.1,
+   "frames": 180,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "I",
+     "start": 0.375,
+     "end": 0.537
+    },
+    {
+     "w": "disagree.",
+     "start": 0.537,
+     "end": 1.475
+    },
+    {
+     "w": "Another",
+     "start": 1.637,
+     "end": 2.05
+    },
+    {
+     "w": "hop",
+     "start": 2.05,
+     "end": 2.362
+    },
+    {
+     "w": "blows",
+     "start": 2.362,
+     "end": 2.8
+    },
+    {
+     "w": "the",
+     "start": 2.8,
+     "end": 2.938
+    },
+    {
+     "w": "two",
+     "start": 2.938,
+     "end": 3.15
+    },
+    {
+     "w": "hundred",
+     "start": 3.15,
+     "end": 3.525
+    },
+    {
+     "w": "millisecond",
+     "start": 3.525,
+     "end": 4.125
+    },
+    {
+     "w": "budget.",
+     "start": 4.125,
+     "end": 4.825
+    }
+   ],
+   "sentences": [
+    {
+     "text": "I disagree.",
+     "start": 0.375
+    },
+    {
+     "text": "Another hop blows the two hundred millisecond budget.",
+     "start": 1.637
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    1.517
+   ]
+  },
+  {
+   "id": "s03",
+   "speaker": "a",
+   "narration": "Then verify signed tokens at the edge. The extra hop costs nothing.",
+   "visual": {
+    "type": "stance",
+    "question": "Should the login service sit in front of every request?",
+    "entries": [
+     {
+      "by": "a",
+      "text": "Yes, one missed check is a breach",
+      "kind": "claim"
+     },
+     {
+      "by": "b",
+      "text": "Another hop blows the 200 ms budget",
+      "kind": "disagree",
+      "ref": 0
+     },
+     {
+      "by": "a",
+      "text": "Verify signed tokens at the edge",
+      "kind": "claim"
+     }
+    ]
+   },
+   "continues": true,
+   "audio": "audio/stance/s03.wav",
+   "durationSec": 4.575,
+   "frames": 165,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Then",
+     "start": 0.275,
+     "end": 0.45
+    },
+    {
+     "w": "verify",
+     "start": 0.45,
+     "end": 0.938
+    },
+    {
+     "w": "signed",
+     "start": 0.938,
+     "end": 1.275
+    },
+    {
+     "w": "tokens",
+     "start": 1.275,
+     "end": 1.637
+    },
+    {
+     "w": "at",
+     "start": 1.637,
+     "end": 1.712
+    },
+    {
+     "w": "the",
+     "start": 1.712,
+     "end": 1.85
+    },
+    {
+     "w": "edge.",
+     "start": 1.85,
+     "end": 2.375
+    },
+    {
+     "w": "The",
+     "start": 2.5,
+     "end": 2.65
+    },
+    {
+     "w": "extra",
+     "start": 2.65,
+     "end": 3.05
+    },
+    {
+     "w": "hop",
+     "start": 3.05,
+     "end": 3.3
+    },
+    {
+     "w": "costs",
+     "start": 3.3,
+     "end": 3.675
+    },
+    {
+     "w": "nothing.",
+     "start": 3.675,
+     "end": 4.325
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Then verify signed tokens at the edge.",
+     "start": 0.275
+    },
+    {
+     "text": "The extra hop costs nothing.",
+     "start": 2.5
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    0.0,
+    0.33
+   ]
+  },
+  {
+   "id": "s04",
+   "speaker": "b",
+   "narration": "Fine, if tokens stay short-lived. I accept that.",
+   "visual": {
+    "type": "stance",
+    "question": "Should the login service sit in front of every request?",
+    "entries": [
+     {
+      "by": "a",
+      "text": "Yes, one missed check is a breach",
+      "kind": "claim"
+     },
+     {
+      "by": "b",
+      "text": "Another hop blows the 200 ms budget",
+      "kind": "disagree",
+      "ref": 0
+     },
+     {
+      "by": "a",
+      "text": "Verify signed tokens at the edge",
+      "kind": "claim"
+     },
+     {
+      "by": "b",
+      "text": "Fine, if tokens stay short-lived",
+      "kind": "resolve",
+      "ref": 1
+     }
+    ]
+   },
+   "continues": true,
+   "audio": "audio/stance/s04.wav",
+   "durationSec": 3.975,
+   "frames": 147,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Fine,",
+     "start": 0.4,
+     "end": 0.7
+    },
+    {
+     "w": "if",
+     "start": 0.738,
+     "end": 0.875
+    },
+    {
+     "w": "tokens",
+     "start": 0.875,
+     "end": 1.25
+    },
+    {
+     "w": "stay",
+     "start": 1.25,
+     "end": 1.587
+    },
+    {
+     "w": "short-lived.",
+     "start": 1.587,
+     "end": 2.45
+    },
+    {
+     "w": "I",
+     "start": 2.55,
+     "end": 2.7
+    },
+    {
+     "w": "accept",
+     "start": 2.7,
+     "end": 3.1
+    },
+    {
+     "w": "that.",
+     "start": 3.1,
+     "end": 3.7
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Fine, if tokens stay short-lived.",
+     "start": 0.4
+    },
+    {
+     "text": "I accept that.",
+     "start": 2.55
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.28
+   ]
+  },
+  {
+   "id": "s05",
+   "speaker": "a",
+   "narration": "Before we stop, here is the budget that all of this has to fit inside.",
+   "visual": {
+    "type": "callout",
+    "heading": "The budget",
+    "big": "200 ms",
+    "text": "Total time for one request"
+   },
+   "audio": "audio/stance/s05.wav",
+   "durationSec": 4.575,
+   "frames": 165,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Before",
+     "start": 0.25,
+     "end": 0.575
+    },
+    {
+     "w": "we",
+     "start": 0.575,
+     "end": 0.725
+    },
+    {
+     "w": "stop,",
+     "start": 0.725,
+     "end": 1.325
+    },
+    {
+     "w": "here",
+     "start": 1.462,
+     "end": 1.688
+    },
+    {
+     "w": "is",
+     "start": 1.688,
+     "end": 1.812
+    },
+    {
+     "w": "the",
+     "start": 1.812,
+     "end": 1.9
+    },
+    {
+     "w": "budget",
+     "start": 1.9,
+     "end": 2.3
+    },
+    {
+     "w": "that",
+     "start": 2.3,
+     "end": 2.487
+    },
+    {
+     "w": "all",
+     "start": 2.487,
+     "end": 2.688
+    },
+    {
+     "w": "of",
+     "start": 2.688,
+     "end": 2.775
+    },
+    {
+     "w": "this",
+     "start": 2.775,
+     "end": 3.0
+    },
+    {
+     "w": "has",
+     "start": 3.0,
+     "end": 3.2
+    },
+    {
+     "w": "to",
+     "start": 3.2,
+     "end": 3.325
+    },
+    {
+     "w": "fit",
+     "start": 3.325,
+     "end": 3.5
+    },
+    {
+     "w": "inside.",
+     "start": 3.5,
+     "end": 4.3
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Before we stop, here is the budget that all of this has to fit inside.",
+     "start": 0.25
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "speaker": "b",
+   "narration": "Why not a cache? Because a cache can serve a revoked account. I would rather wait for a fresh answer.",
+   "visual": {
+    "type": "stance",
+    "question": "Is a cache a safe shortcut for the check?",
+    "entries": [
+     {
+      "by": "a",
+      "text": "A cache makes the check cheap",
+      "kind": "claim"
+     },
+     {
+      "by": "b",
+      "text": "A cache can serve a revoked account",
+      "kind": "disagree",
+      "ref": 0
+     }
+    ]
+   },
+   "audio": "audio/stance/s06.wav",
+   "durationSec": 7.1,
+   "frames": 240,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Why",
+     "start": 0.375,
+     "end": 0.575
+    },
+    {
+     "w": "not",
+     "start": 0.575,
+     "end": 0.738
+    },
+    {
+     "w": "a",
+     "start": 0.738,
+     "end": 0.838
+    },
+    {
+     "w": "cache?",
+     "start": 0.838,
+     "end": 1.6
+    },
+    {
+     "w": "Because",
+     "start": 1.725,
+     "end": 2.013
+    },
+    {
+     "w": "a",
+     "start": 2.013,
+     "end": 2.112
+    },
+    {
+     "w": "cache",
+     "start": 2.112,
+     "end": 2.55
+    },
+    {
+     "w": "can",
+     "start": 2.55,
+     "end": 2.737
+    },
+    {
+     "w": "serve",
+     "start": 2.737,
+     "end": 3.075
+    },
+    {
+     "w": "a",
+     "start": 3.075,
+     "end": 3.175
+    },
+    {
+     "w": "revoked",
+     "start": 3.175,
+     "end": 3.625
+    },
+    {
+     "w": "account.",
+     "start": 3.625,
+     "end": 4.375
+    },
+    {
+     "w": "I",
+     "start": 4.487,
+     "end": 4.65
+    },
+    {
+     "w": "would",
+     "start": 4.65,
+     "end": 4.775
+    },
+    {
+     "w": "rather",
+     "start": 4.775,
+     "end": 5.138
+    },
+    {
+     "w": "wait",
+     "start": 5.138,
+     "end": 5.45
+    },
+    {
+     "w": "for",
+     "start": 5.45,
+     "end": 5.562
+    },
+    {
+     "w": "a",
+     "start": 5.562,
+     "end": 5.662
+    },
+    {
+     "w": "fresh",
+     "start": 5.662,
+     "end": 5.987
+    },
+    {
+     "w": "answer.",
+     "start": 5.987,
+     "end": 6.825
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Why not a cache?",
+     "start": 0.375
+    },
+    {
+     "text": "Because a cache can serve a revoked account.",
+     "start": 1.725
+    },
+    {
+     "text": "I would rather wait for a fresh answer.",
+     "start": 4.487
+    }
+   ],
+   "revealSec": [
+    0.718,
+    1.992,
+    2.617
+   ]
+  }
+ ]
+}

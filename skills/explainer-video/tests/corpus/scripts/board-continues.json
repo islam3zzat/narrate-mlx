@@ -1,0 +1,39 @@
+{
+  "layout": "whiteboard",
+  "title": "Board continues corpus",
+  "scenes": [
+    {
+      "id": "s01",
+      "narration": "A release starts with one rule. Every change is reviewed by a second person before it merges.",
+      "visual": {"type": "bullets", "heading": "Safe releases", "items": ["Review every change", "Run the tests"]}
+    },
+    {
+      "id": "s02",
+      "continues": true,
+      "narration": "Then the tests run on every branch, and the build is signed before anything ships to customers.",
+      "visual": {"type": "bullets", "heading": "Safe releases", "items": ["Review every change", "Run the tests", "Sign the build"]}
+    },
+    {
+      "id": "s03",
+      "continues": true,
+      "narration": "Finally we roll out to one percent of traffic, watch the dashboards, and keep a one click rollback ready.",
+      "visual": {"type": "bullets", "heading": "Safe releases", "items": ["Review every change", "Run the tests", "Sign the build", "Roll out slowly", "Keep rollback ready"]}
+    },
+    {
+      "id": "s04",
+      "narration": "Here is the path a change takes. It starts as a commit, and the pipeline builds it.",
+      "visual": {"type": "flow", "heading": "Path of a change", "nodes": [{"label": "Commit"}, {"label": "Build", "sub": "Pipeline"}]}
+    },
+    {
+      "id": "s05",
+      "continues": true,
+      "narration": "Next the build is deployed to a small canary group that serves real traffic for a while.",
+      "visual": {"type": "flow", "heading": "Path of a change", "nodes": [{"label": "Commit"}, {"label": "Build", "sub": "Pipeline"}, {"label": "Canary", "sub": "Small group"}]}
+    },
+    {
+      "id": "s06",
+      "narration": "That is the whole path. Small steps, each one checked, and nothing ships by surprise.",
+      "visual": {"type": "callout", "heading": "In short", "big": "Small checked steps", "text": "Nothing ships by surprise"}
+    }
+  ]
+}

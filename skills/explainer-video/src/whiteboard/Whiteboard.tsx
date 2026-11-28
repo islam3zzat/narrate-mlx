@@ -8,6 +8,9 @@ import {SceneBody} from '../visuals';
 import type {Scene, VideoData} from '../types';
 import {Annotations, HAND, INK, PAPER, clamp01} from '../sdk/annotate';
 import {buildBoard} from './layouts';
+import {boardPlan, type BoardPlan} from './chain';
+import {SpeakerTag} from '../SpeakerTag';
+import {SpeakersProvider, speakerOf, useSpeakers, type SpeakerInfo} from '../speakers';
 
 /** The paper theme with the hand font as its text face (fixed fallbacks to the bundled Space Grotesk, never a system font,
  * so glyphs the hand font lacks, such as arrows, still render the same on every machine). Mono stays Space Mono: code
@@ -27,6 +30,7 @@ const Subtitle: React.FC<{scene: Scene; frame: number}> = ({scene, frame}) => {
 };
 
 const WipeOut: React.FC<{frame: number; frames: number; last: boolean}> = ({frame, frames, last}) => {
+  // `last` is also true when the next scene continues this one: the board stays as it is across the cut
   const p = last ? 0 : clamp01((frame - (frames - 10)) / 10);
   if (p <= 0) return null;
   return <div style={{position: 'absolute', top: 0, bottom: 0, left: 0, width: p * 2000, background: PAPER, borderRight: `18px solid ${PAPER}`, boxShadow: '30px 0 40px 10px rgba(246,243,234,0.9)'}} />;
@@ -46,9 +50,10 @@ const Sketch: React.FC<{children: React.ReactNode; uid: string}> = ({children, u
   </AbsoluteFill>
 );
 
-export const BoardScene: React.FC<{scene: Scene; index: number; last: boolean; audio?: boolean}> = ({scene, index, last, audio = true}) => {
+export const BoardScene: React.FC<{scene: Scene; index: number; last: boolean; audio?: boolean; speaker?: SpeakerInfo; plan?: BoardPlan}> = ({scene, index, last, audio = true, speaker, plan}) => {
   const frame = useCurrentFrame();
-  const items = React.useMemo(() => buildBoard(scene.visual, scene, index + 1), [scene, index]);
+  const speakers = useSpeakers();
+  const items = React.useMemo(() => buildBoard(scene.visual, {...scene, ...plan?.ctx, speakers: speakers?.list, speaker: speakers?.current?.id}, plan?.seedIndex ?? index + 1), [scene, index, plan, speakers]);
   const audioFrames = Math.round(scene.durationSec * constants.fps);
   return (
     <AbsoluteFill style={{background: 'transparent'}}>
@@ -60,8 +65,9 @@ export const BoardScene: React.FC<{scene: Scene; index: number; last: boolean; a
           <SceneBody visual={scene.visual} frame={frame} lead={scene.leadFrames} audioFrames={audioFrames} reveal={scene.revealSec} focus={scene.focusSec} rendered={scene.mermaidRendered} figureAsset={scene.figureAsset} figureAspect={scene.figureAspect} />
         </Sketch>
       )}
+      {speaker && <SpeakerTag speaker={speaker} frame={frame} lead={scene.leadFrames} />}
       <Subtitle scene={scene} frame={frame} />
-      <WipeOut frame={frame} frames={scene.frames} last={last} />
+      <WipeOut frame={frame} frames={scene.frames} last={last || !!plan?.nextContinues} />
       {audio && <Sequence from={scene.leadFrames}><Audio src={staticFile(scene.audio)} /></Sequence>}
     </AbsoluteFill>
   );
@@ -89,6 +95,7 @@ export const PaperOverlay: React.FC = () => (
 export const WhiteboardExplainer: React.FC<{video: VideoData; frameMap?: number[]}> = ({video, frameMap}) => {
   const theme = boardTheme();
   let from = 0;
+  const plans = React.useMemo(() => video.scenes.map((_, i) => boardPlan(video.scenes, i)), [video]);
   const tree = (
     <ThemeContext.Provider value={theme}>
       <RtlContext.Provider value={false}>
@@ -96,7 +103,9 @@ export const WhiteboardExplainer: React.FC<{video: VideoData; frameMap?: number[
           {video.scenes.map((s, i) => {
             const el = (
               <Sequence key={s.id} from={from} durationInFrames={s.frames}>
-                <BoardScene scene={s} index={i} last={i === video.scenes.length - 1} />
+                <SpeakersProvider video={video} scene={s}>
+                  <BoardScene scene={s} index={i} last={i === video.scenes.length - 1} speaker={speakerOf(video, s)} plan={plans[i]} />
+                </SpeakersProvider>
               </Sequence>
             );
             from += s.frames;

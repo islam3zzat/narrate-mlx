@@ -1,0 +1,118 @@
+{
+  "title": "Notes board corpus",
+  "speakers": {
+    "a": {
+      "name": "Dana",
+      "role": "Principal Security Engineer",
+      "voice": "af_heart"
+    },
+    "b": {
+      "name": "Omar",
+      "role": "Principal Architect",
+      "voice": "am_michael"
+    }
+  },
+  "layout": "whiteboard",
+  "scenes": [
+    {
+      "id": "s01",
+      "speaker": "a",
+      "narration": "Let me close with what we agreed. Verify tokens at the edge, and keep tokens short-lived.",
+      "visual": {
+        "type": "notes",
+        "heading": "Takeaways",
+        "items": [
+          {
+            "text": "Verify tokens at the edge",
+            "by": "a"
+          },
+          {
+            "text": "Keep tokens short-lived",
+            "by": "b"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "speaker": "b",
+      "narration": "Dana also insisted that we check every write in full, and I accept that.",
+      "visual": {
+        "type": "notes",
+        "heading": "Takeaways",
+        "items": [
+          {
+            "text": "Verify tokens at the edge",
+            "by": "a"
+          },
+          {
+            "text": "Keep tokens short-lived",
+            "by": "b"
+          },
+          {
+            "text": "Check every write in full",
+            "by": "a"
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s03",
+      "speaker": "a",
+      "narration": "One more, which both of us share. Measure the added latency, so the next review has numbers.",
+      "visual": {
+        "type": "notes",
+        "heading": "Takeaways",
+        "items": [
+          {
+            "text": "Verify tokens at the edge",
+            "by": "a"
+          },
+          {
+            "text": "Keep tokens short-lived",
+            "by": "b"
+          },
+          {
+            "text": "Check every write in full",
+            "by": "a"
+          },
+          {
+            "text": "Measure the added latency"
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s04",
+      "speaker": "b",
+      "narration": "Before we stop, here is the budget that all of this has to fit inside.",
+      "visual": {
+        "type": "callout",
+        "heading": "The budget",
+        "big": "200 ms",
+        "text": "Total time for one request"
+      }
+    },
+    {
+      "id": "s05",
+      "speaker": "a",
+      "narration": "Two questions stay open. How long a token may live, and who owns the deny list.",
+      "visual": {
+        "type": "notes",
+        "heading": "Open questions",
+        "items": [
+          {
+            "text": "How long a token may live",
+            "by": "b"
+          },
+          {
+            "text": "Who owns the deny list",
+            "by": "a"
+          }
+        ]
+      }
+    }
+  ]
+}

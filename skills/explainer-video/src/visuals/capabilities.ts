@@ -29,6 +29,9 @@ import {capabilities as ablation} from './ablation/capabilities';
 import {capabilities as matrix} from './matrix/capabilities';
 import {capabilities as equation} from './equation/capabilities';
 import {capabilities as figure} from './figure/capabilities';
+import {capabilities as duo} from './duo/capabilities';
+import {capabilities as notes} from './notes/capabilities';
+import {capabilities as stance} from './stance/capabilities';
 import {capabilities as arrayAlgo} from './array-algo/capabilities';
 import {capabilities as graphAlgo} from './graph-algo/capabilities';
 
@@ -37,6 +40,10 @@ export type Capabilities = {
   modes: readonly ('2d' | '3d')[];
   /** The scene may set `continues` (carry the previous scene's diagram across the cut): false, or '2d' (not in 3D yet). Only types whose parts have ids (graph, class, sequence). */
   continues: false | '2d';
+  /** The scene may set `continues` on the whiteboard layout only (needs a board.ts): the leading reveal slots shared with the previous scene (semantics.ts) are drawn already finished, in place. Ignored when `continues` is '2d'. */
+  boardContinues?: true;
+  /** The type belongs to dialogue videos: a script without `speakers` cannot use it (schema.ts rejects it). */
+  needsSpeakers?: true;
   /** The scene may set `focus`: 'both' in 2D and 3D, '2d' only in 2D (mermaid, whose 3D view is flat), false never. */
   focus: false | '2d' | 'both';
   /** Arabic (right to left): 'yes' laid out mirrored, 'warn' drawn but not mirrored (the type's lint then says what to do). */
@@ -75,6 +82,9 @@ export const BUILTIN_CAPABILITIES = {
   matrix,
   equation,
   figure,
+  duo,
+  notes,
+  stance,
   'array-algo': arrayAlgo,
   'graph-algo': graphAlgo,
 } satisfies Record<string, Capabilities>;
@@ -85,12 +95,19 @@ export const CAPABILITIES = {
   ...LOCAL_CAPABILITIES,
 } satisfies Record<string, Capabilities>;
 export type CapType = keyof typeof CAPABILITIES;
+
+/** Built-in types that draw themselves on the whiteboard layout (each has a src/visuals/<type>/board.ts; the dispatch is boards.ts). */
+export const WHITEBOARD_DRAWN_TYPES = ['title', 'bullets', 'compare', 'steps', 'flow', 'fanout', 'callout', 'duo', 'notes', 'stance'] as const;
 const entries = Object.entries(CAPABILITIES) as [CapType, Capabilities][];
 const typesWhere = (f: (c: Capabilities) => boolean) => entries.filter(([, c]) => f(c)).map(([t]) => t);
 type TypesWhere<C> = {[T in CapType]: (typeof CAPABILITIES)[T] extends C ? T : never}[CapType];
 
 /** Types whose parts have ids (graph, class, sequence): they support `continues` and ids in `focus`. */
 export const DIAGRAM_TYPES = typesWhere((c) => c.continues !== false) as TypesWhere<{continues: '2d'}>[];
+/** Types whose `continues` is honoured by the whiteboard layout only (they carry leading reveal slots; see semantics.ts). */
+export const BOARD_CONTINUES_TYPES: readonly string[] = typesWhere((c) => c.boardContinues === true);
+/** Types that only exist in dialogue videos (the script must declare `speakers`). */
+export const DIALOGUE_TYPES: readonly string[] = typesWhere((c) => c.needsSpeakers === true);
 /** Types that only exist in 3D scripts. */
 export const THREE_D_TYPES = typesWhere((c) => !c.modes.includes('2d')) as TypesWhere<{modes: readonly ['3d']}>[];
 /** How the 3D overlay renders a visual type's heading ('banner' by default, or 'badge' for callout). */

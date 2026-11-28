@@ -31,6 +31,9 @@ import {View2D as Figure2D} from './figure/View2D';
 import {View2D as Graph2D} from './graph/View2D';
 import {View2D as Class2D} from './class/View2D';
 import {View2D as Sequence2D} from './sequence/View2D';
+import {View2D as Duo2D} from './duo/View2D';
+import {View2D as Notes2D} from './notes/View2D';
+import {View2D as Stance2D} from './stance/View2D';
 
 // Heavy & extension 2D views code-split on demand
 const Mermaid2D = lazyView<View2DProps<'mermaid'>>(() => import('./mermaid/View2D').then((m) => ({default: m.View2D})), 'mermaid-2d');
@@ -93,6 +96,9 @@ const BUILTIN_VIEWS: {[T in BuiltinVisualType]: ViewSet<T>} = {
   matrix: {View2D: Matrix2D, View3D: null},
   equation: {View2D: Equation2D, View3D: null},
   figure: {View2D: Figure2D, View3D: null},
+  duo: {View2D: Duo2D, View3D: null},
+  notes: {View2D: Notes2D, View3D: null},
+  stance: {View2D: Stance2D, View3D: null},
   'array-algo': {View2D: ArrayAlgo2D, View3D: null},
   'graph-algo': {View2D: GraphAlgo2D, View3D: null},
 };

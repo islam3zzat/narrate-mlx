@@ -8,6 +8,8 @@ import {lazyView} from './visuals/views';
 import {useRtl} from './rtl';
 import {useTheme} from './theme';
 import {headingStyleOf, THREE_D_TYPES} from './visuals/capabilities';
+import {SpeakerTag} from './SpeakerTag';
+import type {SpeakerInfo} from './speakers';
 import type {Scene, Visual} from './types';
 
 const LazyScene3DHost = lazyView(() => import('./three/Scene3DHost'), '3d-host');
@@ -29,6 +31,8 @@ export type SceneChromeProps = {
   mode3d: boolean;
   frame: number;
   audioFrames: number;
+  /** Dialogue videos only: who speaks this scene. Nothing is drawn when absent. */
+  speaker?: SpeakerInfo;
   children?: React.ReactNode;
 };
 
@@ -44,6 +48,7 @@ export const SceneChrome: React.FC<SceneChromeProps> = ({
   mode3d,
   frame,
   audioFrames,
+  speaker,
   children,
 }) => {
   const rtl = useRtl();
@@ -100,6 +105,7 @@ export const SceneChrome: React.FC<SceneChromeProps> = ({
       <AbsoluteFill style={{opacity: fade, padding: '120px 110px 230px 110px'}}>
         <SceneBody visual={scene.visual} frame={frame} lead={scene.leadFrames} audioFrames={audioFrames} reveal={scene.revealSec} prev={prev} focus={scene.focusSec} textOnly={mode3d} rendered={scene.mermaidRendered} figureAsset={scene.figureAsset} figureAspect={scene.figureAspect} />
       </AbsoluteFill>
+      {speaker && <SpeakerTag speaker={speaker} frame={frame} lead={scene.leadFrames} fade={fade} place="above-captions" />}
       <Captions text={scene.narration} frame={frame} lead={scene.leadFrames} audioFrames={audioFrames} aligned={scene.sentences} />
     </AbsoluteFill>
   );

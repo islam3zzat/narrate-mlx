@@ -1,0 +1,107 @@
+{
+  "title": "Gate every request (board)",
+  "style": "podcast",
+  "speakers": {
+    "a": {
+      "name": "Dana",
+      "role": "Principal Security Engineer",
+      "voice": "af_heart"
+    },
+    "b": {
+      "name": "Omar",
+      "role": "Principal Architect",
+      "voice": "am_michael"
+    }
+  },
+  "scenes": [
+    {
+      "id": "s01",
+      "section": "hook",
+      "speaker": "a",
+      "narration": "Should we put the login service in front of every request? I say yes, because one missed check is a breach.",
+      "visual": {
+        "type": "title",
+        "kicker": "Podcast",
+        "headline": "Gate every request?",
+        "sub": "Security against speed"
+      }
+    },
+    {
+      "id": "s02",
+      "section": "setup",
+      "speaker": "b",
+      "narration": "Hold on. Every request means one more network hop, and our budget is two hundred milliseconds in total.",
+      "visual": {
+        "type": "callout",
+        "heading": "The budget",
+        "big": "200 ms",
+        "text": "Total time for one request"
+      }
+    },
+    {
+      "id": "s03",
+      "section": "exchange",
+      "speaker": "a",
+      "narration": "Then check only at the edge. A signed token is verified in under a millisecond, so the hop to the service costs nothing.",
+      "visual": {
+        "type": "flow",
+        "heading": "Where the check happens",
+        "nodes": [
+          {
+            "label": "Client",
+            "sub": "sends a token"
+          },
+          {
+            "label": "Edge check",
+            "sub": "verifies it"
+          },
+          {
+            "label": "Service",
+            "sub": "does the work"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "section": "disagreement",
+      "speaker": "b",
+      "narration": "Tokens can outlive revoked accounts. That is the gap I worry about. How long do you let a stale token live?",
+      "visual": {
+        "type": "bullets",
+        "heading": "Open question",
+        "items": [
+          "Revoked accounts",
+          "Stale token window"
+        ]
+      }
+    },
+    {
+      "id": "s05",
+      "section": "resolution",
+      "speaker": "a",
+      "narration": "Five minutes, so every token is short-lived. A deny list at the edge handles revocation, and writes get a full check. Speed, with a short window.",
+      "visual": {
+        "type": "steps",
+        "heading": "The compromise",
+        "items": [
+          "Short-lived tokens",
+          "Deny list at the edge",
+          "Full check on writes"
+        ]
+      }
+    },
+    {
+      "id": "s06",
+      "section": "close",
+      "speaker": "b",
+      "narration": "Fine, I accept that. Remember three things: verify at the edge, keep tokens short, and check writes in full.",
+      "visual": {
+        "type": "callout",
+        "heading": "Remember",
+        "big": "Edge + five minutes",
+        "text": "Full check on every write"
+      }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok notes: 5 scenes, 78 words, about 30s
+--stderr--

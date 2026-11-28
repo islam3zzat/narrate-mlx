@@ -21,6 +21,9 @@ export type CatalogVariant<T extends VisualType> = {
   focus?: CatalogFocusCue[];
   durationSec?: number;
   prev?: ScriptVisual;
+  /** Dialogue visuals: the two speakers of the fixture (id -> name and role, in script order) and the id of whoever speaks the scene. */
+  speakers?: Record<string, {name: string; role: string}>;
+  speaker?: string;
   mermaidRendered?: {svg?: string; layout?: unknown};
   figureAsset?: string;
 };

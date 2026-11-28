@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok duo: 4 scenes, 82 words, about 32s
+--stderr--

@@ -12,6 +12,7 @@ import type {Scene} from './types';
 import type {MermaidRendered, Visual} from './types';
 import {CAPABILITIES, THREE_D_TYPES} from './visuals/capabilities';
 import type {CatalogFocusCue} from './visuals/catalog-types';
+import {SpeakersProvider, useSpeakers} from './speakers';
 import {REGISTRY, describe as describeVisual, type VisualType} from './visuals/registry';
 
 export type CatalogSceneProps = {
@@ -30,6 +31,9 @@ export type CatalogSceneProps = {
   figureAsset?: string;
   figureAspect?: number;
   prev?: Visual;
+  /** Dialogue visuals: the fixture's speakers (id -> name and role, in script order) and who speaks the scene; absent = a video without speakers. */
+  speakers?: Record<string, {name: string; role: string}>;
+  speaker?: string;
 };
 
 const CatalogInner: React.FC<CatalogSceneProps & {board: boolean}> = ({
@@ -46,6 +50,8 @@ const CatalogInner: React.FC<CatalogSceneProps & {board: boolean}> = ({
   prev,
 }) => {
   const frame = useCurrentFrame();
+  const speakerNow = useSpeakers()?.current;
+  const speaker = speakerNow && {name: speakerNow.name, role: speakerNow.role, index: speakerNow.index};
   const {durationInFrames} = useVideoConfig();
   const {C, FONT, MONO, BORDER, shadow} = useTheme();
 
@@ -101,7 +107,7 @@ const CatalogInner: React.FC<CatalogSceneProps & {board: boolean}> = ({
     };
     return (
       <AbsoluteFill style={{background: PAPER, fontFamily: HAND, color: INK}}>
-        <BoardScene scene={scene} index={0} last audio={false} />
+        <BoardScene scene={scene} index={0} last audio={false} speaker={speaker} />
         <div style={{position: 'absolute', top: 28, right: 40, fontFamily: HAND, fontSize: 26, color: INK, opacity: 0.45}}>{`${type} · whiteboard`}</div>
         <PaperOverlay />
       </AbsoluteFill>
@@ -128,6 +134,7 @@ const CatalogInner: React.FC<CatalogSceneProps & {board: boolean}> = ({
       mode3d={is3d}
       frame={frame}
       audioFrames={audioFrames}
+      speaker={speaker}
     />
   );
 };
@@ -151,11 +158,13 @@ export const CatalogScene: React.FC<CatalogSceneProps> = (props) => {
   const fontsReady = useFontGate(rtl, 'catalog-fonts');
   if (!fontsReady) return <AbsoluteFill style={{background: theme.C.bg}} />;
 
+  const video = props.speakers && {speakers: Object.fromEntries(Object.entries(props.speakers).map(([id, s]) => [id, {...s, voice: ''}]))};
   const inner = <CatalogInner {...props} board={board} />;
+  const scoped = video ? <SpeakersProvider video={video} scene={{speaker: props.speaker}}>{inner}</SpeakersProvider> : inner;
   return (
     <ThemeContext.Provider value={theme}>
       <RtlContext.Provider value={rtl}>
-        {board ? inner : <ChromeBackdrop>{inner}</ChromeBackdrop>}
+        {board ? scoped : <ChromeBackdrop>{scoped}</ChromeBackdrop>}
       </RtlContext.Provider>
     </ThemeContext.Provider>
   );

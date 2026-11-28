@@ -1,0 +1,73 @@
+{
+  "title": "Notes slides corpus",
+  "speakers": {
+    "a": {
+      "name": "Dana",
+      "role": "Principal Security Engineer",
+      "voice": "af_heart"
+    },
+    "b": {
+      "name": "Omar",
+      "role": "Principal Architect",
+      "voice": "am_michael"
+    }
+  },
+  "layout": "slides",
+  "scenes": [
+    {
+      "id": "s01",
+      "speaker": "a",
+      "narration": "Let me close with what we agreed. Verify tokens at the edge, keep tokens short-lived, check every write in full, and measure the added latency.",
+      "visual": {
+        "type": "notes",
+        "heading": "Takeaways",
+        "items": [
+          {
+            "text": "Verify tokens at the edge",
+            "by": "a"
+          },
+          {
+            "text": "Keep tokens short-lived",
+            "by": "b"
+          },
+          {
+            "text": "Check every write in full",
+            "by": "a"
+          },
+          {
+            "text": "Measure the added latency"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "speaker": "b",
+      "narration": "Before we stop, here is the budget that all of this has to fit inside.",
+      "visual": {
+        "type": "callout",
+        "heading": "The budget",
+        "big": "200 ms",
+        "text": "Total time for one request"
+      }
+    },
+    {
+      "id": "s03",
+      "speaker": "b",
+      "narration": "Two questions stay open. How long a token may live, and who owns the deny list.",
+      "visual": {
+        "type": "notes",
+        "heading": "Open questions",
+        "items": [
+          {
+            "text": "How long a token may live",
+            "by": "b"
+          },
+          {
+            "text": "Who owns the deny list"
+          }
+        ]
+      }
+    }
+  ]
+}

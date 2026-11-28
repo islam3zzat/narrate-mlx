@@ -1,0 +1,722 @@
+{
+ "id": "board-continues",
+ "title": "Board continues corpus",
+ "language": "en",
+ "dir": "ltr",
+ "mode": "2d",
+ "layout": "whiteboard",
+ "fps": 30,
+ "totalFrames": 1225,
+ "scenes": [
+  {
+   "id": "s01",
+   "narration": "A release starts with one rule. Every change is reviewed by a second person before it merges.",
+   "visual": {
+    "type": "bullets",
+    "heading": "Safe releases",
+    "items": [
+     "Review every change",
+     "Run the tests"
+    ]
+   },
+   "audio": "audio/board-continues/s01.wav",
+   "durationSec": 6.175,
+   "frames": 213,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "A",
+     "start": 0.275,
+     "end": 0.35
+    },
+    {
+     "w": "release",
+     "start": 0.35,
+     "end": 0.775
+    },
+    {
+     "w": "starts",
+     "start": 0.775,
+     "end": 1.137
+    },
+    {
+     "w": "with",
+     "start": 1.137,
+     "end": 1.312
+    },
+    {
+     "w": "one",
+     "start": 1.312,
+     "end": 1.575
+    },
+    {
+     "w": "rule.",
+     "start": 1.575,
+     "end": 2.225
+    },
+    {
+     "w": "Every",
+     "start": 2.362,
+     "end": 2.712
+    },
+    {
+     "w": "change",
+     "start": 2.712,
+     "end": 3.112
+    },
+    {
+     "w": "is",
+     "start": 3.112,
+     "end": 3.225
+    },
+    {
+     "w": "reviewed",
+     "start": 3.225,
+     "end": 3.7
+    },
+    {
+     "w": "by",
+     "start": 3.7,
+     "end": 3.85
+    },
+    {
+     "w": "a",
+     "start": 3.85,
+     "end": 3.962
+    },
+    {
+     "w": "second",
+     "start": 3.962,
+     "end": 4.3
+    },
+    {
+     "w": "person",
+     "start": 4.3,
+     "end": 4.775
+    },
+    {
+     "w": "before",
+     "start": 4.775,
+     "end": 5.138
+    },
+    {
+     "w": "it",
+     "start": 5.138,
+     "end": 5.225
+    },
+    {
+     "w": "merges.",
+     "start": 5.225,
+     "end": 5.925
+    }
+   ],
+   "sentences": [
+    {
+     "text": "A release starts with one rule.",
+     "start": 0.275
+    },
+    {
+     "text": "Every change is reviewed by a second person before it merges.",
+     "start": 2.362
+    }
+   ],
+   "revealSec": [
+    2.242,
+    3.58
+   ]
+  },
+  {
+   "id": "s02",
+   "continues": true,
+   "narration": "Then the tests run on every branch, and the build is signed before anything ships to customers.",
+   "visual": {
+    "type": "bullets",
+    "heading": "Safe releases",
+    "items": [
+     "Review every change",
+     "Run the tests",
+     "Sign the build"
+    ]
+   },
+   "audio": "audio/board-continues/s02.wav",
+   "durationSec": 5.875,
+   "frames": 204,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Then",
+     "start": 0.275,
+     "end": 0.438
+    },
+    {
+     "w": "the",
+     "start": 0.438,
+     "end": 0.537
+    },
+    {
+     "w": "tests",
+     "start": 0.537,
+     "end": 1.012
+    },
+    {
+     "w": "run",
+     "start": 1.012,
+     "end": 1.288
+    },
+    {
+     "w": "on",
+     "start": 1.288,
+     "end": 1.462
+    },
+    {
+     "w": "every",
+     "start": 1.462,
+     "end": 1.775
+    },
+    {
+     "w": "branch,",
+     "start": 1.775,
+     "end": 2.5
+    },
+    {
+     "w": "and",
+     "start": 2.625,
+     "end": 2.737
+    },
+    {
+     "w": "the",
+     "start": 2.737,
+     "end": 2.825
+    },
+    {
+     "w": "build",
+     "start": 2.825,
+     "end": 3.1
+    },
+    {
+     "w": "is",
+     "start": 3.1,
+     "end": 3.237
+    },
+    {
+     "w": "signed",
+     "start": 3.237,
+     "end": 3.575
+    },
+    {
+     "w": "before",
+     "start": 3.575,
+     "end": 3.913
+    },
+    {
+     "w": "anything",
+     "start": 3.913,
+     "end": 4.338
+    },
+    {
+     "w": "ships",
+     "start": 4.338,
+     "end": 4.65
+    },
+    {
+     "w": "to",
+     "start": 4.65,
+     "end": 4.75
+    },
+    {
+     "w": "customers.",
+     "start": 4.75,
+     "end": 5.625
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Then the tests run on every branch, and the build is signed before anything ships to customers.",
+     "start": 0.275
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    2.705
+   ]
+  },
+  {
+   "id": "s03",
+   "continues": true,
+   "narration": "Finally we roll out to one percent of traffic, watch the dashboards, and keep a one click rollback ready.",
+   "visual": {
+    "type": "bullets",
+    "heading": "Safe releases",
+    "items": [
+     "Review every change",
+     "Run the tests",
+     "Sign the build",
+     "Roll out slowly",
+     "Keep rollback ready"
+    ]
+   },
+   "audio": "audio/board-continues/s03.wav",
+   "durationSec": 6.9,
+   "frames": 234,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Finally",
+     "start": 0.3,
+     "end": 0.75
+    },
+    {
+     "w": "we",
+     "start": 0.75,
+     "end": 0.9
+    },
+    {
+     "w": "roll",
+     "start": 0.9,
+     "end": 1.175
+    },
+    {
+     "w": "out",
+     "start": 1.175,
+     "end": 1.375
+    },
+    {
+     "w": "to",
+     "start": 1.375,
+     "end": 1.5
+    },
+    {
+     "w": "one",
+     "start": 1.5,
+     "end": 1.7
+    },
+    {
+     "w": "percent",
+     "start": 1.7,
+     "end": 2.013
+    },
+    {
+     "w": "of",
+     "start": 2.013,
+     "end": 2.1
+    },
+    {
+     "w": "traffic,",
+     "start": 2.1,
+     "end": 2.9
+    },
+    {
+     "w": "watch",
+     "start": 3.038,
+     "end": 3.35
+    },
+    {
+     "w": "the",
+     "start": 3.35,
+     "end": 3.45
+    },
+    {
+     "w": "dashboards,",
+     "start": 3.45,
+     "end": 4.4
+    },
+    {
+     "w": "and",
+     "start": 4.5,
+     "end": 4.625
+    },
+    {
+     "w": "keep",
+     "start": 4.625,
+     "end": 4.812
+    },
+    {
+     "w": "a",
+     "start": 4.812,
+     "end": 4.925
+    },
+    {
+     "w": "one",
+     "start": 4.925,
+     "end": 5.237
+    },
+    {
+     "w": "click",
+     "start": 5.237,
+     "end": 5.5
+    },
+    {
+     "w": "rollback",
+     "start": 5.5,
+     "end": 6.025
+    },
+    {
+     "w": "ready.",
+     "start": 6.025,
+     "end": 6.65
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Finally we roll out to one percent of traffic, watch the dashboards, and keep a one click rollback ready.",
+     "start": 0.3
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    0.0,
+    0.78,
+    4.505
+   ]
+  },
+  {
+   "id": "s04",
+   "narration": "Here is the path a change takes. It starts as a commit, and the pipeline builds it.",
+   "visual": {
+    "type": "flow",
+    "heading": "Path of a change",
+    "nodes": [
+     {
+      "label": "Commit"
+     },
+     {
+      "label": "Build",
+      "sub": "Pipeline"
+     }
+    ]
+   },
+   "audio": "audio/board-continues/s04.wav",
+   "durationSec": 5.3,
+   "frames": 186,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Here",
+     "start": 0.275,
+     "end": 0.525
+    },
+    {
+     "w": "is",
+     "start": 0.525,
+     "end": 0.662
+    },
+    {
+     "w": "the",
+     "start": 0.662,
+     "end": 0.762
+    },
+    {
+     "w": "path",
+     "start": 0.762,
+     "end": 1.137
+    },
+    {
+     "w": "a",
+     "start": 1.137,
+     "end": 1.238
+    },
+    {
+     "w": "change",
+     "start": 1.238,
+     "end": 1.6
+    },
+    {
+     "w": "takes.",
+     "start": 1.6,
+     "end": 2.3
+    },
+    {
+     "w": "It",
+     "start": 2.4,
+     "end": 2.55
+    },
+    {
+     "w": "starts",
+     "start": 2.55,
+     "end": 2.888
+    },
+    {
+     "w": "as",
+     "start": 2.888,
+     "end": 2.987
+    },
+    {
+     "w": "a",
+     "start": 2.987,
+     "end": 3.05
+    },
+    {
+     "w": "commit,",
+     "start": 3.05,
+     "end": 3.575
+    },
+    {
+     "w": "and",
+     "start": 3.65,
+     "end": 3.763
+    },
+    {
+     "w": "the",
+     "start": 3.763,
+     "end": 3.85
+    },
+    {
+     "w": "pipeline",
+     "start": 3.85,
+     "end": 4.325
+    },
+    {
+     "w": "builds",
+     "start": 4.325,
+     "end": 4.625
+    },
+    {
+     "w": "it.",
+     "start": 4.625,
+     "end": 5.05
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Here is the path a change takes.",
+     "start": 0.275
+    },
+    {
+     "text": "It starts as a commit, and the pipeline builds it.",
+     "start": 2.4
+    }
+   ],
+   "revealSec": [
+    2.93,
+    3.73
+   ]
+  },
+  {
+   "id": "s05",
+   "continues": true,
+   "narration": "Next the build is deployed to a small canary group that serves real traffic for a while.",
+   "visual": {
+    "type": "flow",
+    "heading": "Path of a change",
+    "nodes": [
+     {
+      "label": "Commit"
+     },
+     {
+      "label": "Build",
+      "sub": "Pipeline"
+     },
+     {
+      "label": "Canary",
+      "sub": "Small group"
+     }
+    ]
+   },
+   "audio": "audio/board-continues/s05.wav",
+   "durationSec": 5.6,
+   "frames": 195,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "Next",
+     "start": 0.325,
+     "end": 0.613
+    },
+    {
+     "w": "the",
+     "start": 0.613,
+     "end": 0.7
+    },
+    {
+     "w": "build",
+     "start": 0.7,
+     "end": 0.975
+    },
+    {
+     "w": "is",
+     "start": 0.975,
+     "end": 1.125
+    },
+    {
+     "w": "deployed",
+     "start": 1.125,
+     "end": 1.65
+    },
+    {
+     "w": "to",
+     "start": 1.65,
+     "end": 1.738
+    },
+    {
+     "w": "a",
+     "start": 1.738,
+     "end": 1.85
+    },
+    {
+     "w": "small",
+     "start": 1.85,
+     "end": 2.25
+    },
+    {
+     "w": "canary",
+     "start": 2.25,
+     "end": 2.675
+    },
+    {
+     "w": "group",
+     "start": 2.675,
+     "end": 3.275
+    },
+    {
+     "w": "that",
+     "start": 3.275,
+     "end": 3.475
+    },
+    {
+     "w": "serves",
+     "start": 3.475,
+     "end": 3.837
+    },
+    {
+     "w": "real",
+     "start": 3.837,
+     "end": 4.125
+    },
+    {
+     "w": "traffic",
+     "start": 4.125,
+     "end": 4.55
+    },
+    {
+     "w": "for",
+     "start": 4.55,
+     "end": 4.662
+    },
+    {
+     "w": "a",
+     "start": 4.662,
+     "end": 4.725
+    },
+    {
+     "w": "while.",
+     "start": 4.725,
+     "end": 5.35
+    }
+   ],
+   "sentences": [
+    {
+     "text": "Next the build is deployed to a small canary group that serves real traffic for a while.",
+     "start": 0.325
+    }
+   ],
+   "revealSec": [
+    0.0,
+    0.0,
+    1.73
+   ]
+  },
+  {
+   "id": "s06",
+   "narration": "That is the whole path. Small steps, each one checked, and nothing ships by surprise.",
+   "visual": {
+    "type": "callout",
+    "heading": "In short",
+    "big": "Small checked steps",
+    "text": "Nothing ships by surprise"
+   },
+   "audio": "audio/board-continues/s06.wav",
+   "durationSec": 5.525,
+   "frames": 193,
+   "leadFrames": 10,
+   "words": [
+    {
+     "w": "That",
+     "start": 0.275,
+     "end": 0.475
+    },
+    {
+     "w": "is",
+     "start": 0.475,
+     "end": 0.613
+    },
+    {
+     "w": "the",
+     "start": 0.613,
+     "end": 0.7
+    },
+    {
+     "w": "whole",
+     "start": 0.7,
+     "end": 0.925
+    },
+    {
+     "w": "path.",
+     "start": 0.925,
+     "end": 1.575
+    },
+    {
+     "w": "Small",
+     "start": 1.712,
+     "end": 2.025
+    },
+    {
+     "w": "steps,",
+     "start": 2.025,
+     "end": 2.5
+    },
+    {
+     "w": "each",
+     "start": 2.575,
+     "end": 2.8
+    },
+    {
+     "w": "one",
+     "start": 2.8,
+     "end": 3.038
+    },
+    {
+     "w": "checked,",
+     "start": 3.038,
+     "end": 3.425
+    },
+    {
+     "w": "and",
+     "start": 3.462,
+     "end": 3.575
+    },
+    {
+     "w": "nothing",
+     "start": 3.575,
+     "end": 3.938
+    },
+    {
+     "w": "ships",
+     "start": 3.938,
+     "end": 4.25
+    },
+    {
+     "w": "by",
+     "start": 4.25,
+     "end": 4.425
+    },
+    {
+     "w": "surprise.",
+     "start": 4.425,
+     "end": 5.275
+    }
+   ],
+   "sentences": [
+    {
+     "text": "That is the whole path.",
+     "start": 0.275
+    },
+    {
+     "text": "Small steps, each one checked, and nothing ships by surprise.",
+     "start": 1.712
+    }
+   ]
+  }
+ ]
+}

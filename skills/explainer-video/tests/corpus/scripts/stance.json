@@ -1,0 +1,152 @@
+{
+  "title": "Stance board corpus",
+  "speakers": {
+    "a": {
+      "name": "Dana",
+      "role": "Principal Security Engineer",
+      "voice": "af_heart"
+    },
+    "b": {
+      "name": "Omar",
+      "role": "Principal Architect",
+      "voice": "am_michael"
+    }
+  },
+  "layout": "whiteboard",
+  "scenes": [
+    {
+      "id": "s01",
+      "speaker": "a",
+      "narration": "Yes. One missed check is a breach, so the login service must sit in front of every request.",
+      "visual": {
+        "type": "stance",
+        "question": "Should the login service sit in front of every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Yes, one missed check is a breach",
+            "kind": "claim"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "speaker": "b",
+      "narration": "I disagree. Another hop blows the two hundred millisecond budget.",
+      "visual": {
+        "type": "stance",
+        "question": "Should the login service sit in front of every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Yes, one missed check is a breach",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "Another hop blows the 200 ms budget",
+            "kind": "disagree",
+            "ref": 0
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s03",
+      "speaker": "a",
+      "narration": "Then verify signed tokens at the edge. The extra hop costs nothing.",
+      "visual": {
+        "type": "stance",
+        "question": "Should the login service sit in front of every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Yes, one missed check is a breach",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "Another hop blows the 200 ms budget",
+            "kind": "disagree",
+            "ref": 0
+          },
+          {
+            "by": "a",
+            "text": "Verify signed tokens at the edge",
+            "kind": "claim"
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s04",
+      "speaker": "b",
+      "narration": "Fine, if tokens stay short-lived. I accept that.",
+      "visual": {
+        "type": "stance",
+        "question": "Should the login service sit in front of every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Yes, one missed check is a breach",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "Another hop blows the 200 ms budget",
+            "kind": "disagree",
+            "ref": 0
+          },
+          {
+            "by": "a",
+            "text": "Verify signed tokens at the edge",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "Fine, if tokens stay short-lived",
+            "kind": "resolve",
+            "ref": 1
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s05",
+      "speaker": "a",
+      "narration": "Before we stop, here is the budget that all of this has to fit inside.",
+      "visual": {
+        "type": "callout",
+        "heading": "The budget",
+        "big": "200 ms",
+        "text": "Total time for one request"
+      }
+    },
+    {
+      "id": "s06",
+      "speaker": "b",
+      "narration": "Why not a cache? Because a cache can serve a revoked account. I would rather wait for a fresh answer.",
+      "visual": {
+        "type": "stance",
+        "question": "Is a cache a safe shortcut for the check?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "A cache makes the check cheap",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "A cache can serve a revoked account",
+            "kind": "disagree",
+            "ref": 0
+          }
+        ]
+      }
+    }
+  ]
+}

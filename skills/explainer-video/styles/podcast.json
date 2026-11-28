@@ -1,0 +1,64 @@
+{
+  "name": "podcast",
+  "description": "Two experts talk a topic through: a spoken dialogue with a name tag on screen, one scene per turn. Each turn adds a fact, challenges, or builds; real disagreements get resolved. For listeners who want to hear the trade-offs argued, not lectured.",
+  "audience": "a listener who wants to hear two informed people argue a topic through, then know what to think",
+  "defaults": {
+    "speed": 1.0
+  },
+  "bounds": {
+    "scenes": [
+      8,
+      80
+    ],
+    "seconds": [
+      90,
+      900
+    ],
+    "wordsPerScene": [
+      10,
+      45
+    ]
+  },
+  "preferredVisuals": [
+    "title",
+    "callout",
+    "compare",
+    "bullets",
+    "steps",
+    "flow",
+    "fanout",
+    "graph",
+    "sequence",
+    "table",
+    "timeline",
+    "mermaid",
+    "duo",
+    "stance",
+    "notes"
+  ],
+  "ledger": {
+    "required": false,
+    "kinds": [],
+    "mustCover": [],
+    "coverHigh": false,
+    "allowDeferred": false
+  },
+  "sections": [
+    "hook",
+    "setup",
+    "exchange",
+    "disagreement",
+    "resolution",
+    "close"
+  ],
+  "lint": {
+    "blameless": true
+  },
+  "dialogue": {
+    "speakers": 2,
+    "maxConsecutive": 2,
+    "minShare": 0.3,
+    "maxDuo": 3,
+    "stanceFrom": 12
+  }
+}

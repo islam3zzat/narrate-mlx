@@ -106,11 +106,20 @@ class SpeakCliTests(unittest.TestCase):
             ["speak.py", "--lang", "ar", "--model", "kokoro", "مرحبا"],
             ["speak.py", "--lang", "en", "--diacritize", "hello"],
             ["speak.py", "```python\nx = 1\n```"],
+            ["speak.py", "--lang", "en", "--voice", "not_a_voice", "hello"],
+            ["speak.py", "--lang", "en", "--voice", "zf_xiaobei", "hello"],   # a Kokoro voice, but not an English one
         ):
             with mock.patch.object(sys, "argv", argv), mock.patch.object(sys.stderr, "write"):
                 with self.assertRaises(SystemExit) as cm:
                     speak.main()
                 self.assertEqual(cm.exception.code, 2)
+
+    def test_voices_json_lists_english_kokoro_voices(self) -> None:
+        voices = json.loads((Path(speak.__file__).parent / "voices.json").read_text(encoding="utf-8"))
+        self.assertEqual(tuple(voices), speak.ENGLISH_VOICES)
+        self.assertEqual(len(set(voices)), len(voices))
+        self.assertIn(speak.LANGS["en"][1], voices)   # the default voice is valid
+        self.assertTrue(all(v[:2] in ("af", "am", "bf", "bm") for v in voices))
 
     def test_main_uses_returned_sample_rate_and_writes_atomically(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:

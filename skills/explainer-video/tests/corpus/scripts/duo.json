@@ -1,0 +1,59 @@
+{
+  "title": "Duo board corpus",
+  "speakers": {
+    "a": {
+      "name": "Dana",
+      "role": "Principal Security Engineer",
+      "voice": "af_heart"
+    },
+    "b": {
+      "name": "Omar",
+      "role": "Principal Architect",
+      "voice": "am_michael"
+    }
+  },
+  "layout": "whiteboard",
+  "scenes": [
+    {
+      "id": "s01",
+      "speaker": "a",
+      "narration": "Should we gate every request? I say yes, because one missed check is a breach, and a breach costs far more than a few milliseconds.",
+      "visual": {
+        "type": "duo",
+        "question": "Should we gate every request?",
+        "quote": "One missed check is a breach."
+      }
+    },
+    {
+      "id": "s02",
+      "speaker": "b",
+      "narration": "Hold on. Every request means one more network hop, and our budget is two hundred milliseconds in total.",
+      "visual": {
+        "type": "callout",
+        "heading": "The budget",
+        "big": "200 ms",
+        "text": "Total time for one request"
+      }
+    },
+    {
+      "id": "s03",
+      "speaker": "b",
+      "narration": "So where does the time budget go? Most of it is already spent in the database, before the gate even runs.",
+      "visual": {
+        "type": "duo",
+        "question": "Where does the time budget go?"
+      }
+    },
+    {
+      "id": "s04",
+      "speaker": "a",
+      "narration": "Then we measure it first. Measure, decide, and only then add the gate, one hop at a time.",
+      "visual": {
+        "type": "callout",
+        "heading": "The plan",
+        "big": "Measure first",
+        "text": "Then add the gate, one hop at a time"
+      }
+    }
+  ]
+}

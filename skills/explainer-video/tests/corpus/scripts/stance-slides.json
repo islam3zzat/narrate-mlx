@@ -1,0 +1,84 @@
+{
+  "title": "Stance slides corpus",
+  "speakers": {
+    "a": {
+      "name": "Dana",
+      "role": "Principal Security Engineer",
+      "voice": "af_heart"
+    },
+    "b": {
+      "name": "Omar",
+      "role": "Principal Architect",
+      "voice": "am_michael"
+    }
+  },
+  "layout": "slides",
+  "scenes": [
+    {
+      "id": "s01",
+      "speaker": "b",
+      "narration": "Yes, one missed check is a breach. But another hop blows the budget. So verify signed tokens at the edge. Fine, if tokens stay short-lived.",
+      "visual": {
+        "type": "stance",
+        "question": "Should the login service sit in front of every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Yes, one missed check is a breach",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "Another hop blows the 200 ms budget",
+            "kind": "disagree",
+            "ref": 0
+          },
+          {
+            "by": "a",
+            "text": "Verify signed tokens at the edge",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "Fine, if tokens stay short-lived",
+            "kind": "resolve",
+            "ref": 1
+          }
+        ]
+      }
+    },
+    {
+      "id": "s02",
+      "speaker": "a",
+      "narration": "Before we stop, here is the budget that all of this has to fit inside.",
+      "visual": {
+        "type": "callout",
+        "heading": "The budget",
+        "big": "200 ms",
+        "text": "Total time for one request"
+      }
+    },
+    {
+      "id": "s03",
+      "speaker": "a",
+      "narration": "Why not a cache? A cache makes the check cheap, but a cache can serve a revoked account.",
+      "visual": {
+        "type": "stance",
+        "question": "Is a cache a safe shortcut for the check?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "A cache makes the check cheap",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "A cache can serve a revoked account",
+            "kind": "disagree",
+            "ref": 0
+          }
+        ]
+      }
+    }
+  ]
+}

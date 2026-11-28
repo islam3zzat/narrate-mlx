@@ -4,10 +4,11 @@ from __future__ import annotations
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 import timing
-from env import MAX_WORDS, SKILL, TASHKEEL_MIN, die, inside, run_cli
+from env import MAX_WORDS, SKILL, TASHKEEL_MIN, die, english_voices, inside, run_cli
 from features import feature_errors, lang_of
 from mermaid_host import mermaid_static
 from figures_host import check_figures
@@ -16,6 +17,18 @@ STYLES_DIR = SKILL / "styles"
 USER_STYLES_DIR = Path.home() / ".config/explainer-video/styles"
 DEFAULT_STYLE = "explainer"
 MAX_LEDGER_BYTES, MAX_SOURCE_BYTES = 2_000_000, 8_000_000
+SPEAKER_ID = re.compile(r"[a-z][a-z0-9]{0,11}")
+# The same characters src/visuals/chars.ts (forbiddenChar, used by `code` and the speaker name/role) refuses: control characters, every Unicode
+# format character (zero-width, bidi marks and overrides, isolates, soft hyphen, tag characters ...), line/paragraph separators, the blank
+# "letters" (grapheme joiner, Hangul fillers, Mongolian vowel separator, Braille blank) and variation selectors; plus line breaks and tabs.
+_BLANK_LETTERS = {0x034F, 0x115F, 0x1160, 0x2800, 0x3164, 0xFFA0}
+_BLANK_RANGES = ((0x180B, 0x180F), (0xFE00, 0xFE0F), (0xE0100, 0xE01EF))
+
+
+def forbidden_text_char(ch: str) -> bool:
+    cp = ord(ch)
+    return (unicodedata.category(ch) in ("Cc", "Cf", "Cs", "Zl", "Zp") or cp in _BLANK_LETTERS
+            or any(lo <= cp <= hi for lo, hi in _BLANK_RANGES))
 
 
 def style_dirs(workdir: Path | None = None) -> list[Path]:
@@ -171,6 +184,7 @@ def validate(vid: str, script: dict, lint_warnings: list[str]) -> list[str]:
     errs: list[str] = []
     lang = lang_of(script)
     errs += feature_errors(vid, script)
+    errs += check_speakers(vid, script)
     for sc in script["scenes"]:
         where = f"{vid}/{sc['id']}"
         words = len(sc["narration"].split())
@@ -187,6 +201,42 @@ def validate(vid: str, script: dict, lint_warnings: list[str]) -> list[str]:
     for w in lint_warnings:   # about the whole video (style bounds, sections): "<video>: ..."
         if w.startswith(f"{vid}: "):
             print(f"warning: {w}", file=sys.stderr)
+    return errs
+
+
+def check_speakers(vid: str, script: dict) -> list[str]:
+    """Two-voice dialogue rules (the same as src/schema.ts, plus the voice list that cli.ts also checks): `speakers` has exactly 2
+    entries with distinct English voices, and every scene names a declared speaker who has at least one scene."""
+    speakers, errs = script.get("speakers"), []
+    scenes = script.get("scenes") or []
+    if speakers is None:
+        return [f"{vid}/{sc.get('id')}: speaker needs \"speakers\" at the top of the script" for sc in scenes if "speaker" in sc]
+    if not isinstance(speakers, dict) or len(speakers) != 2:
+        return [f"{vid}: speakers needs exactly 2 entries"]
+    if lang_of(script) != "en":
+        errs.append(f"{vid}: speakers (two-voice dialogue) is English only")
+    voices = english_voices()
+    for sid, sp in speakers.items():
+        if not SPEAKER_ID.fullmatch(sid):
+            errs.append(f"{vid}: speaker id \"{sid}\" must match [a-z][a-z0-9]{{0,11}}")
+        if sp.get("voice") not in voices:
+            errs.append(f"{vid}: speakers.{sid}.voice: \"{sp.get('voice')}\" is not a Kokoro English voice")
+        # one-line display text: no hidden, direction-changing or line-break characters (the same rule as src/schema.ts)
+        for field in ("name", "role"):
+            bad = next((c for c in str(sp.get(field) or "") if forbidden_text_char(c)), None)
+            if bad is not None:
+                errs.append(f"{vid}: speakers.{sid}.{field} has a control, invisible or direction-changing character U+{ord(bad):04X}: remove it")
+    if len({sp.get("voice") for sp in speakers.values()}) < 2:
+        errs.append(f"{vid}: the two speakers share a voice; give each a different voice")
+    used = set()
+    for sc in scenes:
+        who = sc.get("speaker")
+        if who is None:
+            errs.append(f"{vid}/{sc.get('id')}: needs a \"speaker\" ({' or '.join(speakers)})")
+        elif who not in speakers:
+            errs.append(f"{vid}/{sc.get('id')}: unknown speaker \"{who}\" (declared: {', '.join(speakers)})")
+        used.add(who)
+    errs += [f"{vid}: speaker \"{sid}\" has no scene" for sid in speakers if sid not in used]
     return errs
 
 

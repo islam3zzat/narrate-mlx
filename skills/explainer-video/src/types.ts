@@ -16,6 +16,8 @@ export type Scene = {
   /** Script fields that reach the renderer as written. */
   continues?: true;
   chapter?: string;
+  /** Dialogue videos (podcast style): the id of who speaks this scene, a key of VideoData.speakers. */
+  speaker?: string;
   /** Focus changes, with `at` resolved to seconds from the start of the narration audio (explainer.py). */
   focusSec?: {t: number; on: string[]}[];
 };
@@ -29,4 +31,6 @@ export type VideoData = {
   theme?: ThemeName;
   /** The script's `layout` as written: 'whiteboard', 'slides', or absent = automatic (src/whiteboard/eligible.ts resolveLayout). */
   layout?: 'whiteboard' | 'slides';
+  /** Two-voice dialogue (podcast style), in script order: id to display name and role. Absent for every other video; the voices stay audio-side. */
+  speakers?: Record<string, {name: string; role: string}>;
 };

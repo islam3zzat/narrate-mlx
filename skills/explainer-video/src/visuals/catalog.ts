@@ -31,6 +31,9 @@ import {catalog as ablation} from './ablation/catalog';
 import {catalog as matrix} from './matrix/catalog';
 import {catalog as equation} from './equation/catalog';
 import {catalog as figure} from './figure/catalog';
+import {catalog as duo} from './duo/catalog';
+import {catalog as notes} from './notes/catalog';
+import {catalog as stance} from './stance/catalog';
 import {catalog as arrayAlgo} from './array-algo/catalog';
 import {catalog as graphAlgo} from './graph-algo/catalog';
 
@@ -64,6 +67,9 @@ export const BUILTIN_CATALOG: {[K in BuiltinVisualType]: CatalogEntry<K>} = {
   matrix,
   equation,
   figure,
+  duo,
+  notes,
+  stance,
   'array-algo': arrayAlgo,
   'graph-algo': graphAlgo,
 };

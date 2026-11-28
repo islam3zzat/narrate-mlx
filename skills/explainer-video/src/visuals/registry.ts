@@ -4,7 +4,7 @@
 // Both lists are exhaustive over the visual types, so a type missing from either is a compile error.
 import {z} from 'zod';
 import type {Visual} from '../types';
-import type {Described, Semantics} from '../semantics/types';
+import type {Described, Semantics, SpeakerRefs} from '../semantics/types';
 import type {FocusTargets, LintCtx, LintResult, Meta} from './meta-types';
 import type {ScriptVisual} from '../schema';
 import {LOCAL_SCHEMAS, LOCAL_REGISTRY} from '../visuals-local/registry';
@@ -35,6 +35,9 @@ import {schema as ablationSchema} from './ablation/schema';
 import {schema as matrixSchema} from './matrix/schema';
 import {schema as equationSchema} from './equation/schema';
 import {schema as figureSchema} from './figure/schema';
+import {schema as duoSchema} from './duo/schema';
+import {schema as notesSchema} from './notes/schema';
+import {schema as stanceSchema} from './stance/schema';
 import {schema as arrayAlgoSchema} from './array-algo/schema';
 import {schema as graphAlgoSchema} from './graph-algo/schema';
 import {describe as layers3dSem} from './layers3d/semantics';
@@ -64,6 +67,9 @@ import {describe as ablationSem} from './ablation/semantics';
 import {describe as matrixSem} from './matrix/semantics';
 import {describe as equationSem} from './equation/semantics';
 import {describe as figureSem} from './figure/semantics';
+import {describe as duoSem} from './duo/semantics';
+import {describe as notesSem, speakerRefs as notesRefs} from './notes/semantics';
+import {describe as stanceSem, speakerRefs as stanceRefs} from './stance/semantics';
 import {describe as arrayAlgoSem} from './array-algo/semantics';
 import {describe as graphAlgoSem} from './graph-algo/semantics';
 import {meta as layers3dMeta} from './layers3d/meta';
@@ -93,6 +99,9 @@ import {meta as ablationMeta} from './ablation/meta';
 import {meta as matrixMeta} from './matrix/meta';
 import {meta as equationMeta} from './equation/meta';
 import {meta as figureMeta} from './figure/meta';
+import {meta as duoMeta} from './duo/meta';
+import {meta as notesMeta} from './notes/meta';
+import {meta as stanceMeta} from './stance/meta';
 import {meta as arrayAlgoMeta} from './array-algo/meta';
 import {meta as graphAlgoMeta} from './graph-algo/meta';
 
@@ -125,6 +134,9 @@ export const BUILTIN_SCHEMAS = {
   matrix: matrixSchema,
   equation: equationSchema,
   figure: figureSchema,
+  duo: duoSchema,
+  notes: notesSchema,
+  stance: stanceSchema,
   'array-algo': arrayAlgoSchema,
   'graph-algo': graphAlgoSchema,
 };
@@ -175,6 +187,9 @@ export const BUILTIN_REGISTRY: {[T in BuiltinVisualType]: Entry<T>} = {
   matrix: {schema: SCHEMAS.matrix, semantics: matrixSem, meta: matrixMeta},
   equation: {schema: SCHEMAS.equation, semantics: equationSem, meta: equationMeta},
   figure: {schema: SCHEMAS.figure, semantics: figureSem, meta: figureMeta},
+  duo: {schema: SCHEMAS.duo, semantics: duoSem, meta: duoMeta},
+  notes: {schema: SCHEMAS.notes, semantics: notesSem, meta: notesMeta},
+  stance: {schema: SCHEMAS.stance, semantics: stanceSem, meta: stanceMeta},
   'array-algo': {schema: SCHEMAS['array-algo'], semantics: arrayAlgoSem, meta: arrayAlgoMeta},
   'graph-algo': {schema: SCHEMAS['graph-algo'], semantics: graphAlgoSem, meta: graphAlgoMeta},
 };
@@ -184,8 +199,18 @@ export const REGISTRY: {[T in VisualType]: Entry<T>} = {
   ...LOCAL_REGISTRY,
 } as {[T in VisualType]: Entry<T>};
 
+/** The types whose semantics.ts exports `speakerRefs` (the speaker ids a visual names, e.g. a `by`). */
+const SPEAKER_REFS: {[T in BuiltinVisualType]?: SpeakerRefs<T>} = {
+  notes: notesRefs,
+  stance: stanceRefs,
+};
+
 /** Canonical display order in SKILL.md visual-types table and matrix. */
-export const DOCS_ORDER = ['title', 'bullets', 'compare', 'steps', 'flow', 'fanout', 'table', 'graph', 'sequence', 'class', 'mermaid', 'callout', 'svg', 'timeline', 'code', 'stat', 'plot2d', 'linked-plot', 'cancellation-grid', 'field2d', 'chart', 'ablation', 'matrix', 'equation', 'figure', 'surface3d', 'layers3d', 'array-algo', 'graph-algo'] as const satisfies readonly BuiltinVisualType[];
+export const DOCS_ORDER = ['title', 'bullets', 'compare', 'steps', 'flow', 'fanout', 'table', 'graph', 'sequence', 'class', 'mermaid', 'callout', 'duo', 'stance', 'notes', 'svg', 'timeline', 'code', 'stat', 'plot2d', 'linked-plot', 'cancellation-grid', 'field2d', 'chart', 'ablation', 'matrix', 'equation', 'figure', 'surface3d', 'layers3d', 'array-algo', 'graph-algo'] as const satisfies readonly BuiltinVisualType[];
+
+/** The speaker ids a scene's visual names (empty for a type without `speakerRefs`); schema.ts checks them against the script's `speakers`. */
+export const speakerRefsOf = (visual: Visual): string[] =>
+  ((SPEAKER_REFS as Record<string, ((v: Visual) => string[]) | undefined>)[visual.type]?.(visual)) ?? [];
 
 export const describe = (visual: Visual, prev?: Visual, rendered?: {layout?: unknown}): Described =>
   (REGISTRY[visual.type].semantics as (v: Visual, p?: Visual, r?: {layout?: unknown}) => Described)(visual, prev, rendered);

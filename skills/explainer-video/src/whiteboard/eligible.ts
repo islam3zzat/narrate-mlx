@@ -1,7 +1,8 @@
 // Which layout a video gets. The whiteboard is the default; a video falls back to the slide layout only when the board
-// cannot draw it (non-English, 3D, a theme other than paper, chapter cards, continued diagrams, or glyphs the hand font
+// cannot draw it (non-English, 3D, a theme other than paper, chapter cards, continued diagrams of a type the board cannot continue, or glyphs the hand font
 // lacks). Pure (no React, no fonts): schema.ts, frame-schedule.ts, cli.ts and the renderer all resolve through here, so
 // they cannot disagree.
+import {BOARD_CONTINUES_TYPES} from '../visuals/capabilities';
 import {WHITEBOARD_DRAWN_TYPES, stringsOf, unsupportedGlyph} from './glyphs';
 
 export type Layout = 'whiteboard' | 'slides';
@@ -30,7 +31,10 @@ export const whiteboardBlockers = (v: Shape): Blocker[] => {
       if (bad) out.push({kind: 'glyph', path: ['scenes', i, where], message: `the whiteboard font cannot draw "${bad}" (U+${bad.codePointAt(0)!.toString(16).toUpperCase().padStart(4, '0')}); use plain letters or punctuation (for example "to" instead of an arrow)`});
     }
     if (s.chapter) out.push({kind: 'setup', path: ['scenes', i, 'chapter'], message: 'chapter cards are not supported by the whiteboard layout'});
-    if (s.continues) out.push({kind: 'setup', path: ['scenes', i, 'continues'], message: 'continues is not supported by the whiteboard layout (every scene is drawn fresh on the board)'});
+    // the board continues only the types that opt in (capabilities boardContinues): they draw the carried slots already finished
+    if (s.continues && !(BOARD_CONTINUES_TYPES.includes(s.visual.type) && WHITEBOARD_DRAWN_TYPES.includes(s.visual.type))) {
+      out.push({kind: 'setup', path: ['scenes', i, 'continues'], message: `continues on "${s.visual.type}" scenes is not supported by the whiteboard layout (the board continues only: ${BOARD_CONTINUES_TYPES.join(', ')})`});
+    }
   });
   return out;
 };

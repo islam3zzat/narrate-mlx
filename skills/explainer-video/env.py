@@ -243,6 +243,18 @@ def find_speak() -> Path:
         "(the one containing speak.py).")
 
 
+def english_voices() -> list[str]:
+    """The valid Kokoro English voices: speak/voices.json, the one list speak.py and src/voices.ts read too."""
+    p = find_speak() / "voices.json"
+    try:
+        voices = json.loads(p.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as e:
+        die(f"{p}: cannot read the voice list: {e}")
+    if not (isinstance(voices, list) and voices and all(isinstance(v, str) for v in voices)):
+        die(f"{p}: expected a non-empty JSON array of voice names")
+    return voices
+
+
 def load_scripts(workdir: Path, ids: list[str]) -> list[tuple[str, dict]]:
     found = sorted((workdir / "scripts").glob("*.json"))
     if not found:

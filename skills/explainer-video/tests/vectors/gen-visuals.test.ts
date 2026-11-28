@@ -70,8 +70,28 @@ try {
   assert.match(gen['views.tsx'], /'my-algo': \{View2D: MyAlgo2D, View3D: null\},/);
   assert.match(gen['catalog.ts'], /'my-algo': myAlgo,/);
 
+  // a folder with board.ts joins the whiteboard dispatch and WHITEBOARD_DRAWN_TYPES; one without does not
+  assert.match(gen['capabilities.ts'], /WHITEBOARD_DRAWN_TYPES = \[\] as const/);
+  assert.doesNotMatch(gen['boards.ts'], /my-algo/);
+  fs.writeFileSync(path.join(fixture, 'my-algo', 'board.ts'), 'export const board = () => true;\n');
+  const drawn = generateVisualFiles(fixture);
+  assert.match(drawn['capabilities.ts'], /WHITEBOARD_DRAWN_TYPES = \['my-algo'\] as const/);
+  assert.match(drawn['boards.ts'], /import \{board as myAlgo\} from '\.\/my-algo\/board';/);
+  assert.match(drawn['boards.ts'], /'my-algo': myAlgo,/);
+  fs.unlinkSync(path.join(fixture, 'my-algo', 'board.ts'));
+
+  // a semantics.ts that exports speakerRefs is collected into the registry; one without is not
+  assert.doesNotMatch(gen['registry.ts'], /myAlgoRefs/);
+  assert.match(gen['registry.ts'], /const SPEAKER_REFS: \{\[T in BuiltinVisualType\]\?: SpeakerRefs<T>\} = \{\};/);
+  fs.writeFileSync(path.join(fixture, 'my-algo', 'semantics.ts'), "export const describe = () => ({slots: [], carried: []});\nexport const speakerRefs = () => ['a'];\n");
+  const refs = generateVisualFiles(fixture);
+  assert.match(refs['registry.ts'], /import \{describe as myAlgoSem, speakerRefs as myAlgoRefs\} from '\.\/my-algo\/semantics';/);
+  assert.match(refs['registry.ts'], /\{\n  'my-algo': myAlgoRefs,\n\};/);
+  assert.match(refs['registry.ts'], /import \{describe as class_Sem\} from '\.\/class\/semantics';/);
+  fs.writeFileSync(path.join(fixture, 'my-algo', 'semantics.ts'), 'export const describe = () => ({slots: [], carried: []});\n');
+
   const wr = writeVisualFiles(fixture);
-  assert.equal(wr.updated.length, 4);
+  assert.equal(wr.updated.length, 5);
   assert.deepEqual(checkVisualFiles(fixture), []);
   checks++;
 

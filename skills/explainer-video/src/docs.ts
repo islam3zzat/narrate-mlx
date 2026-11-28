@@ -20,7 +20,7 @@ export const visualsSection = (): string => {
     ...metas.map(({type, capabilities: c}) => {
       const focus = c.focus === 'both' ? '2D and 3D' : c.focus === '2d' ? '2D only' : '-';
       const ar = c.rtl === 'yes' ? 'mirrored' : 'not mirrored';
-      return `| \`${type}\` | ${yes(c.modes.includes('2d'))} | ${yes(c.modes.includes('3d'))} | ${c.continues ? '2D only' : '-'} | ${focus} | ${ar} |`;
+      return `| \`${type}\` | ${yes(c.modes.includes('2d'))} | ${yes(c.modes.includes('3d'))} | ${c.continues ? '2D only' : c.boardContinues ? 'whiteboard only' : '-'} | ${focus} | ${ar} |`;
     }),
   ];
   const body = [

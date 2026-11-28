@@ -32,7 +32,7 @@
       ]
     },
     "layout": {
-      "description": "Layout: absent = automatic (the whiteboard whenever the script allows it, else slides); \"whiteboard\" = hand-drawn board (strokes, underlines and check marks drawn on in time with the narration; no title bar, counter or slide transitions), an error if the script cannot use it; \"slides\" = title bar, counter, boxed captions and slide transitions. The board needs English, 2D, the paper theme, and no chapter or continues. title, bullets, flow, steps, fanout, compare and callout are drawn by hand, every other 2D type is shown on the board in a sketched, hand-lettered style",
+      "description": "Layout: absent = automatic (the whiteboard whenever the script allows it, else slides); \"whiteboard\" = hand-drawn board (strokes, underlines and check marks drawn on in time with the narration; no title bar, counter or slide transitions), an error if the script cannot use it; \"slides\" = title bar, counter, boxed captions and slide transitions. The board needs English, 2D, the paper theme, no chapter cards, and `continues` only on bullets, steps, flow, stance and notes (the carried part is drawn finished). title, bullets, flow, steps, fanout, compare and callout are drawn by hand, every other 2D type is shown on the board in a sketched, hand-lettered style",
       "type": "string",
       "enum": [
         "whiteboard",
@@ -45,6 +45,41 @@
       "minLength": 1,
       "maxLength": 40,
       "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "speakers": {
+      "description": "Two-voice dialogue (podcast style): exactly 2 speakers keyed by id (lowercase letters and digits, starting with a letter, up to 12; e.g. \"a\", \"b\"); then every scene needs a `speaker`, one scene per turn. English only; --voice cannot be used",
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 24,
+            "description": "Display name shown on screen, e.g. \"Dana\""
+          },
+          "role": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 48,
+            "description": "Role shown under the name, e.g. \"Principal Security Engineer\""
+          },
+          "voice": {
+            "type": "string",
+            "pattern": "^[a-z]{2}_[a-z]+$",
+            "description": "Kokoro English voice (the names in skills/speak/voices.json). The two speakers need different voices"
+          }
+        },
+        "required": [
+          "name",
+          "role",
+          "voice"
+        ],
+        "additionalProperties": false
+      }
     },
     "title": {
       "type": "string",
@@ -103,7 +138,7 @@
             }
           },
           "continues": {
-            "description": "graph, class and sequence only: this scene carries on the previous scene's diagram (same type, shared ids). Shared parts stay on screen and move to their new places, only new ones are revealed. List the full diagram again",
+            "description": "graph, class and sequence (and, on the whiteboard layout, bullets, steps and flow): this scene carries on the previous scene's diagram (same type, shared ids). Shared parts stay on screen and move to their new places, only new ones are revealed. List the full diagram again",
             "type": "boolean",
             "const": true
           },
@@ -120,6 +155,11 @@
               "type": "string",
               "pattern": "^[a-z]\\d{2,3}$"
             }
+          },
+          "speaker": {
+            "description": "Dialogue videos: the id (a key of the script's \"speakers\") of who says this narration. Required on every scene when the script has \"speakers\", not allowed otherwise",
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]{0,11}$"
           },
           "section": {
             "description": "Styles: which part of the style's structure this scene is (one of the style's sections, e.g. \"decisions\"); optional",
@@ -3751,6 +3791,147 @@
                   "alt"
                 ],
                 "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "duo"
+                  },
+                  "question": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 90,
+                    "description": "The question or claim, written on the board"
+                  },
+                  "quote": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80,
+                    "description": "Optional pull quote: one sentence the current speaker says, shown as a speech bubble"
+                  }
+                },
+                "required": [
+                  "type",
+                  "question"
+                ],
+                "additionalProperties": false,
+                "description": "Two speakers facing each other, the current speaker lit and the other dimmed, with a question on the board (dialogue videos)"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "notes"
+                  },
+                  "heading": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 60,
+                    "description": "Scene heading, for example \"Takeaways\""
+                  },
+                  "items": {
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "text": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 70,
+                          "description": "One note"
+                        },
+                        "by": {
+                          "description": "Id of the speaker (a key of the script's `speakers`) the note belongs to: a small avatar marks it. Omit for a note both agree on",
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$"
+                        }
+                      },
+                      "required": [
+                        "text"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Notes, revealed as they are spoken; 6 or fewer fit well"
+                  }
+                },
+                "required": [
+                  "type",
+                  "heading",
+                  "items"
+                ],
+                "additionalProperties": false,
+                "description": "Takeaways or notes of a dialogue, each optionally attributed to a speaker"
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "const": "stance"
+                  },
+                  "question": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 90,
+                    "description": "The question being argued"
+                  },
+                  "entries": {
+                    "minItems": 1,
+                    "maxItems": 8,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "by": {
+                          "type": "string",
+                          "pattern": "^[A-Za-z0-9_-]+$",
+                          "description": "Id of the speaker (a key of the script's `speakers`) who says it: it goes in that speaker's column"
+                        },
+                        "text": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 60,
+                          "description": "What they say, in a few words"
+                        },
+                        "kind": {
+                          "type": "string",
+                          "enum": [
+                            "claim",
+                            "agree",
+                            "disagree",
+                            "resolve"
+                          ],
+                          "description": "\"claim\" a position, \"agree\" or \"disagree\" with another entry (set `ref`), \"resolve\" settles a disagreement (`ref` must be a \"disagree\" entry)"
+                        },
+                        "ref": {
+                          "description": "Zero-based index of an earlier entry this one answers",
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": [
+                        "by",
+                        "text",
+                        "kind"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "The positions in the order they are spoken, one column per speaker (at most 4 each)"
+                  }
+                },
+                "required": [
+                  "type",
+                  "question",
+                  "entries"
+                ],
+                "additionalProperties": false,
+                "description": "Who holds which position on a question, two columns by speaker, with the disagreements and their resolution (dialogue videos)"
               },
               {
                 "type": "object",

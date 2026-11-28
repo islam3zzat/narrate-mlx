@@ -137,6 +137,9 @@
           "matrix",
           "equation",
           "figure",
+          "duo",
+          "notes",
+          "stance",
           "array-algo",
           "graph-algo"
         ]
@@ -250,6 +253,47 @@
       },
       "required": [
         "blameless"
+      ],
+      "additionalProperties": false
+    },
+    "dialogue": {
+      "description": "Podcast-style two-voice dialogue: the script needs `speakers` and a `speaker` on every scene",
+      "type": "object",
+      "properties": {
+        "speakers": {
+          "type": "number",
+          "const": 2,
+          "description": "The script must declare this many speakers (two voices in conversation)"
+        },
+        "maxConsecutive": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10,
+          "description": "Warn when one speaker has more than this many scenes in a row"
+        },
+        "minShare": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 0.5,
+          "description": "Warn when a speaker says less than this share of the words"
+        },
+        "maxDuo": {
+          "description": "Warn when the script has more `duo` scenes than this, or two in a row (a talking-heads picture teaches nothing new)",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 20
+        },
+        "stanceFrom": {
+          "description": "Warn when a script of this many scenes or more has no `stance` scene (the disagreements should be drawn)",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 200
+        }
+      },
+      "required": [
+        "speakers",
+        "maxConsecutive",
+        "minShare"
       ],
       "additionalProperties": false
     }

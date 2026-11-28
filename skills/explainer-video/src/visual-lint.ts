@@ -25,7 +25,7 @@ const NODE_BUILTINS = new Set([
 ]);
 
 const PURE_FILENAMES = new Set([
-  'capabilities.ts', 'schema.ts', 'semantics.ts', 'meta.ts', 'catalog.ts', 'compute.ts', 'pure.ts',
+  'capabilities.ts', 'schema.ts', 'semantics.ts', 'meta.ts', 'catalog.ts', 'compute.ts', 'pure.ts', 'avatar-geom.ts',
 ]);
 
 const FORBIDDEN_PURE_PKGS = new Set(['react', 'react-dom', 'remotion', 'three']);
@@ -79,11 +79,14 @@ export const RENDER_GATE_ASYNC_CAPS: Record<string, number> = {
 
 const ASYNC_CAPS: Record<string, number> = {...LEGACY_ASYNC_RENDER_CAPS, ...RENDER_GATE_ASYNC_CAPS};
 
+const EXTS = ['.ts', '.tsx', '.mjs', '.js'] as const;
+
 /** Files under `src/` that only run in Node (never bundled for render) and are exempt from the shared lint. */
 export const NODE_ONLY_SOURCES: string[] = [
   'cli.ts', // CLI entry: reads/writes workdirs via node:fs/path
   'gen-visuals.ts', // codegen script: walks src/visuals with node:fs
   'style-files.ts', // style discovery: reads style files from disk
+  'voices.ts', // voice list: reads ../speak/voices.json from disk
   'visual-lint.ts', // this linter: uses node:fs and the TypeScript compiler API
 ];
 
@@ -94,6 +97,8 @@ export type LintFileOptions = {
   isView2D: boolean;
   isPureVisualFile: boolean;
   srcRoot?: string;
+  /** Files under `srcRoot` that only run in Node (default NODE_ONLY_SOURCES): a bundled file must not import one, or the render bundle would pull in `node:fs` and the like. */
+  nodeOnly?: string[];
 };
 
 const isPureFile = (filePath: string): boolean => {
@@ -125,7 +130,16 @@ export const lintVisualFile = (label: string, filePath: string, opts: LintFileOp
   let legacyAsyncHits = 0;
   let firstLegacyAsyncNode: ts.Node | null = null;
 
-  const checkImportTarget = (node: ts.Node, spec: string) => {
+  const nodeOnly = opts.nodeOnly ?? NODE_ONLY_SOURCES;
+  const checkImportTarget = (node: ts.Node, spec: string, typeOnly = false) => {
+    // a relative import that resolves to a Node-only source (the allowlist exempts those files from the no-node-imports rule, so the rule would not see through it)
+    if (spec.startsWith('.') && opts.srcRoot && !typeOnly) {
+      const rel = path.relative(opts.srcRoot, path.resolve(path.dirname(filePath), spec)).replace(/\\/g, '/');
+      const hit = nodeOnly.find((e) => rel === e || [...EXTS].some((x) => rel + x === e) || [...EXTS].some((x) => `${rel}/index${x}` === e));
+      if (hit && !nodeOnly.includes(path.relative(opts.srcRoot, filePath).replace(/\\/g, '/'))) {
+        add(node, 'no-node-only-import', `"${spec}" is Node-only (src/${hit}, see NODE_ONLY_SOURCES) and must not be imported from a bundled file`);
+      }
+    }
     const clean = spec.replace(/^node:/, '');
     if (spec.startsWith('node:') || NODE_BUILTINS.has(clean)) {
       add(node, 'no-node-imports', `forbidden Node built-in import "${spec}"`);
@@ -173,7 +187,7 @@ export const lintVisualFile = (label: string, filePath: string, opts: LintFileOp
   const visit = (node: ts.Node) => {
     // 1. Imports / exports / dynamic imports
     if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier && ts.isStringLiteral(node.moduleSpecifier)) {
-      checkImportTarget(node.moduleSpecifier, node.moduleSpecifier.text);
+      checkImportTarget(node.moduleSpecifier, node.moduleSpecifier.text, ts.isImportDeclaration(node) ? !!node.importClause?.isTypeOnly : node.isTypeOnly);
     }
     if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword && node.arguments[0] && ts.isStringLiteral(node.arguments[0])) {
       checkImportTarget(node.arguments[0], node.arguments[0].text);
@@ -377,7 +391,7 @@ export const lintSharedSources = (
     const label = `src/${rel}`;
     labels.push(label);
     violations.push(
-      ...lintVisualFile(label, full, {isView: false, isView2D: false, isPureVisualFile: false, scope: 'shared', srcRoot: srcDir}),
+      ...lintVisualFile(label, full, {isView: false, isView2D: false, isPureVisualFile: false, scope: 'shared', srcRoot: srcDir, nodeOnly}),
     );
   }
   for (const entry of nodeOnly) {
@@ -388,7 +402,7 @@ export const lintSharedSources = (
   return {labels, violations};
 };
 
-const VISUAL_HELPERS = ['plot-svg.tsx', 'sdk/pure.ts', 'sdk/view2d.tsx', 'sdk/algo-math.ts', 'sdk/algo-2d.tsx'];
+const VISUAL_HELPERS = ['plot-svg.tsx', 'sdk/pure.ts', 'sdk/view2d.tsx', 'sdk/algo-math.ts', 'sdk/algo-2d.tsx', 'sdk/avatar-geom.ts', 'sdk/avatar.tsx'];
 
 /** Lint every registered visual type, the shared visual helpers, and all other `src/**` sources. */
 export const lintAllVisuals = (

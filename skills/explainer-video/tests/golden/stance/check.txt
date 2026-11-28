@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok stance: 6 scenes, 83 words, about 32s
+--stderr--

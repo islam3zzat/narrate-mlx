@@ -1,0 +1,4 @@
+exit 0
+--stdout--
+ok notes-slides: 3 scenes, 56 words, about 22s
+--stderr--

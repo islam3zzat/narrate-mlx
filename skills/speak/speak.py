@@ -43,6 +43,7 @@ LANGS = {
     "ar": ("silma", "default"),
 }
 HERE = Path(__file__).resolve().parent
+ENGLISH_VOICES = tuple(json.loads((HERE / "voices.json").read_text(encoding="utf-8")))  # valid Kokoro English voices (also read by explainer-video)
 CACHE_LIMIT_BYTES = 1024**3  # cap on MLX's GPU buffer cache
 ARABIC_LETTER = re.compile("[\u0621-\u064a\u0671-\u06d3]")
 TASHKEEL = re.compile("[\u064b-\u0652]")
@@ -283,7 +284,7 @@ def main() -> None:
                         help="treat positional argument as literal text even if a file with that name exists")
     parser.add_argument("--lang", choices=list(LANGS), default="en", help="en (Kokoro) or ar (SILMA, Modern Standard Arabic)")
     parser.add_argument("--model", help="en: kokoro; ar: silma (default by --lang)")
-    parser.add_argument("--voice", help="en: af_heart (default). ar: default (bundled reference) or a reference WAV, "
+    parser.add_argument("--voice", help="en: af_heart (default), or any voice in voices.json. ar: default (bundled reference) or a reference WAV, "
                         "with its transcript in a .txt of the same name")
     parser.add_argument("--diacritize", action="store_true", help="ar: let SILMA add diacritics (default: speak the text as written)")
     parser.add_argument("--speed", type=_speed_arg, default=1.0,
@@ -292,6 +293,8 @@ def main() -> None:
     parser.add_argument("--timings", help="also write per-token times as JSON here: {\"words\": [{w, start, end}]} (ar: estimated, \"approx\": true)")
     parser.add_argument("--auto-close", action="store_true", help="close the read-along window automatically when playback finishes")
     args = parser.parse_args()
+    if args.lang == "en" and args.voice and args.voice not in ENGLISH_VOICES:
+        parser.error(f"argument --voice: invalid English voice '{args.voice}' (choose from {', '.join(ENGLISH_VOICES)})")
 
     if args.text is None and sys.stdin.isatty():
         parser.error('no text given. Usage: speak.py "text", or pipe text in')

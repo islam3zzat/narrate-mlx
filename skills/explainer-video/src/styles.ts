@@ -51,6 +51,13 @@ const buildStyleSchema = (visualTypes: readonly [string, ...string[]]) =>
     }),
     sections: z.array(z.string().min(1).max(40)).optional().describe('Scene `section` tags this style expects, in order; one never used warns'),
     lint: z.strictObject({blameless: z.boolean().describe('Turn on the blame-phrase lint')}),
+    dialogue: z.strictObject({
+      speakers: z.literal(2).describe('The script must declare this many speakers (two voices in conversation)'),
+      maxConsecutive: z.number().int().min(1).max(10).describe('Warn when one speaker has more than this many scenes in a row'),
+      minShare: z.number().min(0).max(0.5).describe('Warn when a speaker says less than this share of the words'),
+      maxDuo: z.number().int().min(0).max(20).optional().describe('Warn when the script has more `duo` scenes than this, or two in a row (a talking-heads picture teaches nothing new)'),
+      stanceFrom: z.number().int().min(1).max(200).optional().describe('Warn when a script of this many scenes or more has no `stance` scene (the disagreements should be drawn)'),
+    }).optional().describe('Podcast-style two-voice dialogue: the script needs `speakers` and a `speaker` on every scene'),
   });
 
 export const BuiltinStyleSchema = buildStyleSchema(BUILTIN_VISUAL_TYPES);
@@ -63,8 +70,8 @@ export type StyleDef = z.infer<typeof StyleSchema>;
 const WPS: Record<string, number> = constants.wps;
 const SCENE_PAD_SEC = constants.leadSec + constants.tailSec;
 
-export type StyleScene = {id: string; narration: string; section?: string; visual: {type: string}};
-export type StyleScript = {id: string; language?: string; scenes: readonly StyleScene[]};
+export type StyleScene = {id: string; narration: string; section?: string; speaker?: string; visual: {type: string}};
+export type StyleScript = {id: string; language?: string; speakers?: Readonly<Record<string, unknown>>; scenes: readonly StyleScene[]};
 
 const words = (s: string) => s.split(/\s+/).filter(Boolean).length;
 
@@ -88,6 +95,36 @@ export const styleIssues = (scripts: readonly StyleScript[], style: StyleDef, sp
     }
     const pref = s.scenes.filter((sc) => (style.preferredVisuals as string[]).includes(sc.visual.type)).length;
     if (n && pref / n < 0.5) warnings.push(`${s.id}: only ${pref} of ${n} scenes use the visuals this style prefers (${style.preferredVisuals.join(', ')})`);
+  }
+  const dlg = style.dialogue;
+  if (dlg) for (const s of scripts) {
+    const ids = Object.keys(s.speakers ?? {});
+    if (ids.length !== dlg.speakers) {
+      errors.push(`${s.id}: style "${style.name}" is a ${dlg.speakers}-voice dialogue; the script needs "speakers" with ${dlg.speakers} entries (it has ${ids.length})`);
+      continue;
+    }
+    let run = 0, prev: string | undefined, flagged = false;
+    for (const sc of s.scenes) {
+      run = sc.speaker === prev ? run + 1 : 1;
+      prev = sc.speaker;
+      if (run > dlg.maxConsecutive && !flagged) {
+        flagged = true;
+        warnings.push(`${s.id}/${sc.id}: "${sc.speaker}" speaks ${run} scenes in a row; style "${style.name}" wants at most ${dlg.maxConsecutive} (hand the floor over)`);
+      }
+    }
+    if (dlg.maxDuo !== undefined) {
+      const duos = s.scenes.filter((sc) => sc.visual.type === 'duo').length;
+      if (duos > dlg.maxDuo) warnings.push(`${s.id}: ${duos} "duo" scenes; style "${style.name}" wants at most ${dlg.maxDuo} (use it for the opening question, a pivotal claim and the close)`);
+      const at = s.scenes.findIndex((sc, i) => i > 0 && sc.visual.type === 'duo' && s.scenes[i - 1].visual.type === 'duo');
+      if (at > 0) warnings.push(`${s.id}/${s.scenes[at].id}: "duo" twice in a row; alternate it with a picture that teaches`);
+    }
+    if (dlg.stanceFrom !== undefined && s.scenes.length >= dlg.stanceFrom && !s.scenes.some((sc) => sc.visual.type === 'stance')) {
+      warnings.push(`${s.id}: ${s.scenes.length} scenes and no "stance" scene; style "${style.name}" wants the disagreements drawn (a stance arc built with continues)`);
+    }
+    const share = new Map(ids.map((id) => [id, 0]));
+    let total = 0;
+    for (const sc of s.scenes) if (sc.speaker !== undefined && share.has(sc.speaker)) { const w = words(sc.narration); share.set(sc.speaker, share.get(sc.speaker)! + w); total += w; }
+    if (total) for (const [id, w] of share) if (w / total < dlg.minShare) warnings.push(`${s.id}: "${id}" says only ${Math.round((100 * w) / total)}% of the words; style "${style.name}" wants at least ${Math.round(dlg.minShare * 100)}%`);
   }
   if (style.sections) {
     const used = new Set<string>();

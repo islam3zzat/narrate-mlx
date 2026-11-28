@@ -143,6 +143,19 @@ try {
   assert.ok(r7.violations.some((v) => v.rule === 'prune-allowlist' && v.file === 'src/three/common.tsx'));
   checks++;
 
+  // a bundled file may not import a Node-only source (directly, through a subfolder, or as a directory index); type-only imports are erased and fine
+  const nodeOnlyFiles = {'voices.ts': 'export const v = 1;\n', 'tools/index.ts': 'export const t = 1;\n'};
+  const r8a = lintSharedSources(mk('s8a', {
+    ...nodeOnlyFiles,
+    'a.ts': 'import {v} from "./voices";\nexport const x = v;\n',
+    'sub/b.ts': 'import {v} from "../voices.ts";\nexport {t} from "../tools";\nexport const y = v;\n',
+    'sub/c.ts': 'import type {v} from "../voices";\nexport type X = typeof v;\n',
+    'd.ts': 'export const z = () => import("./voices");\n',
+  }), {nodeOnly: ['voices.ts', 'tools/index.ts']});
+  assert.deepEqual(r8a.violations.map((v) => [v.file, v.rule]).sort(), [['src/a.ts', 'no-node-only-import'], ['src/d.ts', 'no-node-only-import'], ['src/sub/b.ts', 'no-node-only-import'], ['src/sub/b.ts', 'no-node-only-import']]);
+  assert.deepEqual(lintSharedSources(mk('s8b', {...nodeOnlyFiles, 'a.ts': 'import {v} from "./voices";\nexport const x = v;\n'}), {nodeOnly: []}).violations, [], 'nothing is Node-only when the allowlist is empty');
+  checks++;
+
   const r8 = lintSharedSources(mk('s8', {'ok.ts': 'export const z = 1;\n'}), {nodeOnly: ['gone.ts']});
   assert.ok(r8.violations.some((v) => v.rule === 'prune-allowlist' && v.file === 'src/gone.ts'));
   checks++;

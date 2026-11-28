@@ -1,0 +1,331 @@
+{
+  "title": "Gate every request (podcast showcase)",
+  "style": "podcast",
+  "speakers": {
+    "a": {
+      "name": "Dana",
+      "role": "Principal Security Engineer",
+      "voice": "af_heart"
+    },
+    "b": {
+      "name": "Omar",
+      "role": "Principal Architect",
+      "voice": "am_michael"
+    }
+  },
+  "layout": "whiteboard",
+  "scenes": [
+    {
+      "id": "s01",
+      "section": "hook",
+      "speaker": "a",
+      "narration": "Should every request go through the login service? I say yes. One missed check is a breach, and a breach costs far more than a few milliseconds.",
+      "visual": {
+        "type": "duo",
+        "question": "Should every request go through the login service?",
+        "quote": "One missed check is a breach."
+      }
+    },
+    {
+      "id": "s02",
+      "section": "setup",
+      "speaker": "b",
+      "narration": "Hold on. Every request means one more network hop, and our budget is two hundred milliseconds in total.",
+      "visual": {
+        "type": "callout",
+        "heading": "The budget",
+        "big": "200 ms",
+        "text": "Total time for one request"
+      }
+    },
+    {
+      "id": "s03",
+      "section": "exchange",
+      "speaker": "a",
+      "narration": "Then I stand by my claim: gate every request, no exceptions. A check that can be skipped is not a check.",
+      "visual": {
+        "type": "stance",
+        "question": "Gate every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Gate every request, no exceptions",
+            "kind": "claim"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s04",
+      "section": "disagreement",
+      "speaker": "b",
+      "narration": "And I disagree. One more hop blows the budget, and the budget is the product.",
+      "visual": {
+        "type": "stance",
+        "question": "Gate every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Gate every request, no exceptions",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "One more hop blows the budget",
+            "kind": "disagree",
+            "ref": 0
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s05",
+      "section": "resolution",
+      "speaker": "a",
+      "narration": "Then verify at the edge. A signed token is checked in under a millisecond, so the extra hop disappears.",
+      "visual": {
+        "type": "stance",
+        "question": "Gate every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Gate every request, no exceptions",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "One more hop blows the budget",
+            "kind": "disagree",
+            "ref": 0
+          },
+          {
+            "by": "a",
+            "text": "Verify at the edge, under a millisecond",
+            "kind": "resolve",
+            "ref": 1
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s06",
+      "section": "disagreement",
+      "speaker": "b",
+      "narration": "That leaves my real worry. Stale tokens outlive revoked accounts. How long does a fired contractor keep access?",
+      "visual": {
+        "type": "stance",
+        "question": "Gate every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Gate every request, no exceptions",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "One more hop blows the budget",
+            "kind": "disagree",
+            "ref": 0
+          },
+          {
+            "by": "a",
+            "text": "Verify at the edge, under a millisecond",
+            "kind": "resolve",
+            "ref": 1
+          },
+          {
+            "by": "b",
+            "text": "Stale tokens outlive revoked accounts",
+            "kind": "disagree",
+            "ref": 2
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s07",
+      "section": "resolution",
+      "speaker": "a",
+      "narration": "Five minute tokens, plus a deny list at the edge for revocation. The window stays short and the list stays small.",
+      "visual": {
+        "type": "stance",
+        "question": "Gate every request?",
+        "entries": [
+          {
+            "by": "a",
+            "text": "Gate every request, no exceptions",
+            "kind": "claim"
+          },
+          {
+            "by": "b",
+            "text": "One more hop blows the budget",
+            "kind": "disagree",
+            "ref": 0
+          },
+          {
+            "by": "a",
+            "text": "Verify at the edge, under a millisecond",
+            "kind": "resolve",
+            "ref": 1
+          },
+          {
+            "by": "b",
+            "text": "Stale tokens outlive revoked accounts",
+            "kind": "disagree",
+            "ref": 2
+          },
+          {
+            "by": "a",
+            "text": "Five minute tokens and a deny list",
+            "kind": "resolve",
+            "ref": 3
+          }
+        ]
+      },
+      "continues": true
+    },
+    {
+      "id": "s08",
+      "section": "exchange",
+      "speaker": "b",
+      "narration": "So the path changes. The client sends a token, the edge verifies it, and only then does the service do any work.",
+      "visual": {
+        "type": "flow",
+        "heading": "Where the check happens",
+        "nodes": [
+          {
+            "label": "Client",
+            "sub": "sends a token"
+          },
+          {
+            "label": "Edge check",
+            "sub": "verifies it"
+          },
+          {
+            "label": "Service",
+            "sub": "does the work"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s09",
+      "section": "exchange",
+      "speaker": "a",
+      "narration": "Compare that with a session lookup on every call. It is simple and revocable at once, but it costs a database read each time.",
+      "visual": {
+        "type": "compare",
+        "heading": "Two ways to check",
+        "columns": [
+          {
+            "title": "Session lookup",
+            "tag": "Database read",
+            "items": [
+              "Revoke at once",
+              "One read per call",
+              "Hard to scale"
+            ]
+          },
+          {
+            "title": "Signed token",
+            "tag": "Edge check",
+            "items": [
+              "No lookup",
+              "Short lived",
+              "Deny list for revocation"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "s10",
+      "section": "exchange",
+      "speaker": "b",
+      "narration": "Writes are different. A stale token on a read leaks a page, but on a write it changes data. I want a full check there.",
+      "visual": {
+        "type": "steps",
+        "heading": "What each call gets",
+        "items": [
+          "Read: edge check",
+          "Write: full check",
+          "Admin: full check and alert"
+        ]
+      }
+    },
+    {
+      "id": "s11",
+      "section": "exchange",
+      "speaker": "a",
+      "narration": "Agreed, and that is the pivotal part. Fast reads, careful writes. The edge protects the budget and the full check protects the data.",
+      "visual": {
+        "type": "duo",
+        "question": "Fast reads, careful writes",
+        "quote": "The edge protects the budget."
+      }
+    },
+    {
+      "id": "s12",
+      "section": "exchange",
+      "speaker": "b",
+      "narration": "One thing remains. We should measure the added latency after launch, so the next review has numbers instead of opinions.",
+      "visual": {
+        "type": "callout",
+        "heading": "After launch",
+        "big": "Measure it",
+        "text": "Latency of the edge check"
+      }
+    },
+    {
+      "id": "s13",
+      "section": "close",
+      "speaker": "a",
+      "narration": "Let me close with what we agreed. Verify tokens at the edge, and keep tokens short lived, five minutes at most.",
+      "visual": {
+        "type": "notes",
+        "heading": "Takeaways",
+        "items": [
+          {
+            "text": "Verify tokens at the edge",
+            "by": "a"
+          },
+          {
+            "text": "Keep tokens short lived",
+            "by": "b"
+          }
+        ]
+      }
+    },
+    {
+      "id": "s14",
+      "section": "close",
+      "speaker": "b",
+      "narration": "And check every write in full. Then measure the latency after launch, so the decision rests on numbers.",
+      "visual": {
+        "type": "notes",
+        "heading": "Takeaways",
+        "items": [
+          {
+            "text": "Verify tokens at the edge",
+            "by": "a"
+          },
+          {
+            "text": "Keep tokens short lived",
+            "by": "b"
+          },
+          {
+            "text": "Check every write in full",
+            "by": "b"
+          },
+          {
+            "text": "Measure the latency"
+          }
+        ]
+      },
+      "continues": true
+    }
+  ]
+}

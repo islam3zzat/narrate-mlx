@@ -4,6 +4,7 @@ import {TransitionSeries, linearTiming} from '@remotion/transitions';
 import {slide} from '@remotion/transitions/slide';
 import constants from './constants.json';
 import {ThemeContext, getTheme, useFontGate} from './theme';
+import {SpeakersProvider, speakerOf} from './speakers';
 import type {Scene, VideoData} from './types';
 import {RtlContext, useRtl} from './rtl';
 import {ChromeBackdrop, SceneChrome} from './SceneChrome';
@@ -11,10 +12,11 @@ import {ChapterCard} from './ChapterCard';
 import {WhiteboardExplainer} from './whiteboard/Whiteboard';
 import {resolveLayout} from './whiteboard/eligible';
 
-const SceneView: React.FC<{scene: Scene; title: string; index: number; count: number; prev?: Scene; nextContinues: boolean; mode3d: boolean}> = ({scene, title, index, count, prev, nextContinues, mode3d}) => {
+const SceneView: React.FC<{scene: Scene; title: string; index: number; count: number; prev?: Scene; nextContinues: boolean; mode3d: boolean; video: VideoData}> = ({scene, title, index, count, prev, nextContinues, mode3d, video}) => {
   const frame = useCurrentFrame();
   const audioFrames = Math.round(scene.durationSec * constants.fps);
   return (
+    <SpeakersProvider video={video} scene={scene}>
     <SceneChrome
       scene={scene}
       title={title}
@@ -26,11 +28,13 @@ const SceneView: React.FC<{scene: Scene; title: string; index: number; count: nu
       mode3d={mode3d}
       frame={frame}
       audioFrames={audioFrames}
+      speaker={speakerOf(video, scene)}
     >
       <Sequence from={scene.leadFrames}>
         <Audio src={staticFile(scene.audio)} />
       </Sequence>
     </SceneChrome>
+    </SpeakersProvider>
   );
 };
 
@@ -67,7 +71,7 @@ export const Explainer: React.FC<{videoId: string; video: VideoData | null; fram
       items.push(
         <TransitionSeries.Sequence key={s.id} durationInFrames={s.frames}>
           <SceneView scene={s} title={video.title} index={i} count={video.scenes.length}
-            prev={s.continues ? video.scenes[i - 1] : undefined} nextContinues={!!video.scenes[i + 1]?.continues} mode3d={video.mode === '3d'} />
+            prev={s.continues ? video.scenes[i - 1] : undefined} nextContinues={!!video.scenes[i + 1]?.continues} mode3d={video.mode === '3d'} video={video} />
         </TransitionSeries.Sequence>,
       );
     });
@@ -83,7 +87,7 @@ export const Explainer: React.FC<{videoId: string; video: VideoData | null; fram
           const el = (
             <Sequence key={s.id} from={from} durationInFrames={s.frames}>
               <SceneView scene={s} title={video.title} index={i} count={video.scenes.length}
-                prev={s.continues ? video.scenes[i - 1] : undefined} nextContinues={!!video.scenes[i + 1]?.continues} mode3d={video.mode === '3d'} />
+                prev={s.continues ? video.scenes[i - 1] : undefined} nextContinues={!!video.scenes[i + 1]?.continues} mode3d={video.mode === '3d'} video={video} />
             </Sequence>
           );
           from += s.frames;

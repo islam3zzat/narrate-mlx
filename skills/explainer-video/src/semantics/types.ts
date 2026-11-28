@@ -8,3 +8,6 @@ export type Semantics<T extends Visual['type']> = (visual: Extract<Visual, {type
 export const none = (): Described => ({slots: [], carried: []});
 /** Slots that never carry over. */
 export const fresh = (slots: string[]): Described => ({slots, carried: slots.map(() => false)});
+
+/** Optional export of a visual's semantics.ts (`export const speakerRefs`): the speaker ids the visual names (for example a `by` on an item), in script order. schema.ts rejects an id the script's `speakers` does not declare, and any id in a script without `speakers`. */
+export type SpeakerRefs<T extends Visual['type']> = (visual: Extract<Visual, {type: T}>) => string[];

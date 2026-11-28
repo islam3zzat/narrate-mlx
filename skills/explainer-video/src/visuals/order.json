@@ -3,24 +3,25 @@
     "layers3d", "title", "bullets", "compare", "steps", "flow", "fanout",
     "table", "callout", "mermaid", "graph", "sequence", "class", "svg",
     "timeline", "code", "stat", "plot2d", "linked-plot", "cancellation-grid",
-    "field2d", "surface3d", "chart", "ablation", "matrix", "equation", "figure"
+    "field2d", "surface3d", "chart", "ablation", "matrix", "equation", "figure",
+    "duo", "notes", "stance"
   ],
   "schema": [
     "layers3d", "surface3d", "title", "bullets", "compare", "steps", "flow",
     "fanout", "table", "callout", "mermaid", "graph", "sequence", "class",
     "svg", "timeline", "code", "stat", "plot2d", "linked-plot",
     "cancellation-grid", "field2d", "chart", "ablation", "matrix", "equation",
-    "figure"
+    "figure", "duo", "notes", "stance"
   ],
   "docs": [
     "title", "bullets", "compare", "steps", "flow", "fanout", "table",
-    "graph", "sequence", "class", "mermaid", "callout", "svg", "timeline",
+    "graph", "sequence", "class", "mermaid", "callout", "duo", "stance", "notes", "svg", "timeline",
     "code", "stat", "plot2d", "linked-plot", "cancellation-grid", "field2d",
     "chart", "ablation", "matrix", "equation", "figure", "surface3d", "layers3d"
   ],
   "eager2d": [
     "title", "callout", "bullets", "steps", "compare", "table", "flow",
     "fanout", "timeline", "stat", "chart", "ablation", "matrix", "figure",
-    "graph", "class", "sequence"
+    "graph", "class", "sequence", "duo", "notes", "stance"
   ]
 }

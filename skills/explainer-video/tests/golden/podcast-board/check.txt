@@ -1,0 +1,6 @@
+exit 0
+--stdout--
+ok podcast-board [style podcast]: 6 scenes, 128 words, about 49s
+--stderr--
+warning: podcast-board: 6 scene(s); style "podcast" wants 8 to 80
+warning: podcast-board: about 55 s of video; style "podcast" wants 90 to 900 s

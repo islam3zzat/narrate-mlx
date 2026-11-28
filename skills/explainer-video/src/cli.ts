@@ -27,6 +27,7 @@ import {MermaidLayout} from './visuals/mermaid/schema';
 import {checkMermaidAnimation, type MermaidCheckResult, type MermaidCheckScene} from './visuals/mermaid/focus';
 import {LedgerSchema, ledgerIssues, type Ledger} from './ledger';
 import {computeFrameSchedule} from './frame-schedule';
+import {englishVoices} from './voices';
 import {whiteboardBlockers} from './whiteboard/eligible';
 import {checkVisualFiles, writeVisualFiles} from './gen-visuals';
 import {styleIssues, BuiltinStyleSchema, StyleSchema, DEFAULT_STYLE, type StyleDef} from './styles';
@@ -113,8 +114,13 @@ if (cmd === 'schema') {
         try { style = loadStyle(r.data.style, ctx?.workdir); }
         catch (e) { errors.push(`${id}: style: ${e instanceof Error ? e.message : String(e)}`); }
       }
-      for (const sc of r.data.scenes) {
-        const l = lintScene(sc, {lang: r.data.language, mode: r.data.mode});
+      if (r.data.speakers) {
+        const known = englishVoices();
+        for (const [sid, sp] of Object.entries(r.data.speakers)) if (!known.includes(sp.voice)) errors.push(`${id}: speakers.${sid}.voice: "${sp.voice}" is not a Kokoro English voice (${known.join(', ')})`);
+      }
+      for (const [si, sc] of r.data.scenes.entries()) {
+        const carried = sc.continues && si > 0 ? describe(sc.visual, r.data.scenes[si - 1].visual).carried : undefined;
+        const l = lintScene(sc, {lang: r.data.language, mode: r.data.mode, carried});
         errors.push(...l.errors.map((e) => `${id}/${sc.id}: ${e}`));
         warnings.push(...l.warnings.map((w) => `${id}/${sc.id}: ${w}`));
         if (sc.visual.type === 'equation') {
@@ -156,7 +162,7 @@ if (cmd === 'schema') {
     const byStyle = new Map<string, string[]>();
     for (const [id, d] of Object.entries(parsed)) if (d.style) byStyle.set(d.style, [...(byStyle.get(d.style) ?? []), id]);
     for (const [name, ids] of byStyle) {
-      const res = styleIssues(ids.map((id) => ({id, language: parsed[id].language, scenes: parsed[id].scenes})), loadStyle(name, ctx?.workdir));
+      const res = styleIssues(ids.map((id) => ({id, language: parsed[id].language, speakers: parsed[id].speakers, scenes: parsed[id].scenes})), loadStyle(name, ctx?.workdir));
       for (const [kind, msgs] of [['errors', res.errors], ['warnings', res.warnings]] as const) {
         for (const m of msgs) {
           const home = ids.find((id) => m.startsWith(`${id}/`) || m.startsWith(`${id}:`)) ?? ids[0];
@@ -251,6 +257,7 @@ if (cmd === 'schema') {
     ...(v.mermaidRendered ? {mermaidRendered: v.mermaidRendered} : {}),
     ...(v.figureAsset ? {figureAsset: v.figureAsset} : {}),
     ...(v.prev ? {prev: v.prev} : {}),
+    ...(v.speakers ? {speakers: v.speakers, speaker: v.speaker} : {}),
   });
   const durOf = (v: {durationSec?: number}) => Math.round((v.durationSec ?? 8) * constants.fps);
   console.log(

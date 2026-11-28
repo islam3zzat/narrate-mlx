@@ -4,7 +4,13 @@ import type {ScriptVisual} from '../schema';
 import type {Capabilities} from './capabilities';
 
 export type {Capabilities};
-export type LintCtx = {lang: 'en' | 'ar'; mode: '2d' | '3d'; /** The scene's narration (as written in the script). */ narration: string};
+export type LintCtx = {
+  lang: 'en' | 'ar'; mode: '2d' | '3d';
+  /** The scene's narration (as written in the script). */
+  narration: string;
+  /** A `continues` scene: per reveal slot (semantics.ts), true when it is carried from the previous scene (already on screen, so the narration need not say it). */
+  carried?: boolean[];
+};
 /** Messages without the "video/scene: " prefix (the caller adds it). */
 export type LintResult = {errors: string[]; warnings: string[]};
 
